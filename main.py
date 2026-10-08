@@ -1,59 +1,46 @@
-import urllib.parse
-import os
-from fastapi import FastAPI, File, HTTPException, UploadFile, Request, Header
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from pydantic import BaseModel
+import os
 
-app = FastAPI(title="Scanflix API", version="1.0.0")
+app = FastAPI(title="Scanflix")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Dictionnaire de correspondance des mots-clés vers les plateformes de streaming direct
+STREAMING_TARGETS = {
+    "netflix": "https://www.netflix.com",
+    "prime": "https://www.primevideo.com",
+    "canal": "https://www.canalplus.com",
+    "youtube": "https://www.youtube.com"
+}
 
-def generate_streaming_links(title: str):
-    encoded_title = urllib.parse.quote(title)
-    return {
-        "netflix": f"https://www.netflix.com/search?q={encoded_title}",
-        "amazon": f"https://www.primevideo.com/search/ref=atv_sr_sug?phrase={encoded_title}",
-        "youtube": f"https://www.youtube.com/results?search_query={encoded_title}+film+complet",
-        "moviebox": f"https://www.google.com/search?q={encoded_title}+moviebox"
-    }
+class ScanRequest(BaseModel):
+    code: str
 
-@app.post("/api/v1/recognize")
-async def recognize_scene(file: UploadFile = File(...)):
-    allowed_mimeTypes = ["image/jpeg", "image/png", "image/webp"]
-    if file.content_type not in allowed_mimeTypes:
-        raise HTTPException(status_code=400, detail="Format d'image non supporté (JPG, PNG, WebP).")
+@app.post("/api/v1/scan")
+def scan_code(req: ScanRequest):
+    val = req.code.strip().lower()
     
-    contents = await file.read()
-    if len(contents) > 10 * 1024 * 1024:
-        raise HTTPException(status_code=400, detail="Fichier trop volumineux (max 10 Mo).")
+    # Vérifie si l'entrée est un mot-clé direct
+    if val in STREAMING_TARGETS:
+        return {"redirect_url": STREAMING_TARGETS[val]}
+    
+    # Vérifie si l'entrée est une URL valide
+    if val.startswith("http://") or val.startswith("https://"):
+        return {"redirect_url": val}
+    
+    # Si le mot-clé contient une des plateformes
+    for key, url in STREAMING_TARGETS.items():
+        if key in val:
+            return {"redirect_url": url}
+            
+    raise HTTPException(status_code=400, detail="Code ou lien inconnu. Essayez netflix, prime, canal, youtube ou une URL.")
 
-    movie_title = "Le Voyageur"
-    return {
-        "status": "success",
-        "candidate": {
-            "title": movie_title,
-            "year": 2024,
-            "confidence": 0.87,
-            "genre": "Sci-Fi / Drame",
-            "watch_links": generate_streaming_links(movie_title)
-        }
-    }
-
-@app.post("/api/v1/webhook/stripe")
-async def stripe_webhook(request: Request, stripe_signature: str = Header(None)):
-    event_payload = await request.json()
-    if event_payload.get("type") == "checkout.session.completed":
-        pass
-    return {"status": "received"}
-
-@app.get("/")
-async def read_index():
-    if os.path.exists("index.html"):
+# Sert les fichiers statiques de l'interface (index.html, images, etc.)
+if os.path.exists("index.html"):
+    @app.get("/")
+    def read_index():
         return FileResponse("index.html")
-    return {"message": "Scanflix API opérationnelle"}
+
+app.mount("/", StaticFiles(directory="."), name="static")
+
