@@ -3,100 +3,529 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scanflix - Scanner & Streamer</title>
+    <title>Scanflix - Streaming Direct</title>
     <style>
-        :root {
-            --bg-midnight: #0b0f19;
-            --real-orange: #FF8A30;
-            --spotlight-amber: #FFB458;
-            --card-bg: #111827;
-            --border-color: #1f2937;
-        }
-
-        body {
-            background-color: var(--bg-midnight);
-            color: #ffffff;
-            font-family: system-ui, -apple-system, sans-serif;
+        * {
+            box-sizing: border-box;
             margin: 0;
-            padding: 16px;
-            display: flex;
-            justify-content: center;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        .app-container { width: 100%; max-width: 480px; }
-        .header { text-align: center; margin-bottom: 24px; }
-        .logo { color: var(--real-orange); font-size: 32px; font-weight: bold; margin: 0; letter-spacing: -0.5px; }
-        .subtitle { color: #9ca3af; font-size: 14px; margin-top: 4px; }
-        .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; margin-top: 16px; }
-        .btn-orange { background: var(--real-orange); color: #000000; border: none; padding: 14px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; font-size: 16px; }
-        .platforms { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
-        .btn-p { display: block; text-align: center; padding: 10px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; color: #ffffff; }
-        .net { background: #E50914; }
-        .amz { background: #00A8E1; }
-        .yt { background: #FF0000; }
-        .mb { background: var(--spotlight-amber); color: #000000; }
-        .movie-title { margin: 0; color: var(--spotlight-amber); font-size: 20px; }
-        .confidence { color: #9ca3af; font-size: 14px; margin-bottom: 12px; }
+        body {
+            background-color: #0d0f12;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: #161b22;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #2d3748;
+        }
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff7b00;
+            box-shadow: 0 0 20px rgba(255, 123, 0, 0.4);
+        }
+        h1 {
+            font-size: 1.8rem;
+            color: #ff7b00;
+            margin-bottom: 8px;
+        }
+        p {
+            color: #a0aec0;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid #4a5568;
+            background: #0d0f12;
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            border-color: #ff7b00;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #ff7b00 0%, #e65100 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        #status {
+            margin-top: 18px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .success { color: #22c55e; }
+        .error { color: #ef4444; }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="header">
-            <h1 class="logo">Scanflix</h1>
-            <p class="subtitle">Identifiez une scène et lancez votre film</p>
+
+    <div class="container">
+        <!-- Logo Scanflix -->
+        <div class="logo-container">
+            <img src="https://i.ibb.co/L8vTvhZ/scanflix-logo.png" alt="Scanflix Logo" class="logo">
         </div>
 
-        <input type="file" id="fileInput" accept="image/*" style="display:none;" />
-        <button class="btn-orange" id="btn-scan" onclick="document.getElementById('fileInput').click()">📷 Scanner une photo / scène</button>
+        <h1>Scanflix</h1>
+        <p>Entrez un code ou un lien pour accéder au streaming</p>
 
-        <div id="result" class="card" style="display:none;">
-            <h2 id="title" class="movie-title"></h2>
-            <p class="confidence">Confiance : <span id="conf"></span>%</p>
-            <p style="margin-bottom:8px; font-size:14px; color: #e2e8f0;">Regarder directement sur :</p>
-            
-            <div class="platforms">
-                <a id="net" target="_blank" class="btn-p net">Netflix</a>
-                <a id="amz" target="_blank" class="btn-p amz">Prime Video</a>
-                <a id="yt" target="_blank" class="btn-p yt">YouTube</a>
-                <a id="mb" target="_blank" class="btn-p mb">MovieBox</a>
-            </div>
-
-            <button class="btn-orange" style="margin-top:8px;">Ajouter aux favoris</button>
+        <div class="input-group">
+            <input type="text" id="scan-input" placeholder="Ex: netflix, prime, canal ou une URL">
         </div>
+
+        <button onclick="handleScan()">Accéder au Streaming 🎬</button>
+
+        <div id="status"></div>
     </div>
 
     <script>
-        document.getElementById('fileInput').addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if(!file) return;
+        async function handleScan() {
+            const inputVal = document.getElementById('scan-input').value.trim();
+            const statusDiv = document.getElementById('status');
 
-            const btnScan = document.getElementById('btn-scan');
-            btnScan.textContent = 'Analyse de la scène en cours...';
+            if (!inputVal) {
+                statusDiv.className = "error";
+                statusDiv.innerText = "Veuillez entrer un code ou un lien.";
+                return;
+            }
 
-            const formData = new FormData();
-            formData.append('file', file);
-            
+            statusDiv.className = "";
+            statusDiv.innerText = "Vérification en cours...";
+
             try {
-                const res = await fetch('/api/v1/recognize', { method: 'POST', body: formData });
-                const data = await res.json();
-                
-                if(res.ok) {
-                    document.getElementById('title').textContent = data.candidate.title + " (" + data.candidate.year + ")";
-                    document.getElementById('conf').textContent = Math.round(data.candidate.confidence * 100);
-                    document.getElementById('net').href = data.candidate.watch_links.netflix;
-                    document.getElementById('amz').href = data.candidate.watch_links.amazon;
-                    document.getElementById('yt').href = data.candidate.watch_links.youtube;
-                    document.getElementById('mb').href = data.candidate.watch_links.moviebox;
-                    document.getElementById('result').style.display = 'block';
+                const response = await fetch('/api/v1/scan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: inputVal })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.redirect_url) {
+                    statusDiv.className = "success";
+                    statusDiv.innerText = "Succès ! Redirection en cours...";
+                    setTimeout(() => {
+                        window.location.href = data.redirect_url;
+                    }, 800);
                 } else {
-                    alert(data.detail || 'Erreur lors de l\'analyse.');
+                    statusDiv.className = "error";
+                    statusDiv.innerText = data.detail || "Code invalide.";
                 }
             } catch (err) {
-                alert('Erreur de connexion au serveur.');
-            } finally {
-                btnScan.textContent = '📷 Scanner une photo / scène';
+                statusDiv.className = "error";
+                statusDiv.innerText = "Erreur de connexion avec le serveur.";
             }
-        });
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanflix - Streaming Direct</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0d0f12;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: #161b22;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #2d3748;
+        }
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff7b00;
+            box-shadow: 0 0 20px rgba(255, 123, 0, 0.4);
+        }
+        h1 {
+            font-size: 1.8rem;
+            color: #ff7b00;
+            margin-bottom: 8px;
+        }
+        p {
+            color: #a0aec0;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid #4a5568;
+            background: #0d0f12;
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanflix - Streaming Direct</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0d0f12;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: #161b22;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #2d3748;
+        }
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff7b00;
+            box-shadow: 0 0 20px rgba(255, 123, 0, 0.4);
+        }
+        h1 {
+            font-size: 1.8rem;
+            color: #ff7b00;
+            margin-bottom: 8px;
+        }
+        p {
+            color: #a0aec0;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid #4a5568;
+            background: #0d0f12;
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            border-color: #ff7b00;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #ff7b00 0%, #e65100 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        #status {
+            margin-top: 18px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .success { color: #22c55e; }
+        .error { color: #ef4444; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Logo Scanflix -->
+        <div class="logo-container">
+            <img src="https://i.ibb.co/L8vTvhZ/scanflix-logo.png" alt="Scanflix Logo" class="logo">
+        </div>
+
+        <h1>Scanflix</h1>
+        <p>Entrez un code ou un lien pour accéder au streaming</p>
+
+        <div class="input-group">
+            <input type="text" id="scan-input" placeholder="Ex: netflix, prime, canal ou une URL">
+        </div>
+
+        <button onclick="handleScan()">Accéder au Streaming 🎬</button>
+
+        <div id="status"></div>
+    </div>
+
+    <script>
+        async function handleScan() {
+            const inputVal = document.getElementById('scan-input').value.trim();
+            const statusDiv = document.getElementById('status');
+
+            if (!inputVal) {
+                statusDiv.className = "error";
+                statusDiv.innerText = "Veuillez entrer un code ou un lien.";
+                return;
+            }
+
+            statusDiv.className = "";
+            statusDiv.innerText = "Vérification en cours...";
+
+            try {
+                const response = await fetch('/api/v1/scan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: inputVal })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.redirect_url) {
+                    statusDiv.className = "success";
+                    statusDiv.innerText = "Succès ! Redirection en cours...";
+                    setTimeout(() => {
+                        window.location.href = data.redirect_url;
+                    }, 800);
+                } else {
+                    statusDiv.className = "error";
+                    statusDiv.innerText = data.detail || "Code invalide.";
+                }
+            } catch (err) {
+                statusDiv.className = "error";
+                statusDiv.innerText = "Erreur de connexion avec le serveur.";
+            }
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanflix - Streaming Direct</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0d0f12;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: #161b22;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #2d3748;
+        }
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff7b00;
+            box-shadow: 0 0 20px rgba(255, 123, 0, 0.4);
+        }
+        h1 {
+            font-size: 1.8rem;
+            color: #ff7b00;
+            margin-bottom: 8px;
+        }
+        p {
+            color: #a0aec0;
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid #4a5568;
+            background: #0d0f12;
+            color: #fff;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            border-color: #ff7b00;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #ff7b00 0%, #e65100 100%);
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        #status {
+            margin-top: 18px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .success { color: #22c55e; }
+        .error { color: #ef4444; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Logo Scanflix -->
+        <div class="logo-container">
+            <img src="https://i.ibb.co/L8vTvhZ/scanflix-logo.png" alt="Scanflix Logo" class="logo">
+        </div>
+
+        <h1>Scanflix</h1>
+        <p>Entrez un code ou un lien pour accéder au streaming</p>
+
+        <div class="input-group">
+            <input type="text" id="scan-input" placeholder="Ex: netflix, prime, canal ou une URL">
+        </div>
+
+        <button onclick="handleScan()">Accéder au Streaming 🎬</button>
+
+        <div id="status"></div>
+    </div>
+
+    <script>
+        async function handleScan() {
+            const inputVal = document.getElementById('scan-input').value.trim();
+            const statusDiv = document.getElementById('status');
+
+            if (!inputVal) {
+                statusDiv.className = "error";
+                statusDiv.innerText = "Veuillez entrer un code ou un lien.";
+                return;
+            }
+
+            statusDiv.className = "";
+            statusDiv.innerText = "Vérification en cours...";
+
+            try {
+                const response = await fetch('/api/v1/scan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: inputVal })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.redirect_url) {
+                    statusDiv.className = "success";
+                    statusDiv.innerText = "Succès ! Redirection en cours...";
+                    setTimeout(() => {
+                        window.location.href = data.redirect_url;
+                    }, 800);
+                } else {
+                    statusDiv.className = "error";
+                    statusDiv.innerText = data.detail || "Code invalide.";
+                }
+            } catch (err) {
+                statusDiv.className = "error";
+                statusDiv.innerText = "Erreur de connexion avec le serveur.";
+            }
+        }
     </script>
 </body>
 </html>
