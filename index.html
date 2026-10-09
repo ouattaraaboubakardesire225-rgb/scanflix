@@ -42,7 +42,6 @@
             padding-bottom: 90px;
         }
 
-        /* HEADER AVEC LOGO CAMERA STAR */
         header {
             position: sticky;
             top: 0;
@@ -120,7 +119,6 @@
             margin-bottom: 16px;
         }
 
-        /* BLOC DE TÉLÉCHARGEMENT DIRECT APK */
         .download-box {
             background: linear-gradient(135deg, rgba(0, 210, 255, 0.1) 0%, rgba(255, 85, 0, 0.1) 100%);
             border: 1px solid var(--card-border);
@@ -166,7 +164,6 @@
         .btn-pwa { background: var(--blue-gradient); box-shadow: 0 4px 15px var(--glow-blue); }
         .btn-apk { background: var(--orange-gradient); box-shadow: 0 4px 15px var(--glow-orange); }
 
-        /* CARD PRINCIPALE DÉTECTION IMAGE & RECHERCHE VOCALE */
         .action-card {
             background: var(--card-midnight);
             border: 1px solid var(--card-border);
@@ -248,7 +245,6 @@
             margin-top: 14px;
         }
 
-        /* RÉSULTAT DE SCÈNE */
         .result-card {
             display: none;
             background: var(--card-midnight);
@@ -278,7 +274,6 @@
             margin-top: 12px;
         }
 
-        /* SECTIONS & AFFICHES */
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -336,7 +331,6 @@
 
         .media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
 
-        /* MODAL POPUP STREAMING ET PARTAGE */
         .platform-modal {
             display: none;
             position: fixed;
@@ -408,7 +402,6 @@
 
         .stars { color: #f59e0b; font-size: 1.1rem; }
 
-        /* NAVIGATION BAS */
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
 
@@ -468,7 +461,6 @@
 </head>
 <body>
 
-    <!-- HEADER DE L'APPLICATION -->
     <header>
         <div class="header-left">
             <button class="btn-back-nav" id="btn-global-back" onclick="retourAccueil()" style="display: none;">
@@ -500,15 +492,12 @@
 
     <div class="container">
 
-        <!-- DÉCOMPTE ESSAI GRATUIT 24H -->
         <div id="trial-banner" class="trial-banner">
             🎁 Essai gratuit 24h actif ! Temps restant : <span id="trial-countdown">23h 59m 59s</span>
         </div>
 
-        <!-- ONGLET ACCUEIL -->
         <div id="tab-home" class="tab-panel active">
             
-            <!-- BLOC DE TÉLÉCHARGEMENT DIRECT APK -->
             <div class="download-box">
                 <div class="download-title">
                     <span>📱 Télécharger l'application Mobile</span>
@@ -519,7 +508,6 @@
                 </div>
             </div>
 
-            <!-- CARD PRINCIPALE DÉTECTION IMAGE & RECHERCHE VOCALE -->
             <div class="action-card">
                 <h2>Détecter une scène</h2>
                 <p>Scannez une image ou décrivez la scène à la voix.</p>
@@ -575,7 +563,6 @@
                 </div>
             </div>
 
-            <!-- CARROUSEL AVEC VRAIES AFFICHES CLIQUEABLES -->
             <div class="section-header">
                 <h3>Tendances Actuelles</h3>
             </div>
@@ -604,7 +591,6 @@
 
         </div>
 
-        <!-- ONGLET FAVORIS -->
         <div id="tab-favs" class="tab-panel">
             <div class="section-header">
                 <h3>Mes Favoris (Hors-ligne)</h3>
@@ -623,7 +609,6 @@
             </div>
         </div>
 
-        <!-- ONGLET BIBLIOTHÈQUE -->
         <div id="tab-library" class="tab-panel">
             <div class="section-header">
                 <h3>Historique des Scans</h3>
@@ -637,7 +622,6 @@
             </div>
         </div>
 
-        <!-- ONGLET COMPTE & PARAMÈTRES -->
         <div id="tab-account" class="tab-panel">
             <div id="settings-main">
                 <div class="section-header">
@@ -650,7 +634,6 @@
                 </div>
             </div>
 
-            <!-- SOUS-PAGES DYNAMIQUES -->
             <div id="sub-page-profile" style="display:none;">
                 <div class="section-header"><h3>Mon Profil</h3></div>
                 <div style="background:var(--card-midnight); border:1px solid var(--card-border); border-radius:18px; padding:16px;">
@@ -686,7 +669,6 @@
 
     </div>
 
-    <!-- MODAL CHOIX PLATEFORME DE STREAMING -->
     <div class="platform-modal" id="platformModal">
         <div class="modal-content">
             <h3 id="modalMediaTitle" style="color:var(--neon-orange); font-size:1.1rem; margin-bottom:4px;">Film</h3>
@@ -705,7 +687,6 @@
         </div>
     </div>
 
-    <!-- NAVBAR BAS DE PAGE -->
     <nav class="nav-bar">
         <button class="nav-item active" onclick="naviguerVers('home', this)">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -903,4 +884,5 @@
         }
     </script>
 </body>
-</html>￼Enter
+</html>
+￼Enter
