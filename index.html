@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scanflix - Détecteur de Films & Animes AI</title>
-    <!-- Web App Manifest pour PWA -->
+    <!-- Web App Manifest -->
     <link rel="manifest" href="data:application/manifest+json,{
         %22name%22:%22Scanflix%22,
         %22short_name%22:%22Scanflix%22,
@@ -14,16 +14,16 @@
         %22theme_color%22:%22%23ff5500%22
     }">
     <meta name="theme-color" content="#08090d">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.kkiapay.me/me.js"></script>
     <style>
         :root {
             --bg-dark: #08090d;
-            --card-bg: rgba(18, 20, 30, 0.75);
+            --card-bg: rgba(18, 20, 32, 0.8);
             --card-border: rgba(255, 255, 255, 0.08);
             --primary-orange: #ff5500;
-            --primary-gradient: linear-gradient(135deg, #ff6b00 0%, #ff2200 100%);
-            --glow-orange: rgba(255, 85, 0, 0.4);
+            --primary-gradient: linear-gradient(135deg, #ff7700 0%, #ff2200 100%);
+            --glow-orange: rgba(255, 85, 0, 0.45);
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
         }
@@ -39,14 +39,14 @@
         body {
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(255, 85, 0, 0.15) 0%, transparent 60%),
-                radial-gradient(circle at 100% 100%, rgba(20, 20, 35, 0.9) 0%, transparent 50%);
+                radial-gradient(circle at 50% -10%, rgba(255, 85, 0, 0.25) 0%, transparent 60%),
+                radial-gradient(circle at 100% 100%, rgba(30, 20, 50, 0.6) 0%, transparent 50%);
             background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding-bottom: 85px;
+            padding-bottom: 90px;
         }
 
         /* HEADER */
@@ -54,7 +54,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
             background: rgba(8, 9, 13, 0.85);
             border-bottom: 1px solid var(--card-border);
             padding: 14px 20px;
@@ -69,31 +69,43 @@
             gap: 12px;
         }
 
-        /* LOGO STYLE NEON FILM PLAY */
         .logo-icon {
-            width: 38px;
-            height: 38px;
-            background: radial-gradient(circle, #1a1e2e 0%, #0a0c14 100%);
+            width: 42px;
+            height: 42px;
+            background: radial-gradient(circle, #251b2e 0%, #0a0c14 100%);
             border: 2px solid var(--primary-orange);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 12px var(--glow-orange);
+            box-shadow: 0 0 15px var(--glow-orange);
             position: relative;
         }
+
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1px dashed rgba(255, 85, 0, 0.5);
+            animation: spin 12s linear infinite;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
         .logo-icon svg {
             width: 20px;
             height: 20px;
             fill: var(--primary-orange);
-            filter: drop-shadow(0 0 4px var(--primary-orange));
+            filter: drop-shadow(0 0 6px var(--primary-orange));
+            margin-left: 2px;
         }
 
         .brand-logo h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, #ffffff 40%, var(--primary-orange) 100%);
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #ffffff 30%, var(--primary-orange) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -101,56 +113,15 @@
         .main-container {
             flex: 1;
             padding: 20px;
-            max-width: 520px;
+            max-width: 500px;
             margin: 0 auto;
             width: 100%;
         }
 
-        /* BANNIÈRE HERO ET BADGES */
-        .hero-banner {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .hero-banner h2 {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin-bottom: 8px;
-            line-height: 1.2;
-        }
-
-        .hero-banner p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            line-height: 1.4;
-            margin-bottom: 14px;
-        }
-
-        .badges-list {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .badge-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.75rem;
-            color: #d1d5db;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--card-border);
-            padding: 6px 12px;
-            border-radius: 20px;
-        }
-
-        .badge-item span { color: #22c55e; font-weight: bold; }
-
-        /* BANNIÈRE INSTALLATION PWA */
+        /* BANNIÈRE PWA */
         .install-card {
-            background: linear-gradient(90deg, rgba(255, 85, 0, 0.2) 0%, rgba(18, 20, 30, 0.8) 100%);
-            border: 1px solid rgba(255, 85, 0, 0.4);
+            background: linear-gradient(90deg, rgba(255, 85, 0, 0.25) 0%, rgba(18, 20, 32, 0.9) 100%);
+            border: 1px solid rgba(255, 85, 0, 0.5);
             border-radius: 16px;
             padding: 12px 16px;
             display: flex;
@@ -164,43 +135,98 @@
             background: var(--primary-gradient);
             color: white;
             border: none;
-            padding: 8px 14px;
+            padding: 8px 16px;
             font-size: 0.8rem;
-            font-weight: 700;
-            border-radius: 8px;
+            font-weight: 800;
+            border-radius: 10px;
             cursor: pointer;
             box-shadow: 0 2px 10px var(--glow-orange);
         }
 
-        /* LOGO GEANT ACCUEIL */
-        .main-logo-hero {
-            width: 110px;
-            height: 110px;
+        /* BANNIÈRE ESSAI GRATUIT 24H */
+        .trial-badge-banner {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            border-radius: 12px;
+            padding: 10px 14px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #22c55e;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .trial-badge-banner.expired {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #ef4444;
+        }
+
+        /* HERO LOGO GRAND */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .hero-logo-box {
+            width: 100px;
+            height: 100px;
             margin: 0 auto 16px;
-            background: radial-gradient(circle, #1e2436 0%, #08090d 80%);
+            background: radial-gradient(circle, #2a1e38 0%, #08090d 80%);
             border: 3px solid var(--primary-orange);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 0 30px var(--glow-orange);
+            position: relative;
         }
 
-        .main-logo-hero svg {
-            width: 55px;
-            height: 55px;
+        .hero-logo-box svg {
+            width: 48px;
+            height: 48px;
             fill: var(--primary-orange);
             filter: drop-shadow(0 0 10px var(--primary-orange));
+            margin-left: 4px;
         }
 
-        /* SECTION EXEMPLES / CARROUSEL */
-        .section-title {
-            font-size: 0.95rem;
-            font-weight: 700;
-            margin: 24px 0 12px;
+        .hero-section h2 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .hero-section p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+
+        .badges-container {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #d1d5db;
+        }
+
+        .badge span { color: #22c55e; font-weight: bold; }
+
+        /* CARROUSEL D'EXEMPLES */
+        .section-header {
+            font-size: 0.9rem;
+            font-weight: 800;
+            margin: 22px 0 12px;
+            color: #e5e7eb;
         }
 
         .carousel {
@@ -213,25 +239,24 @@
 
         .carousel::-webkit-scrollbar { display: none; }
 
-        .example-card {
-            min-width: 120px;
+        .carousel-card {
+            min-width: 115px;
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: 14px;
             padding: 8px;
             text-align: center;
-            backdrop-filter: blur(8px);
         }
 
-        .example-card img {
-            width: 104px;
+        .carousel-card img {
+            width: 99px;
             height: 130px;
             object-fit: cover;
             border-radius: 10px;
             margin-bottom: 6px;
         }
 
-        .example-card p {
+        .carousel-card p {
             font-size: 0.75rem;
             font-weight: 700;
             white-space: nowrap;
@@ -239,13 +264,13 @@
             text-overflow: ellipsis;
         }
 
-        .example-card span {
+        .carousel-card span {
             font-size: 0.65rem;
             color: #22c55e;
-            font-weight: bold;
+            font-weight: 800;
         }
 
-        /* BOUTON D'ACTION PRINCIPAL */
+        /* BOUTON PRINCIPAL */
         .btn-glow {
             width: 100%;
             background: var(--primary-gradient);
@@ -256,7 +281,7 @@
             font-weight: 800;
             border-radius: 14px;
             cursor: pointer;
-            margin-top: 16px;
+            margin-top: 18px;
             box-shadow: 0 8px 25px var(--glow-orange);
             display: flex;
             align-items: center;
@@ -267,7 +292,7 @@
 
         .btn-glow:active { transform: scale(0.98); }
 
-        /* PREVIEW & RÉSULTAT */
+        /* PREVIEW ET RÉSULTAT */
         .preview-box {
             display: none;
             background: var(--card-bg);
@@ -287,7 +312,7 @@
 
         .result-card {
             display: none;
-            background: linear-gradient(180deg, rgba(30, 35, 50, 0.95) 0%, rgba(12, 14, 22, 0.98) 100%);
+            background: linear-gradient(180deg, rgba(35, 25, 45, 0.9) 0%, rgba(12, 14, 22, 0.95) 100%);
             border: 1px solid var(--primary-orange);
             border-radius: 18px;
             padding: 18px;
@@ -295,11 +320,10 @@
             box-shadow: 0 10px 30px var(--glow-orange);
         }
 
-        .platforms-list {
+        .platform-btns {
             margin-top: 14px;
             display: flex;
             gap: 8px;
-            justify-content: space-around;
         }
 
         .platform-btn {
@@ -307,21 +331,39 @@
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--card-border);
             color: #fff;
-            padding: 8px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 10px;
             font-size: 0.75rem;
             font-weight: 700;
             text-align: center;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
+            display: block;
         }
 
-        .platform-btn:hover { background: rgba(255, 85, 0, 0.2); }
+        /* PACKS ABONNEMENT */
+        .plans-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 12px;
+        }
 
-        /* TAB PANELS & NAVBAR */
+        .plan-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .plan-card.recommended {
+            border-color: var(--primary-orange);
+            background: rgba(255, 85, 0, 0.08);
+        }
+
+        /* PANELS ET NAVIGATION */
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
 
@@ -329,8 +371,7 @@
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: 18px;
-            padding: 18px;
-            backdrop-filter: blur(12px);
+            padding: 20px;
             margin-bottom: 16px;
         }
 
@@ -341,8 +382,13 @@
             color: #fff;
             padding: 12px;
             border-radius: 10px;
-            margin: 10px 0;
+            margin: 8px 0 14px 0;
             outline: none;
+            font-size: 0.9rem;
+        }
+
+        .input-dark:focus {
+            border-color: var(--primary-orange);
         }
 
         .nav-bar {
@@ -350,7 +396,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background: rgba(8, 9, 13, 0.92);
+            background: rgba(8, 9, 13, 0.95);
             backdrop-filter: blur(20px);
             border-top: 1px solid var(--card-border);
             display: flex;
@@ -393,72 +439,70 @@
 
     <div class="main-container">
 
-        <!-- BANNIÈRE TÉLÉCHARGEMENT / PWA -->
+        <!-- BANNIÈRE PWA TÉLÉCHARGEMENT -->
         <div id="pwa-banner" class="install-card" style="display: none;">
-            <span style="font-size: 0.85rem; font-weight: 700;">📲 Installer Scanflix sur votre écran</span>
-            <button class="btn-install-app" onclick="installerPWA()">Télécharger</button>
+            <span style="font-size: 0.85rem; font-weight: 700;">📲 Installer l'application sur votre écran</span>
+            <button class="btn-install-app" onclick="installerPWA()">Installer</button>
+        </div>
+
+        <!-- INDICATEUR ESSAI GRATUIT 24H -->
+        <div id="trial-timer-banner" class="trial-badge-banner">
+            🎁 1 Jour d'essai gratuit offert ! Temps restant : <span id="trial-countdown">--:--:--</span>
         </div>
 
         <!-- ONGLET ACCUEIL -->
         <div id="tab-home" class="tab-panel active">
-            <div class="hero-banner">
-                <div class="main-logo-hero">
+            <div class="hero-section">
+                <div class="hero-logo-box">
                     <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 </div>
                 <h2>Instantanément</h2>
                 <p>Envoyez une capture d'écran et découvrez ce que vous regardez. Même une scène d'anime, un dessin animé ou un film dont vous avez oublié le nom.</p>
                 
-                <div class="badges-list">
-                    <div class="badge-item"><span>✓</span> Vos images restent privées</div>
-                    <div class="badge-item"><span>⚡</span> Résultat en quelques secondes</div>
+                <div class="badges-container">
+                    <div class="badge"><span>✓</span> Images privées</div>
+                    <div class="badge"><span>⚡</span> Résultat instantané</div>
                 </div>
             </div>
 
-            <!-- CARROUSEL D'EXEMPLES -->
-            <div class="section-title">
-                <span>Exemples d'Animes et de Films Reconnus</span>
-            </div>
+            <div class="section-header">Exemples d'Animes et de Films Reconnus</div>
             <div class="carousel">
-                <div class="example-card">
-                    <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=200" alt="Spirited Away">
+                <div class="carousel-card">
+                    <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=200" alt="Chihiro">
                     <p>Le Voyage de Chihiro</p>
                     <span>✓ Identifié</span>
                 </div>
-                <div class="example-card">
+                <div class="carousel-card">
                     <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=200" alt="Blade Runner">
                     <p>Blade Runner</p>
                     <span>✓ Identifié</span>
                 </div>
-                <div class="example-card">
+                <div class="carousel-card">
                     <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=200" alt="Demon Slayer">
                     <p>Demon Slayer</p>
                     <span>✓ Identifié</span>
                 </div>
             </div>
 
-            <!-- BOUTON IDENTIFIER -->
-            <button class="btn-glow" onclick="document.getElementById('file-input').click();">
-                🎥 IDENTIFIER MA SCÈNE
+            <button class="btn-glow" onclick="demarrerScanProcess()">
+                🎬 IDENTIFIER MA SCÈNE
             </button>
             <input type="file" id="file-input" accept="image/*">
 
-            <!-- APERÇU DE L'IMAGE SÉLECTIONNÉE -->
             <div class="preview-box" id="preview-box">
                 <img id="image-preview" src="" alt="Aperçu">
-                <button class="btn-glow" style="margin-top: 10px;" onclick="lancerAnalyse()">Lancer la recherche AI</button>
+                <button class="btn-glow" style="margin-top: 10px;" onclick="lancerAnalyse()">Lancer l'analyse AI</button>
             </div>
 
-            <!-- RÉSULTAT DU FILM & REDIRECTIONS PLATEFORMES -->
             <div class="result-card" id="result-box">
-                <h3 style="color: var(--primary-orange); margin-bottom: 6px;">Scene Détectée !</h3>
-                <p id="movie-title-result" style="font-size: 1.1rem; font-weight: 800;">Inception (2010)</p>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Réalisateur: Christopher Nolan • Genre: Sci-Fi / Action</p>
+                <h3 style="color: var(--primary-orange); margin-bottom: 6px;">Film / Anime Identifié !</h3>
+                <p style="font-size: 1.1rem; font-weight: 800;">Demon Slayer: Kimetsu no Yaiba</p>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Studio: ufotable • Genre: Animation / Action</p>
                 
                 <p style="font-size: 0.75rem; font-weight: bold; margin-top: 12px; color: #d1d5db;">Disponible sur :</p>
-                <div class="platforms-list">
-                    <a href="https://www.netflix.com" target="_blank" class="platform-btn">🔴 Netflix</a>
-                    <a href="https://www.primevideo.com" target="_blank" class="platform-btn">🔵 Prime</a>
+                <div class="platform-btns">
                     <a href="https://www.crunchyroll.com" target="_blank" class="platform-btn">🟠 Crunchyroll</a>
+                    <a href="https://www.netflix.com" target="_blank" class="platform-btn">🔴 Netflix</a>
                 </div>
             </div>
         </div>
@@ -467,7 +511,7 @@
         <div id="tab-favs" class="tab-panel">
             <div class="panel-card">
                 <h3 style="color: var(--primary-orange);">Mes Favoris</h3>
-                <p style="color: var(--text-muted); font-size: 0.85rem;">Vos films et animes enregistrés apparaîtront ici.</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Vos sauvegardes apparaîtront ici.</p>
             </div>
         </div>
 
@@ -475,25 +519,57 @@
         <div id="tab-library" class="tab-panel">
             <div class="panel-card">
                 <h3 style="color: var(--primary-orange);">Bibliothèque</h3>
-                <p style="color: var(--text-muted); font-size: 0.85rem;">Consultez les tendances et l'historique des scènes identifiées.</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Historique des scènes identifiées.</p>
             </div>
         </div>
 
-        <!-- ONGLET COMPTE & PROPRIÉTAIRE -->
+        <!-- ONGLET COMPTE & PARAMÈTRES PROFIL -->
         <div id="tab-account" class="tab-panel">
             <div class="panel-card">
-                <h3 style="color: var(--primary-orange);">Mon Compte</h3>
-                <p style="font-size:0.85rem; color: var(--text-muted); margin-bottom: 10px;">Statut : <strong id="user-role-label" style="color: var(--primary-orange);">Gratuit</strong></p>
+                <h3 style="color: var(--primary-orange);">Mon Profil & Compte</h3>
+                <p style="font-size:0.85rem; color: var(--text-muted); margin-bottom: 12px;">Statut actuel : <strong id="user-role-label" style="color: #22c55e;">Pass Gratuit 24h Actif</strong></p>
                 
-                <div id="pay-box">
-                    <button class="btn-glow" onclick="lancerPaiement()">Passer Premium (1000 FCFA)</button>
+                <!-- FORMULAIRE DE PROFIL -->
+                <div style="margin-bottom: 20px;">
+                    <label style="font-size: 0.8rem; font-weight: 700; color: #d1d5db;">Nom Complet :</label>
+                    <input type="text" id="profile-name" class="input-dark" placeholder="Ex: Aboubakar Ouattara">
+
+                    <label style="font-size: 0.8rem; font-weight: 700; color: #d1d5db;">Adresse Email :</label>
+                    <input type="email" id="profile-email" class="input-dark" placeholder="votre.email@gmail.com">
+
+                    <label style="font-size: 0.8rem; font-weight: 700; color: #d1d5db;">Numéro de Téléphone :</label>
+                    <input type="tel" id="profile-phone" class="input-dark" placeholder="Ex: +225 0700000000">
+
+                    <button class="btn-install-app" style="width: 100%; padding: 12px; margin-top: 4px;" onclick="sauvegarderProfil()">💾 Enregistrer mon profil</button>
                 </div>
 
                 <hr style="border-color: var(--card-border); margin: 20px 0;">
 
-                <h4 style="font-size: 0.9rem;">Accès Propriétaire (Gratuit)</h4>
+                <div id="pay-box">
+                    <h4 style="font-size: 0.9rem; margin-bottom: 8px;">Forfaits d'Abonnement :</h4>
+                    <div class="plans-grid">
+                        <div class="plan-card recommended">
+                            <div>
+                                <strong style="font-size: 0.95rem; color: #fff;">1 Mois Premium</strong>
+                                <p style="font-size: 0.75rem; color: var(--text-muted);">Accès illimité pendant 30 jours</p>
+                            </div>
+                            <button class="btn-install-app" onclick="lancerPaiement(1000, 'Abonnement 1 Mois')">1 000 FCFA</button>
+                        </div>
+                        <div class="plan-card">
+                            <div>
+                                <strong style="font-size: 0.95rem; color: #fff;">3 Mois VIP</strong>
+                                <p style="font-size: 0.75rem; color: var(--text-muted);">Economisez 500 FCFA</p>
+                            </div>
+                            <button class="btn-install-app" style="background:#252a3d;" onclick="lancerPaiement(2500, 'Abonnement 3 Mois')">2 500 FCFA</button>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="border-color: var(--card-border); margin: 20px 0;">
+
+                <h4 style="font-size: 0.85rem;">Accès Propriétaire (Gratuit)</h4>
                 <input type="password" id="admin-pass" class="input-dark" placeholder="Code secret">
-                <button class="platform-btn" style="width:100%; padding:10px;" onclick="validerCodeAdmin()">Activer l'accès VIP</button>
+                <button class="platform-btn" style="width:100%; padding: 10px;" onclick="validerCodeAdmin()">Activer l'accès VIP</button>
             </div>
         </div>
 
@@ -521,12 +597,89 @@
 
     <script>
         const SECRET_CODE = "ADMIN225";
+        const TRIAL_DURATION_MS = 24 * 60 * 60 * 1000; // 24 heures
 
         window.addEventListener('load', () => {
+            // Initialisation de la période d'essai 24h
+            if (!localStorage.getItem('scanflix_trial_start')) {
+                localStorage.setItem('scanflix_trial_start', Date.now().toString());
+            }
+
+            // Charger les infos de profil enregistrées
+            if (localStorage.getItem('scanflix_name')) {
+                document.getElementById('profile-name').value = localStorage.getItem('scanflix_name');
+            }
+            if (localStorage.getItem('scanflix_email')) {
+                document.getElementById('profile-email').value = localStorage.getItem('scanflix_email');
+            }
+            if (localStorage.getItem('scanflix_phone')) {
+                document.getElementById('profile-phone').value = localStorage.getItem('scanflix_phone');
+            }
+
             if (localStorage.getItem('scanflix_vip') === 'true') {
                 appliquerModeVIP();
+            } else {
+                demarrerCompteARebours();
             }
         });
+
+        function sauvegarderProfil() {
+            const name = document.getElementById('profile-name').value.trim();
+            const email = document.getElementById('profile-email').value.trim();
+            const phone = document.getElementById('profile-phone').value.trim();
+
+            localStorage.setItem('scanflix_name', name);
+            localStorage.setItem('scanflix_email', email);
+            localStorage.setItem('scanflix_phone', phone);
+
+            alert("✅ Vos informations de profil ont été enregistrées avec succès !");
+        }
+
+        function verifierPériodeEssaiActive() {
+            if (localStorage.getItem('scanflix_vip') === 'true') return true;
+            
+            const start = parseInt(localStorage.getItem('scanflix_trial_start') || '0');
+            const now = Date.now();
+            return (now - start) < TRIAL_DURATION_MS;
+        }
+
+        function demarrerCompteARebours() {
+            const countdownEl = document.getElementById('trial-countdown');
+            const bannerEl = document.getElementById('trial-timer-banner');
+
+            const interval = setInterval(() => {
+                if (localStorage.getItem('scanflix_vip') === 'true') {
+                    clearInterval(interval);
+                    return;
+                }
+
+                const start = parseInt(localStorage.getItem('scanflix_trial_start') || '0');
+                const elapsed = Date.now() - start;
+                const remaining = TRIAL_DURATION_MS - elapsed;
+
+                if (remaining <= 0) {
+                    clearInterval(interval);
+                    bannerEl.classList.add('expired');
+                    bannerEl.innerHTML = "⚠️ Votre période d'essai 24h a expiré. Veuillez vous abonner dans l'onglet Compte.";
+                    document.getElementById('user-role-label').innerText = "Essai expiré (Payant requis)";
+                    document.getElementById('user-role-label').style.color = "#ef4444";
+                } else {
+                    const hours = Math.floor(remaining / (1000 * 60 * 60));
+                    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+                    countdownEl.innerText = `${hours}h ${minutes}m ${seconds}s`;
+                }
+            }, 1000);
+        }
+
+        function demarrerScanProcess() {
+            if (!verifierPériodeEssaiActive()) {
+                alert("Votre journée d'essai gratuit est terminée ! Veuillez souscrire à un abonnement dans l'onglet Compte.");
+                naviguerVers('account', document.querySelectorAll('.nav-button')[3]);
+                return;
+            }
+            document.getElementById('file-input').click();
+        }
 
         function validerCodeAdmin() {
             if (document.getElementById('admin-pass').value.trim() === SECRET_CODE) {
@@ -539,9 +692,10 @@
         }
 
         function appliquerModeVIP() {
-            document.getElementById('user-role-label').innerText = "Propriétaire VIP (Gratuit)";
+            document.getElementById('user-role-label').innerText = "Propriétaire VIP (Gratuit A Vie)";
             document.getElementById('user-role-label').style.color = "#22c55e";
             document.getElementById('pay-box').style.display = "none";
+            document.getElementById('trial-timer-banner').style.display = "none";
         }
 
         function naviguerVers(nomOnglet, btn) {
@@ -569,11 +723,11 @@
             document.getElementById('result-box').style.display = 'block';
         }
 
-        function lancerPaiement() {
+        function lancerPaiement(montant, nomOffre) {
             openKkiapay({
-                amount: 1000,
+                amount: montant,
                 position: "center",
-                data: "Abonnement Scanflix",
+                data: nomOffre,
                 theme: "#ff5500",
                 key: "VOTRE_PUBLISHABLE_KEY"
             });
