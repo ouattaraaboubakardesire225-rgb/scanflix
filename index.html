@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scanflix — AI Film & Anime Detector</title>
+    <title>Scanflix — Ultimate AI Film & Anime Hub</title>
     <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Scanflix%22,%22short_name%22:%22Scanflix%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23080c16%22,%22theme_color%22:%22%23ff5500%22}">
     <meta name="theme-color" content="#080c16">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -42,7 +42,7 @@
             padding-bottom: 90px;
         }
 
-        /* HEADER AVEC LOGO NEON BLEU/ORANGE */
+        /* HEADER AVEC LOGO SHUTTER CAMERA STAR */
         header {
             position: sticky;
             top: 0;
@@ -81,50 +81,17 @@
             gap: 10px;
         }
 
-        .logo-icon-container {
-            width: 40px;
-            height: 40px;
+        .app-logo-icon {
+            width: 42px;
+            height: 42px;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
+            filter: drop-shadow(0 0 8px rgba(255, 85, 0, 0.5));
         }
 
-        .ring-blue {
-            position: absolute;
-            inset: 0;
-            border: 2px solid var(--neon-blue);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--glow-blue);
-            clip-path: polygon(0 0, 100% 0, 100% 60%, 0 60%);
-        }
-
-        .ring-orange {
-            position: absolute;
-            inset: 3px;
-            border: 2px solid var(--neon-orange);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--glow-orange);
-            clip-path: polygon(0 40%, 100% 40%, 100% 100%, 0 100%);
-        }
-
-        .logo-play {
-            width: 22px;
-            height: 22px;
-            background: #080c16;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-        }
-
-        .logo-play svg {
-            width: 11px;
-            height: 11px;
-            fill: var(--neon-orange);
-            margin-left: 2px;
-        }
+        .app-logo-icon svg { width: 100%; height: 100%; }
 
         .brand-title {
             font-size: 1.35rem;
@@ -141,7 +108,6 @@
             margin: 0 auto;
         }
 
-        /* BANNIÈRE ESSAI 24H */
         .trial-banner {
             background: rgba(0, 210, 255, 0.1);
             border: 1px solid rgba(0, 210, 255, 0.25);
@@ -196,17 +162,10 @@
             color: #fff;
         }
 
-        .btn-pwa {
-            background: var(--blue-gradient);
-            box-shadow: 0 4px 15px var(--glow-blue);
-        }
+        .btn-pwa { background: var(--blue-gradient); box-shadow: 0 4px 15px var(--glow-blue); }
+        .btn-apk { background: var(--orange-gradient); box-shadow: 0 4px 15px var(--glow-orange); }
 
-        .btn-apk {
-            background: var(--orange-gradient);
-            box-shadow: 0 4px 15px var(--glow-orange);
-        }
-
-        /* CARD PRINCIPALE DÉTECTION */
+        /* CARD PRINCIPALE DÉTECTION & RECHERCHE VOCALE */
         .action-card {
             background: var(--card-midnight);
             border: 1px solid var(--card-border);
@@ -216,24 +175,44 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
 
-        .action-card h2 {
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: #fff;
-            margin-bottom: 6px;
+        .action-card h2 { font-size: 1.4rem; font-weight: 900; color: #fff; margin-bottom: 6px; }
+        .action-card p { font-size: 0.83rem; color: var(--text-muted); line-height: 1.4; }
+
+        .voice-search-box {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
         }
 
-        .action-card p {
-            font-size: 0.83rem;
-            color: var(--text-muted);
-            line-height: 1.4;
+        .voice-input {
+            flex: 1;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--card-border);
+            color: #fff;
+            padding: 12px;
+            border-radius: 12px;
+            outline: none;
+            font-size: 0.82rem;
+        }
+
+        .btn-mic {
+            background: rgba(0, 210, 255, 0.15);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            color: var(--neon-cyan);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
         }
 
         .source-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-top: 16px;
+            margin-top: 14px;
         }
 
         .btn-source {
@@ -268,7 +247,37 @@
             margin-top: 14px;
         }
 
-        /* SECTIONS DE FILMS / AFFICHES OFFICIELLES */
+        /* CARDS DÉTAILLÉES RÉSULTATS AVEC TIMECODE ET TRAILER */
+        .result-card {
+            display: none;
+            background: var(--card-midnight);
+            border: 1px solid var(--neon-orange);
+            border-radius: 18px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .timecode-tag {
+            background: rgba(255, 85, 0, 0.15);
+            color: var(--neon-orange);
+            border: 1px solid rgba(255, 85, 0, 0.3);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            display: inline-block;
+            margin-top: 6px;
+        }
+
+        .trailer-frame {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            border: none;
+            margin-top: 12px;
+        }
+
+        /* SECTIONS & AFFICHES */
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -295,21 +304,22 @@
         .media-scroll::-webkit-scrollbar { display: none; }
 
         .media-poster-card {
-            min-width: 125px;
-            width: 125px;
+            min-width: 130px;
+            width: 130px;
             background: var(--card-midnight);
             border: 1px solid var(--card-border);
             border-radius: 16px;
             padding: 8px;
-            position: relative;
+            cursor: pointer;
         }
 
         .media-poster-card img {
             width: 100%;
-            height: 175px;
+            height: 180px;
             object-fit: cover;
             border-radius: 12px;
             margin-bottom: 8px;
+            background: #111827;
         }
 
         .media-poster-card h4 {
@@ -321,24 +331,38 @@
             text-overflow: ellipsis;
         }
 
-        .media-poster-card p {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 2px;
+        .media-poster-card p { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+        .media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+        /* MODAL POPUP STREAMING ET PARTAGE */
+        .platform-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .media-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+        .modal-content {
+            background: var(--card-midnight);
+            border: 1px solid var(--neon-orange);
+            border-radius: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
         }
 
-        /* BOUTONS PLATEFORMES DE STREAMING */
         .platforms-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-top: 12px;
+            gap: 10px;
+            margin-top: 14px;
         }
 
         .platform-link {
@@ -346,9 +370,9 @@
             border: 1px solid var(--card-border);
             color: #fff;
             text-decoration: none;
-            padding: 10px;
-            border-radius: 10px;
-            font-size: 0.75rem;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 0.78rem;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -356,24 +380,33 @@
             gap: 6px;
         }
 
-        .platform-link:active { background: rgba(255, 85, 0, 0.2); }
-
-        /* PREVIEW & RÉSULTAT */
-        .preview-box, .result-card {
-            display: none;
-            background: var(--card-midnight);
-            border: 1px solid var(--neon-orange);
-            border-radius: 18px;
-            padding: 16px;
-            margin-top: 16px;
-        }
-
-        .preview-box img {
-            width: 100%;
-            max-height: 230px;
-            object-fit: cover;
+        .btn-share {
+            background: #25d366;
+            color: #fff;
+            border: none;
+            padding: 12px;
             border-radius: 12px;
+            font-weight: 800;
+            width: 100%;
+            margin-top: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
+
+        /* REVIEW SYSTEM */
+        .review-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 12px;
+            margin-top: 12px;
+            text-align: left;
+        }
+
+        .stars { color: #f59e0b; font-size: 1.1rem; cursor: pointer; }
 
         /* NAVIGATION BAS */
         .tab-panel { display: none; }
@@ -427,24 +460,38 @@
             outline: none;
         }
 
+        .preview-box { display: none; margin-top: 14px; }
+        .preview-box img { width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px; }
+
         #file-gallery, #file-camera { display: none; }
     </style>
 </head>
 <body>
 
-    <!-- HEADER DE L'APPLICATION -->
+    <!-- HEADER DE L'APPLICATION AVEC NOUVEAU LOGO CAMÉRA/ÉTOILE -->
     <header>
         <div class="header-left">
             <button class="btn-back-nav" id="btn-global-back" onclick="retourAccueil()" style="display: none;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 19l-7-7 7-7"/></svg>
             </button>
             <div class="brand-box">
-                <div class="logo-icon-container">
-                    <div class="ring-blue"></div>
-                    <div class="ring-orange"></div>
-                    <div class="logo-play">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </div>
+                <div class="app-logo-icon">
+                    <svg viewBox="0 0 500 500">
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ff3b5c"/>
+                                <stop offset="50%" stop-color="#ff5500"/>
+                                <stop offset="100%" stop-color="#3d0c2c"/>
+                            </linearGradient>
+                            <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ff7744"/>
+                                <stop offset="100%" stop-color="#ff2200"/>
+                            </linearGradient>
+                        </defs>
+                        <rect x="50" y="50" width="400" height="400" rx="100" fill="url(#logoGrad)"/>
+                        <path d="M180 160 L340 250 L180 340 Z" fill="#ff5500" stroke="#111" stroke-width="12"/>
+                        <path d="M410 70 Q410 120 460 120 Q410 120 410 170 Q410 120 360 120 Q410 120 410 70 Z" fill="url(#starGrad)"/>
+                    </svg>
                 </div>
                 <div class="brand-title">Scan<span>flix</span></div>
             </div>
@@ -461,7 +508,7 @@
         <!-- ONGLET ACCUEIL -->
         <div id="tab-home" class="tab-panel active">
             
-            <!-- BLOC D'INSTALLATION & TÉLÉCHARGEMENT APK -->
+            <!-- BLOC DE TÉLÉCHARGEMENT D'APPLICATION / APK -->
             <div class="download-box">
                 <div class="download-title">
                     <span>📱 Obtenir l'application Mobile</span>
@@ -472,9 +519,16 @@
                 </div>
             </div>
 
+            <!-- CARD PRINCIPALE DÉTECTION IMAGE & RECHERCHE VOCALE -->
             <div class="action-card">
                 <h2>Détecter une scène</h2>
-                <p>Importez une capture depuis la galerie ou prenez directement une photo pour trouver le titre.</p>
+                <p>Scannez une image ou décrivez la scène à la voix.</p>
+
+                <!-- RECHERCHE VOCALE -->
+                <div class="voice-search-box">
+                    <input type="text" id="voiceQueryInput" class="voice-input" placeholder="Décrivez la scène (ex: Rengoku vs Akaza)...">
+                    <button class="btn-mic" onclick="demarrerEcouteVocale()" title="Parler à la voix">🎤</button>
+                </div>
 
                 <div class="source-grid">
                     <button class="btn-source blue" onclick="choisirGalerie()">
@@ -495,11 +549,17 @@
                     <button class="btn-glow-orange" onclick="lancerAnalyse()">IDENTIFIER LA SCÈNE AI</button>
                 </div>
 
+                <!-- CARTE RÉSULTAT COMPLÈTE AVEC BANDE-ANNONCE ET HORODATAGE -->
                 <div class="result-card" id="result-box">
                     <h3 style="color:var(--neon-orange); font-size:1rem;">Scene Identifiée !</h3>
-                    <p style="font-weight:800; font-size:1.1rem; margin-top:4px;">Demon Slayer: Kimetsu no Yaiba</p>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Regarder / Télécharger sur :</p>
+                    <p style="font-weight:800; font-size:1.1rem; margin-top:4px;">Demon Slayer: Le Train de l'Infini</p>
                     
+                    <span class="timecode-tag">⏱️ Timestamp : Épisode 19 • 14:35</span>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;">Acteurs : Natsuki Hanae (Tanjiro), Satoshi Hino (Rengoku)</p>
+
+                    <!-- BANDE ANNONCE YOUTUBE INTÉGRÉE -->
+                    <iframe class="trailer-frame" src="https://www.youtube.com/embed/ATJYac_dORw" title="Trailer" allowfullscreen></iframe>
+
                     <div class="platforms-grid">
                         <a href="https://www.netflix.com" target="_blank" class="platform-link">🔴 Netflix</a>
                         <a href="https://www.primevideo.com" target="_blank" class="platform-link">🔵 Prime Video</a>
@@ -508,31 +568,39 @@
                         <a href="https://moviebox.ng" target="_blank" class="platform-link">🎬 MovieBox</a>
                         <a href="https://www.crunchyroll.com" target="_blank" class="platform-link">🟠 Crunchyroll</a>
                     </div>
+
+                    <button class="btn-share" onclick="partagerScene('Demon Slayer: Le Train de l\'Infini')">📲 Partager sur WhatsApp / Story</button>
+
+                    <!-- SYSTEME D'AVIS COMMUNAUTAIRE -->
+                    <div class="review-box">
+                        <p style="font-size:0.78rem; font-weight:700;">Avis de la communauté :</p>
+                        <div class="stars">⭐⭐⭐⭐⭐ <span style="font-size:0.75rem; color:#fff;">(4.9/5 • 1,240 votes)</span></div>
+                    </div>
                 </div>
             </div>
 
-            <!-- CARROUSEL AVEC VRAIES AFFICHES HD -->
+            <!-- CARROUSEL AVEC VRAIES AFFICHES CLIQUEABLES -->
             <div class="section-header">
                 <h3>Tendances Actuelles</h3>
             </div>
             <div class="media-scroll">
-                <div class="media-poster-card">
-                    <img src="https://m.media-amazon.com/images/M/MV5BN2QyZGU4ZDctOWMzMy00NTc5LThlOGQtODhmNDI1NmY5YzAwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Dune 2">
+                <div class="media-poster-card" onclick="ouvrirMediaModal('Dune: Part Two')">
+                    <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400" alt="Dune 2">
                     <h4>Dune: Part Two</h4>
                     <p>Film • 2024</p>
                 </div>
-                <div class="media-poster-card">
-                    <img src="https://m.media-amazon.com/images/M/MV5BNDI5NTgwNTEtMzg3OS00NWJhLWIxMGMtMjk0ZjhhMGUyM2M2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Furiosa">
+                <div class="media-poster-card" onclick="ouvrirMediaModal('Furiosa')">
+                    <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400" alt="Furiosa">
                     <h4>Furiosa</h4>
                     <p>Action • 2024</p>
                 </div>
-                <div class="media-poster-card">
-                    <img src="https://m.media-amazon.com/images/M/MV5BY2I2MzI1ODYtM2A3Ny00MGI2LTljNDAtM2FjNWJhNTBkMGYzXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Demon Slayer">
+                <div class="media-poster-card" onclick="ouvrirMediaModal('Demon Slayer')">
+                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400" alt="Demon Slayer">
                     <h4>Demon Slayer</h4>
                     <p>Anime • 2024</p>
                 </div>
-                <div class="media-poster-card">
-                    <img src="https://m.media-amazon.com/images/M/MV5BYTExZTdhMDAtYTBhMi00M2MjLWFjNjItOWFiY2EzMGE1YWJhXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Jujutsu Kaisen">
+                <div class="media-poster-card" onclick="ouvrirMediaModal('Jujutsu Kaisen')">
+                    <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400" alt="Jujutsu Kaisen">
                     <h4>Jujutsu Kaisen</h4>
                     <p>Anime • 2023</p>
                 </div>
@@ -540,58 +608,48 @@
 
         </div>
 
-        <!-- ONGLET FAVORIS AVEC AFFICHES HD -->
+        <!-- ONGLET FAVORIS -->
         <div id="tab-favs" class="tab-panel">
             <div class="section-header">
-                <h3>Mes Favoris</h3>
+                <h3>Mes Favoris (Hors-ligne)</h3>
             </div>
-            <div class="media-grid">
-                <div class="media-poster-card">
-                    <img src="https://m.media-amazon.com/images/M/MV5BY2I2MzI1ODYtM2A3Ny00MGI2LTljNDAtM2FjNWJhNTBkMGYzXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Demon Slayer">
+            <div class="media-grid" id="favs-grid">
+                <div class="media-poster-card" onclick="ouvrirMediaModal('Demon Slayer')">
+                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400" alt="Demon Slayer">
                     <h4>Demon Slayer</h4>
                     <p>Anime</p>
                 </div>
-                <div class="media-poster-card">
-                    <img src="https://m.media-amazon.com/images/M/MV5BN2QyZGU4ZDctOWMzMy00NTc5LThlOGQtODhmNDI1NmY5YzAwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Dune 2">
+                <div class="media-poster-card" onclick="ouvrirMediaModal('Dune: Part Two')">
+                    <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400" alt="Dune 2">
                     <h4>Dune 2</h4>
                     <p>Film</p>
                 </div>
-                <div class="media-poster-card">
-                    <img src="https://m.media-amazon.com/images/M/MV5BNDI5NTgwNTEtMzg3OS00NWJhLWIxMGMtMjk0ZjhhMGUyM2M2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Furiosa">
-                    <h4>Furiosa</h4>
-                    <p>Film</p>
-                </div>
             </div>
         </div>
 
-        <!-- ONGLET BIBLIOTHÈQUE AVEC AFFICHES HD -->
+        <!-- ONGLET BIBLIOTHÈQUE -->
         <div id="tab-library" class="tab-panel">
             <div class="section-header">
-                <h3>Bibliothèque d'Historique</h3>
+                <h3>Historique des Scans</h3>
             </div>
-            <div class="media-grid">
-                <div class="media-poster-card">
-                    <img src="https://m.media-amazon.com/images/M/MV5BYTExZTdhMDAtYTBhMi00M2MjLWFjNjItOWFiY2EzMGE1YWJhXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Jujutsu Kaisen">
+            <div class="media-grid" id="history-grid">
+                <div class="media-poster-card" onclick="ouvrirMediaModal('Jujutsu Kaisen')">
+                    <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400" alt="Jujutsu Kaisen">
                     <h4>Jujutsu Kaisen</h4>
-                    <p>Scanné</p>
-                </div>
-                <div class="media-poster-card">
-                    <img src="https://m.media-amazon.com/images/M/MV5BN2QyZGU4ZDctOWMzMy00NTc5LThlOGQtODhmNDI1NmY5YzAwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Dune 2">
-                    <h4>Dune: Part Two</h4>
-                    <p>Scanné</p>
+                    <p>Scanné à 14:20</p>
                 </div>
             </div>
         </div>
 
-        <!-- ONGLET COMPTE & PARAMÈTRES -->
+        <!-- ONGLET COMPTE & PARAMÈTRES / PAIEMENT MOBILE MONEY -->
         <div id="tab-account" class="tab-panel">
             <div id="settings-main">
                 <div class="section-header">
-                    <h3>Paramètres</h3>
+                    <h3>Paramètres & Paiement</h3>
                 </div>
                 <div style="background:var(--card-midnight); border:1px solid var(--card-border); border-radius:18px; overflow:hidden;">
                     <div style="padding:16px; border-bottom:1px solid var(--card-border); cursor:pointer;" onclick="ouvrirSousPage('profile')">👤 Mon Profil (Nom, Email, Tel) ›</div>
-                    <div style="padding:16px; border-bottom:1px solid var(--card-border); cursor:pointer;" onclick="ouvrirSousPage('subs')">💳 Abonnements Premium ›</div>
+                    <div style="padding:16px; border-bottom:1px solid var(--card-border); cursor:pointer;" onclick="ouvrirSousPage('subs')">💳 Abonnement Mobile Money (Wave, Orange, MTN) ›</div>
                     <div style="padding:16px; cursor:pointer;" onclick="ouvrirSousPage('admin')">👑 Espace Propriétaire VIP ›</div>
                 </div>
             </div>
@@ -604,16 +662,16 @@
                     <input type="text" id="profile-name" class="input-dark" placeholder="Votre nom">
                     <label style="font-size:0.8rem;">Email :</label>
                     <input type="email" id="profile-email" class="input-dark" placeholder="Votre email">
-                    <label style="font-size:0.8rem;">Téléphone :</label>
-                    <input type="tel" id="profile-phone" class="input-dark" placeholder="Votre numéro">
+                    <label style="font-size:0.8rem;">Téléphone (Orange/MTN/Wave) :</label>
+                    <input type="tel" id="profile-phone" class="input-dark" placeholder="+225 0700000000">
                     <button class="btn-glow-orange" onclick="sauvegarderProfil()">Sauvegarder</button>
                 </div>
             </div>
 
             <div id="sub-page-subs" style="display:none;">
-                <div class="section-header"><h3>Abonnements</h3></div>
+                <div class="section-header"><h3>Abonnements Mobile Money</h3></div>
                 <div style="background:var(--card-midnight); border:1px solid var(--card-border); border-radius:18px; padding:16px;">
-                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;">Paiement sécurisé via Kkiapay Mobile Money.</p>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;">Paiement Wave, Orange Money, MTN MoMo & Moov via Kkiapay.</p>
                     <button class="btn-glow-orange" style="margin-bottom:10px;" onclick="payer(1000, 'Pass 1 Mois')">S'abonner 1 Mois (1 000 FCFA)</button>
                     <button class="btn-glow-orange" style="background:linear-gradient(135deg, #00d2ff 0%, #0066ff 100%);" onclick="payer(2500, 'Pass 3 Mois')">S'abonner 3 Mois (2 500 FCFA)</button>
                 </div>
@@ -630,6 +688,25 @@
 
         </div>
 
+    </div>
+
+    <!-- MODAL CHOIX PLATEFORME DE STREAMING ET PARTAGE -->
+    <div class="platform-modal" id="platformModal">
+        <div class="modal-content">
+            <h3 id="modalMediaTitle" style="color:var(--neon-orange); font-size:1.1rem; margin-bottom:4px;">Film</h3>
+            <p style="font-size:0.8rem; color:var(--text-muted);">Choisir la plateforme pour regarder :</p>
+
+            <div class="platforms-grid">
+                <a href="https://www.netflix.com" target="_blank" class="platform-link">🔴 Netflix</a>
+                <a href="https://www.primevideo.com" target="_blank" class="platform-link">🔵 Prime Video</a>
+                <a href="https://www.youtube.com" target="_blank" class="platform-link">🔴 YouTube</a>
+                <a href="https://www.vidmate.com" target="_blank" class="platform-link">⚡ VidMate</a>
+                <a href="https://moviebox.ng" target="_blank" class="platform-link">🎬 MovieBox</a>
+                <a href="https://www.crunchyroll.com" target="_blank" class="platform-link">🟠 Crunchyroll</a>
+            </div>
+
+            <button class="btn-glow-orange" style="margin-top:16px; padding:10px;" onclick="fermerMediaModal()">Fermer</button>
+        </div>
     </div>
 
     <!-- NAVBAR BAS DE PAGE -->
@@ -672,7 +749,35 @@
                     deferredPrompt = null;
                 });
             } else {
-                alert('📲 Pour installer : Ouvrez le menu de votre navigateur (les 3 petits points) et appuyez sur "Ajouter à l\'écran d\'accueil".');
+                alert('📲 Pour installer : Ouvrez le menu de votre navigateur (3 petits points) et appuyez sur "Ajouter à l\'écran d\'accueil".');
+            }
+        }
+
+        /* RECHERCHE VOCALE */
+        function demarrerEcouteVocale() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'fr-FR';
+                recognition.start();
+
+                recognition.onresult = (event) => {
+                    const text = event.results[0][0].transcript;
+                    document.getElementById('voiceQueryInput').value = text;
+                    document.getElementById('result-box').style.display = 'block';
+                };
+            } else {
+                alert("La recherche vocale n'est pas supportée par votre navigateur.");
+            }
+        }
+
+        /* PARTAGE DE SCENE */
+        function partagerScene(titre) {
+            const text = `🔥 J'ai découvert la scène de ${titre} grâce à Scanflix ! Télécharge l'application ici : ${window.location.href}`;
+            if (navigator.share) {
+                navigator.share({ title: 'Scanflix AI', text: text, url: window.location.href });
+            } else {
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`);
             }
         }
 
@@ -709,6 +814,15 @@
         }
 
         function lancerAnalyse() { document.getElementById('result-box').style.display = 'block'; }
+
+        function ouvrirMediaModal(titre) {
+            document.getElementById('modalMediaTitle').innerText = titre;
+            document.getElementById('platformModal').style.display = 'flex';
+        }
+
+        function fermerMediaModal() {
+            document.getElementById('platformModal').style.display = 'none';
+        }
 
         function naviguerVers(nom, btn) {
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -795,5 +909,4 @@
         }
     </script>
 </body>
-</html>
-￼Enter
+</html>￼Enter
