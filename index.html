@@ -127,7 +127,7 @@
             margin-bottom: 18px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         .download-title {
@@ -139,30 +139,22 @@
             gap: 8px;
         }
 
-        .download-btns-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .btn-download {
-            padding: 12px;
-            border-radius: 12px;
+        .btn-download-full {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
             border: none;
             font-weight: 800;
-            font-size: 0.78rem;
+            font-size: 0.9rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            text-decoration: none;
+            gap: 8px;
             color: #fff;
-            text-align: center;
+            background: var(--blue-gradient);
+            box-shadow: 0 6px 20px var(--glow-blue);
         }
-
-        .btn-pwa { background: var(--blue-gradient); box-shadow: 0 4px 15px var(--glow-blue); }
-        .btn-apk { background: var(--orange-gradient); box-shadow: 0 4px 15px var(--glow-orange); }
 
         .action-card {
             background: var(--card-midnight);
@@ -500,12 +492,9 @@
             
             <div class="download-box">
                 <div class="download-title">
-                    <span>📱 Télécharger l'application Mobile</span>
+                    <span>📱 Installer l'application sur votre écran</span>
                 </div>
-                <div class="download-btns-grid">
-                    <button class="btn-download btn-pwa" onclick="installerPWA()">📲 Installation Rapide</button>
-                    <a href="./scanflix.apk" download="Scanflix.apk" class="btn-download btn-apk">🤖 Télécharger l'APK</a>
-                </div>
+                <button class="btn-download-full" onclick="installerPWA()">📲 Installation Rapide en 1 Clic</button>
             </div>
 
             <div class="action-card">
@@ -726,7 +715,7 @@
                     deferredPrompt = null;
                 });
             } else {
-                alert('📲 Pour installer : Ouvrez le menu de votre navigateur (3 petits points) et appuyez sur "Ajouter à l\'écran d\'accueil".');
+                alert('📲 Pour installer Scanflix sur votre téléphone :\n\n1. Appuyez sur les options de votre navigateur (les 3 points en haut à droite de l\'écran de votre téléphone).\n2. Sélectionnez "Ajouter à l\'écran d\'accueil" ou "Installer l\'application".');
             }
         }
 
@@ -885,4 +874,3 @@
     </script>
 </body>
 </html>
-￼Enter
