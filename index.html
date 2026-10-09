@@ -119,7 +119,6 @@
             margin-bottom: 16px;
         }
 
-        /* BOUTON UNIQUE INSTALLATION RAPIDE */
         .download-box {
             background: linear-gradient(135deg, rgba(0, 210, 255, 0.1) 0%, rgba(255, 85, 0, 0.1) 100%);
             border: 1px solid var(--card-border);
@@ -157,7 +156,6 @@
             box-shadow: 0 6px 20px var(--glow-blue);
         }
 
-        /* POP-UP MODAL TUTORIEL D'INSTALLATION */
         .install-modal {
             display: none;
             position: fixed;
@@ -330,5 +328,629 @@
             font-size: 0.95rem;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing:
-￼Enter
+            letter-spacing: 0.5px;
+            color: #fff;
+        }
+
+        .media-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+
+        .media-scroll::-webkit-scrollbar { display: none; }
+
+        .media-poster-card {
+            min-width: 130px;
+            width: 130px;
+            background: var(--card-midnight);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .media-poster-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            background: #111827;
+        }
+
+        .media-poster-card h4 {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .media-poster-card p { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+        .media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+        .platform-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--card-midnight);
+            border: 1px solid var(--neon-orange);
+            border-radius: 20px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .platform-link {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-share {
+            background: #25d366;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 800;
+            width: 100%;
+            margin-top: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .review-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 12px;
+            margin-top: 12px;
+            text-align: left;
+        }
+
+        .stars { color: #f59e0b; font-size: 1.1rem; }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(6, 9, 19, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0 12px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 22%;
+            padding: 6px 0;
+            border-radius: 12px;
+        }
+
+        .nav-item svg { width: 20px; height: 20px; fill: currentColor; }
+        .nav-item.active {
+            color: #fff;
+            background: rgba(255, 85, 0, 0.15);
+            border: 1px solid rgba(255, 85, 0, 0.3);
+        }
+
+        .input-dark {
+            width: 100%;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--card-border);
+            color: #fff;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 8px 0 14px 0;
+            outline: none;
+        }
+
+        .preview-box { display: none; margin-top: 14px; }
+        .preview-box img { width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px; }
+
+        #file-gallery, #file-camera { display: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <button class="btn-back-nav" id="btn-global-back" onclick="retourAccueil()" style="display: none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <div class="brand-box">
+                <div class="app-logo-icon">
+                    <svg viewBox="0 0 500 500">
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ff3b5c"/>
+                                <stop offset="50%" stop-color="#ff5500"/>
+                                <stop offset="100%" stop-color="#3d0c2c"/>
+                            </linearGradient>
+                            <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#ff7744"/>
+                                <stop offset="100%" stop-color="#ff2200"/>
+                            </linearGradient>
+                        </defs>
+                        <rect x="50" y="50" width="400" height="400" rx="100" fill="url(#logoGrad)"/>
+                        <path d="M180 160 L340 250 L180 340 Z" fill="#ff5500" stroke="#111" stroke-width="12"/>
+                        <path d="M410 70 Q410 120 460 120 Q410 120 410 170 Q410 120 360 120 Q410 120 410 70 Z" fill="url(#starGrad)"/>
+                    </svg>
+                </div>
+                <div class="brand-title">Scan<span>flix</span></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div id="trial-banner" class="trial-banner">
+            🎁 Essai gratuit 24h actif ! Temps restant : <span id="trial-countdown">23h 59m 59s</span>
+        </div>
+
+        <div id="tab-home" class="tab-panel active">
+            
+            <div class="download-box">
+                <div class="download-title">
+                    <span>📱 Installer l'application sur votre écran</span>
+                </div>
+                <button class="btn-download-full" onclick="installerPWA()">📲 Installation Rapide en 1 Clic</button>
+            </div>
+
+            <div class="action-card">
+                <h2>Détecter une scène</h2>
+                <p>Scannez une image ou décrivez la scène à la voix.</p>
+
+                <div class="voice-search-box">
+                    <input type="text" id="voiceQueryInput" class="voice-input" placeholder="Décrivez la scène (ex: Rengoku vs Akaza)...">
+                    <button class="btn-mic" onclick="demarrerEcouteVocale()" title="Parler à la voix">🎤</button>
+                </div>
+
+                <div class="source-grid">
+                    <button class="btn-source blue" onclick="choisirGalerie()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--neon-blue)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        <span>Galerie Photo</span>
+                    </button>
+                    <button class="btn-source orange" onclick="ouvrirCamera()">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--neon-orange)" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                        <span>Prendre Photo</span>
+                    </button>
+                </div>
+
+                <input type="file" id="file-gallery" accept="image/*" onchange="gererFichierImage(this)">
+                <input type="file" id="file-camera" accept="image/*" capture="environment" onchange="gererFichierImage(this)">
+
+                <div class="preview-box" id="preview-box">
+                    <img id="image-preview" src="" alt="Aperçu">
+                    <button class="btn-glow-orange" onclick="lancerAnalyse()">IDENTIFIER LA SCÈNE AI</button>
+                </div>
+
+                <div class="result-card" id="result-box">
+                    <h3 style="color:var(--neon-orange); font-size:1rem;">Scene Identifiée !</h3>
+                    <p style="font-weight:800; font-size:1.1rem; margin-top:4px;">Demon Slayer: Le Train de l'Infini</p>
+                    
+                    <span class="timecode-tag">⏱️ Timestamp : Épisode 19 • 14:35</span>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;">Acteurs : Natsuki Hanae (Tanjiro), Satoshi Hino (Rengoku)</p>
+
+                    <iframe class="trailer-frame" src="https://www.youtube.com/embed/ATJYac_dORw" title="Trailer" allowfullscreen></iframe>
+
+                    <div class="platforms-grid">
+                        <a href="https://www.netflix.com" target="_blank" class="platform-link">🔴 Netflix</a>
+                        <a href="https://www.primevideo.com" target="_blank" class="platform-link">🔵 Prime Video</a>
+                        <a href="https://www.youtube.com" target="_blank" class="platform-link">🔴 YouTube</a>
+                        <a href="https://www.vidmate.com" target="_blank" class="platform-link">⚡ VidMate</a>
+                        <a href="https://moviebox.ng" target="_blank" class="platform-link">🎬 MovieBox</a>
+                        <a href="https://www.crunchyroll.com" target="_blank" class="platform-link">🟠 Crunchyroll</a>
+                    </div>
+
+                    <button class="btn-share" onclick="partagerScene('Demon Slayer: Le Train de l\'Infini')">📲 Partager sur WhatsApp / Story</button>
+
+                    <div class="review-box">
+                        <p style="font-size:0.78rem; font-weight:700;">Avis de la communauté :</p>
+                        <div class="stars">⭐⭐⭐⭐⭐ <span style="font-size:0.75rem; color:#fff;">(4.9/5 • 1,240 votes)</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h3>Tendances Actuelles</h3>
+            </div>
+            <div class="media-scroll">
+                <div class="media-poster-card" onclick="ouvrirMediaModal('Dune: Part Two')">
+                    <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400" alt="Dune 2">
+                    <h4>Dune: Part Two</h4>
+                    <p>Film • 2024</p>
+                </div>
+                <div class="media-poster-card" onclick="ouvrirMediaModal('Furiosa')">
+                    <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400" alt="Furiosa">
+                    <h4>Furiosa</h4>
+                    <p>Action • 2024</p>
+                </div>
+                <div class="media-poster-card" onclick="ouvrirMediaModal('Demon Slayer')">
+                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400" alt="Demon Slayer">
+                    <h4>Demon Slayer</h4>
+                    <p>Anime • 2024</p>
+                </div>
+                <div class="media-poster-card" onclick="ouvrirMediaModal('Jujutsu Kaisen')">
+                    <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400" alt="Jujutsu Kaisen">
+                    <h4>Jujutsu Kaisen</h4>
+                    <p>Anime • 2023</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="tab-favs" class="tab-panel">
+            <div class="section-header">
+                <h3>Mes Favoris (Hors-ligne)</h3>
+            </div>
+            <div class="media-grid">
+                <div class="media-poster-card" onclick="ouvrirMediaModal('Demon Slayer')">
+                    <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400" alt="Demon Slayer">
+                    <h4>Demon Slayer</h4>
+                    <p>Anime</p>
+                </div>
+                <div class="media-poster-card" onclick="ouvrirMediaModal('Dune: Part Two')">
+                    <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400" alt="Dune 2">
+                    <h4>Dune 2</h4>
+                    <p>Film</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-library" class="tab-panel">
+            <div class="section-header">
+                <h3>Historique des Scans</h3>
+            </div>
+            <div class="media-grid">
+                <div class="media-poster-card" onclick="ouvrirMediaModal('Jujutsu Kaisen')">
+                    <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400" alt="Jujutsu Kaisen">
+                    <h4>Jujutsu Kaisen</h4>
+                    <p>Scanné à 14:20</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-account" class="tab-panel">
+            <div id="settings-main">
+                <div class="section-header">
+                    <h3>Paramètres & Paiement</h3>
+                </div>
+                <div style="background:var(--card-midnight); border:1px solid var(--card-border); border-radius:18px; overflow:hidden;">
+                    <div style="padding:16px; border-bottom:1px solid var(--card-border); cursor:pointer;" onclick="ouvrirSousPage('profile')">👤 Mon Profil (Nom, Email, Tel) ›</div>
+                    <div style="padding:16px; border-bottom:1px solid var(--card-border); cursor:pointer;" onclick="ouvrirSousPage('subs')">💳 Abonnement Mobile Money (Wave, Orange, MTN) ›</div>
+                    <div style="padding:16px; cursor:pointer;" onclick="ouvrirSousPage('admin')">👑 Espace Propriétaire VIP ›</div>
+                </div>
+            </div>
+
+            <div id="sub-page-profile" style="display:none;">
+                <div class="section-header"><h3>Mon Profil</h3></div>
+                <div style="background:var(--card-midnight); border:1px solid var(--card-border); border-radius:18px; padding:16px;">
+                    <label style="font-size:0.8rem;">Nom Complet :</label>
+                    <input type="text" id="profile-name" class="input-dark" placeholder="Votre nom">
+                    <label style="font-size:0.8rem;">Email :</label>
+                    <input type="email" id="profile-email" class="input-dark" placeholder="Votre email">
+                    <label style="font-size:0.8rem;">Téléphone (Orange/MTN/Wave) :</label>
+                    <input type="tel" id="profile-phone" class="input-dark" placeholder="+225 0700000000">
+                    <button class="btn-glow-orange" onclick="sauvegarderProfil()">Sauvegarder</button>
+                </div>
+            </div>
+
+            <div id="sub-page-subs" style="display:none;">
+                <div class="section-header"><h3>Abonnements Mobile Money</h3></div>
+                <div style="background:var(--card-midnight); border:1px solid var(--card-border); border-radius:18px; padding:16px;">
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;">Paiement Wave, Orange Money, MTN MoMo & Moov via Kkiapay.</p>
+                    <button class="btn-glow-orange" style="margin-bottom:10px;" onclick="payer(1000, 'Pass 1 Mois')">S'abonner 1 Mois (1 000 FCFA)</button>
+                    <button class="btn-glow-orange" style="background:linear-gradient(135deg, #00d2ff 0%, #0066ff 100%);" onclick="payer(2500, 'Pass 3 Mois')">S'abonner 3 Mois (2 500 FCFA)</button>
+                </div>
+            </div>
+
+            <div id="sub-page-admin" style="display:none;">
+                <div class="section-header"><h3>Accès VIP</h3></div>
+                <div style="background:var(--card-midnight); border:1px solid var(--card-border); border-radius:18px; padding:16px;">
+                    <label style="font-size:0.8rem;">Code Secret :</label>
+                    <input type="password" id="admin-pass" class="input-dark" placeholder="Entrez le code secret">
+                    <button class="btn-glow-orange" onclick="validerCodeAdmin()">Déverrouiller VIP</button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="install-modal" id="installModal">
+        <div class="install-modal-content">
+            <h3 style="color:var(--neon-blue); font-size:1.1rem; margin-bottom:6px;">📲 Installer Scanflix</h3>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:12px;">Profitez de l'application directement sur votre écran d'accueil :</p>
+            
+            <div class="install-step">
+                <div class="install-step-num">1</div>
+                <div>Appuyez sur les <b>3 petits points</b> situés tout en haut à droite de votre navigateur.</div>
+            </div>
+            
+            <div class="install-step">
+                <div class="install-step-num">2</div>
+                <div>Sélectionnez l'option <b>"Ajouter à l'écran d'accueil"</b> ou <b>"Installer l'application"</b>.</div>
+            </div>
+
+            <div class="install-step">
+                <div class="install-step-num">3</div>
+                <div>Confirmez pour ajouter l'icône Scanflix sur votre téléphone !</div>
+            </div>
+
+            <button class="btn-glow-orange" style="margin-top:16px; padding:12px;" onclick="fermerModalInstall()">J'ai compris</button>
+        </div>
+    </div>
+
+    <div class="platform-modal" id="platformModal">
+        <div class="modal-content">
+            <h3 id="modalMediaTitle" style="color:var(--neon-orange); font-size:1.1rem; margin-bottom:4px;">Film</h3>
+            <p style="font-size:0.8rem; color:var(--text-muted);">Choisir la plateforme pour regarder :</p>
+
+            <div class="platforms-grid">
+                <a href="https://www.netflix.com" target="_blank" class="platform-link">🔴 Netflix</a>
+                <a href="https://www.primevideo.com" target="_blank" class="platform-link">🔵 Prime Video</a>
+                <a href="https://www.youtube.com" target="_blank" class="platform-link">🔴 YouTube</a>
+                <a href="https://www.vidmate.com" target="_blank" class="platform-link">⚡ VidMate</a>
+                <a href="https://moviebox.ng" target="_blank" class="platform-link">🎬 MovieBox</a>
+                <a href="https://www.crunchyroll.com" target="_blank" class="platform-link">🟠 Crunchyroll</a>
+            </div>
+
+            <button class="btn-glow-orange" style="margin-top:16px; padding:10px;" onclick="fermerMediaModal()">Fermer</button>
+        </div>
+    </div>
+
+    <nav class="nav-bar">
+        <button class="nav-item active" onclick="naviguerVers('home', this)">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            ACCUEIL
+        </button>
+        <button class="nav-item" onclick="naviguerVers('favs', this)">
+            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            FAVORIS
+        </button>
+        <button class="nav-item" onclick="naviguerVers('library', this)">
+            <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0-2-.9-2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+            BIBLIO
+        </button>
+        <button class="nav-item" onclick="naviguerVers('account', this)">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            COMPTE
+        </button>
+    </nav>
+
+    <script>
+        const SECRET_CODE = "ADMIN225";
+        const TRIAL_MS = 24 * 60 * 60 * 1000;
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function installerPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        alert('✅ Scanflix s\'installe sur votre téléphone !');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                document.getElementById('installModal').style.display = 'flex';
+            }
+        }
+
+        function fermerModalInstall() {
+            document.getElementById('installModal').style.display = 'none';
+        }
+
+        function demarrerEcouteVocale() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'fr-FR';
+                recognition.start();
+
+                recognition.onresult = (event) => {
+                    const text = event.results[0][0].transcript;
+                    document.getElementById('voiceQueryInput').value = text;
+                    document.getElementById('result-box').style.display = 'block';
+                };
+            } else {
+                alert("La recherche vocale n'est pas supportée par votre navigateur.");
+            }
+        }
+
+        function partagerScene(titre) {
+            const text = `🔥 J'ai découvert la scène de ${titre} grâce à Scanflix ! Télécharge l'application ici : ${window.location.href}`;
+            if (navigator.share) {
+                navigator.share({ title: 'Scanflix AI', text: text, url: window.location.href });
+            } else {
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`);
+            }
+        }
+
+        window.addEventListener('load', () => {
+            if (!localStorage.getItem('scanflix_trial_start')) {
+                localStorage.setItem('scanflix_trial_start', Date.now().toString());
+            }
+
+            if (localStorage.getItem('scanflix_name')) document.getElementById('profile-name').value = localStorage.getItem('scanflix_name');
+            if (localStorage.getItem('scanflix_email')) document.getElementById('profile-email').value = localStorage.getItem('scanflix_email');
+            if (localStorage.getItem('scanflix_phone')) document.getElementById('profile-phone').value = localStorage.getItem('scanflix_phone');
+
+            if (localStorage.getItem('scanflix_vip') === 'true') {
+                appliquerModeVIP();
+            } else {
+                demarrerTimer();
+            }
+        });
+
+        function choisirGalerie() { document.getElementById('file-gallery').click(); }
+        function ouvrirCamera() { document.getElementById('file-camera').click(); }
+
+        function gererFichierImage(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('image-preview').src = e.target.result;
+                    document.getElementById('preview-box').style.display = 'block';
+                    document.getElementById('result-box').style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function lancerAnalyse() { document.getElementById('result-box').style.display = 'block'; }
+
+        function ouvrirMediaModal(titre) {
+            document.getElementById('modalMediaTitle').innerText = titre;
+            document.getElementById('platformModal').style.display = 'flex';
+        }
+
+        function fermerMediaModal() {
+            document.getElementById('platformModal').style.display = 'none';
+        }
+
+        function naviguerVers(nom, btn) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + nom).classList.add('active');
+            btn.classList.add('active');
+
+            const backBtn = document.getElementById('btn-global-back');
+            if (nom !== 'home') {
+                backBtn.style.display = 'flex';
+            } else {
+                backBtn.style.display = 'none';
+                fermerToutesSousPages();
+            }
+        }
+
+        function retourAccueil() {
+            naviguerVers('home', document.querySelectorAll('.nav-item')[0]);
+        }
+
+        function ouvrirSousPage(page) {
+            document.getElementById('settings-main').style.display = 'none';
+            document.getElementById('sub-page-profile').style.display = 'none';
+            document.getElementById('sub-page-subs').style.display = 'none';
+            document.getElementById('sub-page-admin').style.display = 'none';
+
+            if (page === 'profile') document.getElementById('sub-page-profile').style.display = 'block';
+            if (page === 'subs') document.getElementById('sub-page-subs').style.display = 'block';
+            if (page === 'admin') document.getElementById('sub-page-admin').style.display = 'block';
+        }
+
+        function fermerToutesSousPages() {
+            document.getElementById('settings-main').style.display = 'block';
+            document.getElementById('sub-page-profile').style.display = 'none';
+            document.getElementById('sub-page-subs').style.display = 'none';
+            document.getElementById('sub-page-admin').style.display = 'none';
+        }
+
+        function sauvegarderProfil() {
+            localStorage.setItem('scanflix_name', document.getElementById('profile-name').value.trim());
+            localStorage.setItem('scanflix_email', document.getElementById('profile-email').value.trim());
+            localStorage.setItem('scanflix_phone', document.getElementById('profile-phone').value.trim());
+            alert("✅ Profil sauvegardé !");
+        }
+
+        function validerCodeAdmin() {
+            if (document.getElementById('admin-pass').value.trim() === SECRET_CODE) {
+                localStorage.setItem('scanflix_vip', 'true');
+                appliquerModeVIP();
+                alert("👑 Accès Propriétaire VIP activé !");
+            } else {
+                alert("Code secret incorrect.");
+            }
+        }
+
+        function appliquerModeVIP() {
+            document.getElementById('trial-banner').style.display = "none";
+        }
+
+        function demarrerTimer() {
+            const el = document.getElementById('trial-countdown');
+            setInterval(() => {
+                const start = parseInt(localStorage.getItem('scanflix_trial_start') || '0');
+                const remaining = TRIAL_MS - (Date.now() - start);
+                if (remaining <= 0) {
+                    el.innerText = "Expiré";
+                } else {
+                    const h = Math.floor(remaining / (1000 * 60 * 60));
+                    const m = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+                    const s = Math.floor((remaining % (1000 * 60)) / 1000);
+                    el.innerText = `${h}h ${m}m ${s}s`;
+                }
+            }, 1000);
+        }
+
+        function payer(montant, offre) {
+            openKkiapay({
+                amount: montant,
+                position: "center",
+                data: offre,
+                theme: "#ff5500",
+                key: "VOTRE_PUBLISHABLE_KEY"
+            });
+        }
+    </script>
+</body>
+</html>
+
