@@ -42,7 +42,7 @@
             padding-bottom: 90px;
         }
 
-        /* HEADER AVEC LOGO SHUTTER CAMERA STAR */
+        /* HEADER AVEC LOGO CAMERA STAR */
         header {
             position: sticky;
             top: 0;
@@ -120,7 +120,7 @@
             margin-bottom: 16px;
         }
 
-        /* BLOC DE TÉLÉCHARGEMENT D'APPLICATION / APK */
+        /* BLOC DE TÉLÉCHARGEMENT DIRECT APK */
         .download-box {
             background: linear-gradient(135deg, rgba(0, 210, 255, 0.1) 0%, rgba(255, 85, 0, 0.1) 100%);
             border: 1px solid var(--card-border);
@@ -160,12 +160,13 @@
             gap: 6px;
             text-decoration: none;
             color: #fff;
+            text-align: center;
         }
 
         .btn-pwa { background: var(--blue-gradient); box-shadow: 0 4px 15px var(--glow-blue); }
         .btn-apk { background: var(--orange-gradient); box-shadow: 0 4px 15px var(--glow-orange); }
 
-        /* CARD PRINCIPALE DÉTECTION & RECHERCHE VOCALE */
+        /* CARD PRINCIPALE DÉTECTION IMAGE & RECHERCHE VOCALE */
         .action-card {
             background: var(--card-midnight);
             border: 1px solid var(--card-border);
@@ -247,7 +248,7 @@
             margin-top: 14px;
         }
 
-        /* CARDS DÉTAILLÉES RÉSULTATS AVEC TIMECODE ET TRAILER */
+        /* RÉSULTAT DE SCÈNE */
         .result-card {
             display: none;
             background: var(--card-midnight);
@@ -396,7 +397,6 @@
             gap: 6px;
         }
 
-        /* REVIEW SYSTEM */
         .review-box {
             background: rgba(255,255,255,0.03);
             border: 1px solid var(--card-border);
@@ -406,7 +406,7 @@
             text-align: left;
         }
 
-        .stars { color: #f59e0b; font-size: 1.1rem; cursor: pointer; }
+        .stars { color: #f59e0b; font-size: 1.1rem; }
 
         /* NAVIGATION BAS */
         .tab-panel { display: none; }
@@ -468,7 +468,7 @@
 </head>
 <body>
 
-    <!-- HEADER DE L'APPLICATION AVEC NOUVEAU LOGO CAMÉRA/ÉTOILE -->
+    <!-- HEADER DE L'APPLICATION -->
     <header>
         <div class="header-left">
             <button class="btn-back-nav" id="btn-global-back" onclick="retourAccueil()" style="display: none;">
@@ -508,14 +508,14 @@
         <!-- ONGLET ACCUEIL -->
         <div id="tab-home" class="tab-panel active">
             
-            <!-- BLOC DE TÉLÉCHARGEMENT D'APPLICATION / APK -->
+            <!-- BLOC DE TÉLÉCHARGEMENT DIRECT APK -->
             <div class="download-box">
                 <div class="download-title">
-                    <span>📱 Obtenir l'application Mobile</span>
+                    <span>📱 Télécharger l'application Mobile</span>
                 </div>
                 <div class="download-btns-grid">
-                    <button class="btn-download btn-pwa" onclick="installerPWA()">📲 Installer App</button>
-                    <a href="https://webinto.app" target="_blank" class="btn-download btn-apk">🤖 Fichier APK</a>
+                    <button class="btn-download btn-pwa" onclick="installerPWA()">📲 Installation Rapide</button>
+                    <a href="./scanflix.apk" download="Scanflix.apk" class="btn-download btn-apk">🤖 Télécharger l'APK</a>
                 </div>
             </div>
 
@@ -524,7 +524,6 @@
                 <h2>Détecter une scène</h2>
                 <p>Scannez une image ou décrivez la scène à la voix.</p>
 
-                <!-- RECHERCHE VOCALE -->
                 <div class="voice-search-box">
                     <input type="text" id="voiceQueryInput" class="voice-input" placeholder="Décrivez la scène (ex: Rengoku vs Akaza)...">
                     <button class="btn-mic" onclick="demarrerEcouteVocale()" title="Parler à la voix">🎤</button>
@@ -549,7 +548,6 @@
                     <button class="btn-glow-orange" onclick="lancerAnalyse()">IDENTIFIER LA SCÈNE AI</button>
                 </div>
 
-                <!-- CARTE RÉSULTAT COMPLÈTE AVEC BANDE-ANNONCE ET HORODATAGE -->
                 <div class="result-card" id="result-box">
                     <h3 style="color:var(--neon-orange); font-size:1rem;">Scene Identifiée !</h3>
                     <p style="font-weight:800; font-size:1.1rem; margin-top:4px;">Demon Slayer: Le Train de l'Infini</p>
@@ -557,7 +555,6 @@
                     <span class="timecode-tag">⏱️ Timestamp : Épisode 19 • 14:35</span>
                     <p style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;">Acteurs : Natsuki Hanae (Tanjiro), Satoshi Hino (Rengoku)</p>
 
-                    <!-- BANDE ANNONCE YOUTUBE INTÉGRÉE -->
                     <iframe class="trailer-frame" src="https://www.youtube.com/embed/ATJYac_dORw" title="Trailer" allowfullscreen></iframe>
 
                     <div class="platforms-grid">
@@ -571,7 +568,6 @@
 
                     <button class="btn-share" onclick="partagerScene('Demon Slayer: Le Train de l\'Infini')">📲 Partager sur WhatsApp / Story</button>
 
-                    <!-- SYSTEME D'AVIS COMMUNAUTAIRE -->
                     <div class="review-box">
                         <p style="font-size:0.78rem; font-weight:700;">Avis de la communauté :</p>
                         <div class="stars">⭐⭐⭐⭐⭐ <span style="font-size:0.75rem; color:#fff;">(4.9/5 • 1,240 votes)</span></div>
@@ -613,7 +609,7 @@
             <div class="section-header">
                 <h3>Mes Favoris (Hors-ligne)</h3>
             </div>
-            <div class="media-grid" id="favs-grid">
+            <div class="media-grid">
                 <div class="media-poster-card" onclick="ouvrirMediaModal('Demon Slayer')">
                     <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=400" alt="Demon Slayer">
                     <h4>Demon Slayer</h4>
@@ -632,7 +628,7 @@
             <div class="section-header">
                 <h3>Historique des Scans</h3>
             </div>
-            <div class="media-grid" id="history-grid">
+            <div class="media-grid">
                 <div class="media-poster-card" onclick="ouvrirMediaModal('Jujutsu Kaisen')">
                     <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400" alt="Jujutsu Kaisen">
                     <h4>Jujutsu Kaisen</h4>
@@ -641,7 +637,7 @@
             </div>
         </div>
 
-        <!-- ONGLET COMPTE & PARAMÈTRES / PAIEMENT MOBILE MONEY -->
+        <!-- ONGLET COMPTE & PARAMÈTRES -->
         <div id="tab-account" class="tab-panel">
             <div id="settings-main">
                 <div class="section-header">
@@ -690,7 +686,7 @@
 
     </div>
 
-    <!-- MODAL CHOIX PLATEFORME DE STREAMING ET PARTAGE -->
+    <!-- MODAL CHOIX PLATEFORME DE STREAMING -->
     <div class="platform-modal" id="platformModal">
         <div class="modal-content">
             <h3 id="modalMediaTitle" style="color:var(--neon-orange); font-size:1.1rem; margin-bottom:4px;">Film</h3>
@@ -753,7 +749,6 @@
             }
         }
 
-        /* RECHERCHE VOCALE */
         function demarrerEcouteVocale() {
             if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -771,7 +766,6 @@
             }
         }
 
-        /* PARTAGE DE SCENE */
         function partagerScene(titre) {
             const text = `🔥 J'ai découvert la scène de ${titre} grâce à Scanflix ! Télécharge l'application ici : ${window.location.href}`;
             if (navigator.share) {
