@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scanflix</title>
     <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#07090e">
+    <meta name="theme-color" content="#05070b">
     
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #07090e;
-            --card-bg: rgba(18, 22, 35, 0.85);
+            --bg-deep: #05070b;
+            --bg-card: rgba(14, 18, 29, 0.85);
             --border-glass: rgba(255, 255, 255, 0.08);
-            --accent-orange: #ff6b00;
-            --accent-purple: #8b5cf6;
+            --accent-orange: #ff7a00;
+            --accent-purple: #9333ea;
+            --accent-cyan: #06b6d4;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
         }
@@ -28,10 +29,10 @@
         }
 
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg-deep);
             color: var(--text-main);
-            background-image: radial-gradient(circle at 50% 0%, rgba(255, 107, 0, 0.15) 0%, transparent 60%),
-                              radial-gradient(circle at 10% 100%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            background-image: radial-gradient(circle at 50% 0%, rgba(147, 51, 234, 0.18) 0%, transparent 55%),
+                              radial-gradient(circle at 10% 100%, rgba(255, 122, 0, 0.12) 0%, transparent 50%);
             min-height: 100vh;
             padding-bottom: 110px;
         }
@@ -55,20 +56,27 @@
             background: none;
             border: none;
             color: #fff;
-            font-size: 22px;
+            font-size: 20px;
             cursor: pointer;
-            padding: 4px;
+            padding: 6px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-glass);
         }
 
         .header-title {
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, #fff 40%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .header-actions {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             align-items: center;
         }
 
@@ -78,11 +86,11 @@
         }
 
         .hero-title {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, #fff 30%, #94a3b8 100%);
+            line-height: 1.15;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff 30%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -91,56 +99,132 @@
             font-size: 13px;
             color: var(--text-muted);
             line-height: 1.5;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .hero-badges {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            margin-bottom: 24px;
+            gap: 5px;
+            margin-bottom: 18px;
             font-size: 12px;
             color: #cbd5e1;
         }
 
         .hero-visual {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(255, 107, 0, 0.1));
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.15), rgba(255, 122, 0, 0.08));
             border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            height: 180px;
+            border-radius: 20px;
+            height: 150px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
 
         .central-logo-box {
-            width: 75px;
-            height: 75px;
-            background: linear-gradient(135deg, #8b5cf6, #ff6b00);
-            border-radius: 20px;
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-orange));
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 34px;
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.5);
+            font-size: 30px;
+            box-shadow: 0 10px 25px rgba(147, 51, 234, 0.4);
             position: relative;
         }
 
         .sparkle {
             position: absolute;
-            color: #ff6b00;
-            font-size: 18px;
+            color: #ffb703;
+            font-size: 16px;
             animation: pulse 2s infinite;
         }
-        .sparkle-1 { top: 10px; right: 12px; }
+        .sparkle-1 { top: 6px; right: 8px; }
 
         @keyframes pulse {
             0%, 100% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.3); opacity: 0.6; }
+        }
+
+        /* Bouton d'installation PWA */
+        .install-pwa-btn {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(147, 51, 234, 0.15));
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            color: #22d3ee;
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.1);
+        }
+
+        /* Tendances / Films 1, 2, 3 */
+        .trends-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.5px;
+            color: #e2e8f0;
+        }
+
+        .trends-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .trend-card {
+            height: 140px;
+            border-radius: 16px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-family: 'Cinzel', serif;
+            font-weight: 800;
+            font-size: 22px;
+            cursor: pointer;
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .trend-card:active { transform: scale(0.96); }
+
+        .trend-1 { background: linear-gradient(145deg, #c2410c, #431407); }
+        .trend-2 { background: linear-gradient(145deg, #0369a1, #082f49); }
+        .trend-3 { background: linear-gradient(145deg, #7e22ce, #3b0764); }
+
+        .trend-card .trend-title-box {
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(6px);
+            padding: 6px 4px;
+            border-radius: 8px;
+            font-size: 10px;
+            text-align: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            color: #fff;
         }
 
         .action-buttons-grid {
@@ -150,12 +234,12 @@
         }
 
         .action-btn {
-            background: rgba(18, 22, 35, 0.9);
-            border: 1px solid rgba(139, 92, 246, 0.4);
-            padding: 16px;
+            background: var(--bg-card);
+            border: 1px solid rgba(147, 51, 234, 0.4);
+            padding: 14px;
             border-radius: 16px;
             color: #fff;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
             letter-spacing: 1px;
             cursor: pointer;
@@ -164,81 +248,54 @@
             justify-content: center;
             gap: 8px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            transition: transform 0.2s;
         }
-
-        .action-btn:active { transform: scale(0.96); }
 
         .camera-action-btn {
-            background: linear-gradient(135deg, #ff6b00, #ff4500);
+            background: linear-gradient(135deg, #ff7a00, #ea580c);
             border: none;
-            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4);
+            box-shadow: 0 6px 20px rgba(255, 122, 0, 0.35);
         }
 
-        /* Onglet Compte & PayDunya (1000 FCFA / 1 Jour offert) */
+        /* Onglet Compte & Profil */
         .profile-card {
-            background: var(--card-bg);
+            background: var(--bg-card);
             border: 1px solid var(--border-glass);
             border-radius: 20px;
-            padding: 16px;
+            padding: 18px;
             text-align: center;
             margin-bottom: 14px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
 
         .profile-avatar {
             width: 65px;
             height: 65px;
-            background: linear-gradient(135deg, #ff6b00, #8b5cf6);
+            background: linear-gradient(135deg, #ff7a00, #9333ea);
             border-radius: 50%;
             margin: 0 auto 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 26px;
+            box-shadow: 0 5px 15px rgba(255, 122, 0, 0.3);
         }
 
-        .profile-name {
-            font-size: 15px;
-            font-weight: 800;
-            margin-bottom: 4px;
-        }
-
-        .profile-badge {
-            display: inline-block;
-            background: rgba(255, 107, 0, 0.2);
-            border: 1px solid rgba(255, 107, 0, 0.4);
-            color: #ffb07b;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 800;
-        }
+        .profile-name { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+        .profile-badge { display: inline-block; background: rgba(255, 122, 0, 0.2); border: 1px solid rgba(255, 122, 0, 0.4); color: #ffb703; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 800; }
 
         .promo-banner {
-            background: linear-gradient(135deg, rgba(255, 107, 0, 0.2), rgba(139, 92, 246, 0.2));
-            border: 1px solid rgba(255, 107, 0, 0.4);
+            background: linear-gradient(135deg, rgba(255, 122, 0, 0.15), rgba(147, 51, 234, 0.15));
+            border: 1px solid rgba(255, 122, 0, 0.35);
             border-radius: 16px;
             padding: 14px;
             text-align: center;
             margin-bottom: 14px;
         }
-
-        .promo-banner h4 {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--accent-orange);
-            margin-bottom: 4px;
-        }
-
-        .promo-banner p {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
+        .promo-banner h4 { font-size: 12px; font-weight: 800; color: #ff9f43; margin-bottom: 4px; }
+        .promo-banner p { font-size: 11px; color: var(--text-muted); }
 
         .paydunya-btn {
             width: 100%;
-            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
             border: none;
             color: #fff;
             padding: 14px;
@@ -246,47 +303,19 @@
             font-size: 12px;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 6px 20px rgba(0, 210, 255, 0.3);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.25);
             margin-bottom: 14px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-
-        .stat-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-glass);
-            border-radius: 16px;
-            padding: 14px;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--accent-orange);
-            margin-bottom: 2px;
-        }
-
-        .stat-label {
-            font-size: 11px;
-            color: var(--text-muted);
         }
 
         .settings-group {
-            background: var(--card-bg);
+            background: var(--bg-card);
             border: 1px solid var(--border-glass);
             border-radius: 16px;
             overflow: hidden;
             margin-bottom: 14px;
         }
-
         .setting-item {
-            padding: 12px 16px;
+            padding: 14px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -294,7 +323,6 @@
             border-bottom: 1px solid var(--border-glass);
             cursor: pointer;
         }
-
         .setting-item:last-child { border-bottom: none; }
 
         .logout-btn {
@@ -310,18 +338,18 @@
             text-align: center;
         }
 
-        /* Navigation inférieure */
+        /* Barre de navigation inférieure élégante */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(7, 9, 14, 0.95);
-            backdrop-filter: blur(20px);
+            background: rgba(5, 7, 11, 0.95);
+            backdrop-filter: blur(25px);
             border-top: 1px solid var(--border-glass);
             display: flex;
             justify-content: space-around;
-            padding: 12px 0;
+            padding: 10px 0 16px 0;
             z-index: 1000;
         }
 
@@ -334,10 +362,14 @@
             font-size: 10px;
             font-weight: 700;
             gap: 4px;
+            transition: all 0.2s ease;
         }
 
         .nav-item.active {
             color: var(--accent-orange);
+            background: rgba(255, 122, 0, 0.12);
+            padding: 6px 14px;
+            border-radius: 16px;
         }
 
         /* Vues */
@@ -349,7 +381,7 @@
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.88);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             display: none;
             align-items: center;
             justify-content: center;
@@ -357,8 +389,8 @@
             padding: 16px;
         }
         .modal-content {
-            background: #121623;
-            border: 1px solid var(--border-glass);
+            background: #0e121d;
+            border: 1px solid rgba(255, 122, 0, 0.3);
             border-radius: 24px;
             width: 100%;
             max-width: 420px;
@@ -366,17 +398,19 @@
             text-align: left;
             max-height: 90vh;
             overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
         .modal-close {
-            background: #ff6b00;
+            background: linear-gradient(135deg, #ff7a00, #ea580c);
             border: none;
             color: #fff;
-            padding: 10px;
+            padding: 12px;
             border-radius: 14px;
             width: 100%;
             margin-top: 15px;
             cursor: pointer;
             font-weight: 800;
+            box-shadow: 0 4px 15px rgba(255, 122, 0, 0.3);
         }
         .platform-links-grid {
             display: grid;
@@ -385,7 +419,7 @@
             margin-top: 12px;
         }
         .platform-link-btn {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.04);
             border: 1px solid var(--border-glass);
             padding: 10px;
             border-radius: 12px;
@@ -398,8 +432,9 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
+            transition: background 0.2s;
         }
-        .platform-link-btn:active { background: rgba(255,107,0,0.2); border-color: var(--accent-orange); }
+        .platform-link-btn:active { background: rgba(255, 122, 0, 0.2); border-color: var(--accent-orange); }
     </style>
 </head>
 <body>
@@ -407,7 +442,7 @@
         <!-- En-tête -->
         <header class="app-header">
             <button class="icon-btn" id="menuBtn">☰</button>
-            <span class="header-title">Scanflix</span>
+            <span class="header-title">SCANFLIX</span>
             <div class="header-actions">
                 <button class="icon-btn" id="chatHeaderBtn">💬</button>
                 <button class="icon-btn" id="optionsBtn">⋮</button>
@@ -424,10 +459,34 @@
                     <span>⚡ Résultat en quelques secondes</span>
                 </div>
 
+                <!-- Bouton d'installation PWA -->
+                <button class="install-pwa-btn" id="installAppBtn">
+                    📥 Installer l'application sur l'appareil
+                </button>
+
                 <div class="hero-visual">
                     <div class="central-logo-box">
                         ▶
                         <div class="sparkle sparkle-1">✨</div>
+                    </div>
+                </div>
+
+                <!-- Tendances / Films Maquette 1, 2, 3 -->
+                <div class="trends-header">
+                    <span>Tendances & Classiques</span>
+                </div>
+                <div class="trends-grid">
+                    <div class="trend-card trend-1" onclick="showScanResult('Demon Slayer', 'https://www.youtube.com/embed/VQGCidnXRVs')">
+                        <span>1</span>
+                        <div class="trend-title-box">Demon Slayer</div>
+                    </div>
+                    <div class="trend-card trend-2" onclick="showScanResult('Spirited Away', 'https://www.youtube.com/embed/ByXuk9QqQkk')">
+                        <span>2</span>
+                        <div class="trend-title-box">Spirited Away</div>
+                    </div>
+                    <div class="trend-card trend-3" onclick="showScanResult('Blade Runner', 'https://www.youtube.com/embed/gCcx85zbxz4')">
+                        <span>3</span>
+                        <div class="trend-title-box">Blade Runner</div>
                     </div>
                 </div>
 
@@ -454,7 +513,7 @@
             </div>
         </div>
 
-        <!-- VUE COMPTE (PAYDUNYA 1000 FCFA & 1 JOUR OFFERT) -->
+        <!-- VUE COMPTE -->
         <div id="view-compte" class="app-view">
             <div class="profile-card">
                 <div class="profile-avatar">🎬</div>
@@ -469,29 +528,14 @@
 
             <button class="paydunya-btn" onclick="openPayDunyaGateway()">💳 S'abonner (1 000 FCFA / mois)</button>
 
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <div class="stat-value" id="statScans">0</div>
-                    <div class="stat-label">Scènes Analysées</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-value" id="modeDisplay">LIVE</div>
-                    <div class="stat-label">Mode Actif</div>
-                </div>
-            </div>
-
             <div class="settings-group">
                 <div class="setting-item" onclick="togglePayDunyaMode()">
-                    <span>⚙️ Basculer Mode (Test / Live)</span>
-                    <span id="modeText" style="color: #10b981; font-weight: 700;">Production (Live)</span>
+                    <span>⚙️ Mode PayDunya</span>
+                    <span id="modeText" style="color: #22d3ee; font-weight: 700;">Production (Live)</span>
                 </div>
                 <div class="setting-item" onclick="alert('Thème cinématique sombre actif.')">
                     <span>🌙 Mode Sombre & Néon</span>
                     <span style="color: var(--text-muted);">Actif</span>
-                </div>
-                <div class="setting-item" onclick="alert('Scanflix v3.3.0 - PayDunya Intégré')">
-                    <span>ℹ️ Version API</span>
-                    <span style="color: var(--text-muted);">v3.3.0</span>
                 </div>
             </div>
 
@@ -502,19 +546,19 @@
         <input type="file" id="galleryInput" accept="image/*" style="display: none;">
         <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
 
-        <!-- Navigation -->
+        <!-- Barre de navigation inférieure -->
         <nav class="bottom-nav">
             <a href="#" class="nav-item active" data-target="view-accueil">
-                <span>🏠</span> Accueil
+                <span>🏠</span> ACCUEIL
             </a>
             <a href="#" class="nav-item" data-target="view-favoris">
-                <span>❤️</span> Favoris
+                <span>❤️</span> FAVORIS
             </a>
             <a href="#" class="nav-item" data-target="view-biblio">
-                <span>📚</span> Bibliothèque
+                <span>📚</span> BIBLIOTHÈQUE
             </a>
             <a href="#" class="nav-item" data-target="view-compte">
-                <span>👤</span> Compte
+                <span>👤</span> COMPTE
             </a>
         </nav>
     </div>
@@ -522,34 +566,45 @@
     <!-- Modal Intelligent -->
     <div class="modal-overlay" id="generalModal">
         <div class="modal-content">
-            <h3 id="modalTitle" style="margin-bottom: 8px; color: #ff6b00; font-size: 16px;">Titre</h3>
+            <h3 id="modalTitle" style="margin-bottom: 8px; color: var(--accent-orange); font-size: 16px;">Titre</h3>
             <div id="modalBody" style="font-size: 12px; color: #cbd5e1; margin-bottom: 12px;">Contenu</div>
             <button class="modal-close" onclick="closeModal()">Fermer</button>
         </div>
     </div>
 
     <script>
-        // Configuration PayDunya (Test & Live avec clés de production intégrées)
-        let paydunyaMode = "live";
+        let deferredPrompt;
+        const installBtn = document.getElementById('installAppBtn');
 
-        const PAYDUNYA_CREDENTIALS = {
-            test: {
-                publicKey: "test_public_Ig8ofRVgnBZNuH04853CJqSpay",
-                privateKey: "test_private_KTOrAAnVwNGIkRblWT7RU0NZg1t",
-                token: "HlvgiTfksxLPCicqHdW"
-            },
-            live: {
-                publicKey: "live_public_CK1AU7QB4Fy8t4G9nPqhaUVYOk4",
-                privateKey: "live_private_SzPF5B6UHyVmoUYLmUhbs8y5jGg",
-                token: "va1VDW7LBcwtlAgcsjgu"
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'flex';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                let { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('Application installée');
+                }
+                deferredPrompt = null;
+            } else {
+                alert("Pour installer Scanflix : appuyez sur les trois points (⋮) de votre navigateur mobile, puis choisissez 'Ajouter à l'écran d'accueil' ou 'Installer l'application'.");
             }
+        });
+
+        let paydunyaMode = "live";
+        const PAYDUNYA_CREDENTIALS = {
+            test: { publicKey: "test_public_Ig8ofRVgnBZNuH04853CJqSpay" },
+            live: { publicKey: "live_public_CK1AU7QB4Fy8t4G9nPqhaUVYOk4" }
         };
 
         function togglePayDunyaMode() {
             paydunyaMode = paydunyaMode === "test" ? "live" : "test";
-            document.getElementById('modeDisplay').innerText = paydunyaMode.toUpperCase();
             document.getElementById('modeText').innerText = paydunyaMode === "test" ? "Sandbox (Test)" : "Production (Live)";
-            document.getElementById('modeText').style.color = paydunyaMode === "test" ? "#ff6b00" : "#10b981";
+            document.getElementById('modeText').style.color = paydunyaMode === "test" ? "#ff7a00" : "#22d3ee";
             alert("Mode PayDunya basculé en : " + paydunyaMode.toUpperCase());
         }
 
@@ -596,41 +651,19 @@
             modal.style.display = 'none';
         }
 
-        // Passerelle PayDunya (Abonnement fixe à 1000 FCFA / mois)
         function openPayDunyaGateway() {
             let currentCreds = PAYDUNYA_CREDENTIALS[paydunyaMode];
             modalTitle.innerText = "Passerelle PayDunya (" + paydunyaMode.toUpperCase() + ")";
             modalBody.innerHTML = `
                 <p style="margin-bottom: 8px;">Abonnement mensuel Scanflix : <strong>1 000 FCFA / mois</strong></p>
-                <p style="color: #10b981; font-weight: 700; margin-bottom: 10px;">✔ Inscription gratuite : votre 1er jour est offert !</p>
-                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 12px; border-radius: 12px; font-size: 11px; margin-bottom: 12px;">
+                <p style="color: #22d3ee; font-weight: 700; margin-bottom: 10px;">✔ Inscription gratuite : votre 1er jour est offert !</p>
+                <div style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.3); padding: 12px; border-radius: 12px; font-size: 11px; margin-bottom: 12px;">
                     <strong>Mode Actif :</strong> ${paydunyaMode.toUpperCase()}<br>
                     <strong>Clé :</strong> <code>${currentCreds.publicKey.substring(0, 22)}...</code>
                 </div>
-                <button onclick="alert('Redirection vers le paiement sécurisé de 1000 FCFA via PayDunya (' + paydunyaMode.toUpperCase() + ')...')" style="width:100%; background:#10b981; color:#fff; border:none; padding:10px; border-radius:10px; font-weight:800; cursor:pointer;">Payer 1 000 FCFA / mois</button>
+                <button onclick="alert('Redirection vers le paiement sécurisé de 1000 FCFA via PayDunya...')" style="width:100%; background:linear-gradient(135deg, #06b6d4, #3b82f6); color:#fff; border:none; padding:12px; border-radius:12px; font-weight:800; cursor:pointer;">Payer 1 000 FCFA / mois</button>
             `;
             modal.style.display = 'flex';
-        }
-
-        // Statistiques et Historique
-        function updateStats() {
-            let history = JSON.parse(localStorage.getItem('scanflix_history') || '[]');
-            const statScans = document.getElementById('statScans');
-            if(statScans) statScans.innerText = history.length;
-            
-            const historyList = document.getElementById('historyList');
-            if(historyList) {
-                if(history.length === 0) {
-                    historyList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px;">Vos analyses de scènes récentes apparaîtront ici.</p>';
-                } else {
-                    historyList.innerHTML = history.map(item => `
-                        <div style="background:var(--card-bg); border:1px solid var(--border-glass); padding:12px; border-radius:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; font-size:12px;">
-                            <span>🎬 ${item.title}</span>
-                            <span style="color:var(--text-muted); font-size:10px;">${item.date}</span>
-                        </div>
-                    `).join('');
-                }
-            }
         }
 
         function addToHistory(title) {
@@ -638,29 +671,24 @@
             history.unshift({ title: title, date: new Date().toLocaleDateString() });
             if(history.length > 15) history.pop();
             localStorage.setItem('scanflix_history', JSON.stringify(history));
-            updateStats();
         }
 
         function resetAppData() {
             if(confirm("Voulez-vous effacer tout l'historique ?")) {
                 localStorage.removeItem('scanflix_history');
-                updateStats();
                 alert("Historique réinitialisé.");
             }
         }
 
-        updateStats();
-
-        // Fonction affichant le résultat IA + Bande Annonce + Liens Plateformes
         function showScanResult(movieTitle, youtubeEmbedUrl) {
             addToHistory(movieTitle);
             modalTitle.innerText = "✨ Scène Identifiée : " + movieTitle;
             modalBody.innerHTML = `
-                <p style="margin-bottom: 10px; color: #10b981; font-weight: 700;">✔ Reconnaissance réussie par l'IA !</p>
+                <p style="margin-bottom: 10px; color: #22d3ee; font-weight: 700;">✔ Reconnaissance réussie par l'IA !</p>
                 
                 <p style="font-size: 11px; margin-bottom: 4px; color: var(--text-muted);">Bande-annonce officielle :</p>
-                <div style="position:relative; width:100%; height:180px; margin-bottom:14px;">
-                    <iframe src="${youtubeEmbedUrl}" style="position:absolute; top:0; left:0; width:100%; height:100%; border:none; border-radius:12px;" allowfullscreen></iframe>
+                <div style="position:relative; width:100%; height:190px; margin-bottom:14px; background:#000; border-radius:12px; overflow:hidden;">
+                    <iframe src="${youtubeEmbedUrl}" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>
                 </div>
 
                 <p style="font-size: 11px; margin-bottom: 6px; font-weight: 700; color: #fff;">Regarder ou télécharger sur vos plateformes :</p>
@@ -684,7 +712,7 @@
         galleryInput.addEventListener('change', (e) => {
             if(e.target.files.length > 0) {
                 modalTitle.innerText = "Analyse IA en cours...";
-                modalBody.innerText = "Analyse de la capture d'écran de la galerie...";
+                modalBody.innerText = "Analyse de la capture d'écran...";
                 modal.style.display = 'flex';
                 setTimeout(() => {
                     showScanResult("Demon Slayer : Le Train de l'Infini", "https://www.youtube.com/embed/VQGCidnXRVs");
