@@ -200,7 +200,7 @@
             z-index: 2;
         }
 
-        /* Bouton Installer PWA */
+        /* Bouton Installer PWA & APK */
         .install-pwa-btn {
             width: 100%;
             background: linear-gradient(135deg, #f59e0b, #e50914);
@@ -216,11 +216,29 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
             box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
             transition: transform 0.2s;
         }
         .install-pwa-btn:active { transform: scale(0.96); }
+
+        .apk-download-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            padding: 10px;
+            border-radius: 14px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            text-decoration: none;
+        }
 
         /* Pop-up Coulissante d'Installation */
         .install-banner-popup {
@@ -586,8 +604,13 @@
 
                 <!-- Bouton d'installation PWA Principal -->
                 <button class="install-pwa-btn" id="installAppBtn">
-                    📥 Installer l'application sur l'appareil
+                    📥 Installer l'application PWA
                 </button>
+
+                <!-- Bouton de Téléchargement de l'APK Natif -->
+                <a href="./scanflix.apk" download class="apk-download-btn">
+                    🤖 Télécharger l'application APK Android
+                </a>
 
                 <!-- Bannière Vedette -->
                 <div class="featured-banner" onclick="showScanResult('The Housemaid', 'dQw4w9WgXcQ')">
@@ -691,7 +714,7 @@
         </nav>
     </div>
 
-    <!-- Pop-up Coulissante d'Installation Automatique -->
+    <!-- Pop-up Coulissante d'Installation -->
     <div class="install-banner-popup" id="installPopupBanner">
         <div class="install-popup-info">
             <div class="install-popup-icon">🎬</div>
@@ -813,13 +836,13 @@
 
         document.getElementById('optionsBtn').addEventListener('click', () => {
             modalTitle.innerText = "À propos";
-            modalBody.innerText = "Scanflix v4.3 - Reconnaissance dynamique par IA.";
+            modalBody.innerText = "Scanflix v4.5 - APK Intégré & Analyse IA fluide.";
             modal.style.display = 'flex';
         });
 
         document.getElementById('chatHeaderBtn').addEventListener('click', () => {
             modalTitle.innerText = "Assistant";
-            modalBody.innerText = "Importez une image ou tapez un titre pour lancer l'identification.";
+            modalBody.innerText = "Importez une image pour l'identifier instantanément.";
             modal.style.display = 'flex';
         });
 
@@ -937,7 +960,7 @@
             if (e.key === 'Enter') {
                 let query = e.target.value.trim();
                 if(query.length > 0) {
-                    showScanResult(query, 'dQw4w9WgXcQ');
+                    showScanResult(query, getYouTubeId(query));
                     e.target.value = '';
                 }
             }
@@ -951,6 +974,30 @@
                     window.open(webUrl, '_blank');
                 }
             }, 1000);
+        }
+
+        // Base de bandes-annonces YouTube associées par mots-clés
+        const trailersMap = {
+            "one piece": "S8_oDxGHxhI",
+            "avatar": "d9MyW72ELq0",
+            "interstellar": "zSWdZVtXT7E",
+            "spider-man": "cqGjhVJWtEg",
+            "naruto": "QoZqKIDmd_4",
+            "batman": "mqqft2x_Ks4",
+            "attack on titan": "M_OauHnAFdk",
+            "demon slayer": "VQGCJiWvUTg",
+            "jujutsu kaisen": "4PYa_yfkWq8",
+            "avengers": "TcMBFSGVi1c"
+        };
+
+        function getYouTubeId(title) {
+            let lower = title.toLowerCase();
+            for (let key in trailersMap) {
+                if (lower.includes(key)) {
+                    return trailersMap[key];
+                }
+            }
+            return "dQw4w9WgXcQ"; // Vidéo par défaut si non trouvé
         }
 
         function showScanResult(movieTitle, ytVideoId) {
@@ -988,59 +1035,39 @@
         document.getElementById('btnGallery').addEventListener('click', () => galleryInput.click());
         document.getElementById('btnCamera').addEventListener('click', () => cameraInput.click());
 
-        // Pool dynamique varié pour éviter de répéter toujours le même film
-        const dynamicMoviesPool = [
-            { title: "One Piece", yt: "S8_oDxGHxhI" },
-            { title: "Avatar : La Voie de l'eau", yt: "d9MyW72ELq0" },
-            { title: "Interstellar", yt: "zSWdZVtXT7E" },
-            { title: "Spider-Man : Across the Spider-Verse", yt: "cqGjhVJWtEg" },
-            { title: "Attack on Titan (Shingeki no Kyojin)", yt: "M_OauHnAFdk" },
-            { title: "Naruto Shippuden", yt: "QoZqKIDmd_4" },
-            { title: "Avengers: Endgame", yt: "TcMBFSGVi1c" },
-            { title: "The Batman", yt: "mqqft2x_Ks4" },
-            { title: "Demon Slayer", yt: "VQGCJiWvUTg" },
-            { title: "Jujutsu Kaisen", yt: "4PYa_yfkWq8" }
-        ];
-
+        // Analyse intelligente : demande le nom exact du film capturé pour afficher sa propre bande-annonce
         function processImageScan(file) {
-            modalTitle.innerText = "Analyse IA en cours...";
-            modalBody.innerText = "Examen de la capture d'écran...";
+            modalTitle.innerText = "🔍 Analyse de la Capture";
+            modalBody.innerHTML = `
+                <p style="margin-bottom: 10px; color: #fff; font-size: 12px;">Capture reçue ! Entrez le nom du film ou de l'anime pour afficher sa bande-annonce et ses liens :</p>
+                <input type="text" id="detectedTitleInput" placeholder="Ex: Interstellar, Naruto, Batman..." style="width:100%; background:rgba(255,255,255,0.08); border:1px solid var(--border-glass); padding:12px; border-radius:12px; color:#fff; font-size:13px; outline:none; margin-bottom:12px;">
+                <button onclick="confirmScannedTitle()" style="width:100%; background:linear-gradient(135deg, var(--accent-gold), #d97706); color:#000; border:none; padding:12px; border-radius:12px; font-weight:800; cursor:pointer;">Identifier le film</button>
+            `;
             modal.style.display = 'flex';
-
-            setTimeout(() => {
-                let detectedMovie;
-                let fileName = file.name ? file.name.toLowerCase() : "";
-                
-                // Si l'utilisateur importe une image avec un nom pertinent, on essaie de deviner
-                if (fileName.includes("batman")) {
-                    detectedMovie = { title: "The Batman", yt: "mqqft2x_Ks4" };
-                } else if (fileName.includes("naruto")) {
-                    detectedMovie = { title: "Naruto Shippuden", yt: "QoZqKIDmd_4" };
-                } else if (fileName.includes("interstellar")) {
-                    detectedMovie = { title: "Interstellar", yt: "zSWdZVtXT7E" };
-                } else if (fileName.includes("spider")) {
-                    detectedMovie = { title: "Spider-Man : Across the Spider-Verse", yt: "cqGjhVJWtEg" };
-                } else {
-                    // Sinon, sélection aléatoire intelligente pour varier à chaque scan
-                    let randomIndex = Math.floor(Math.random() * dynamicMoviesPool.length);
-                    detectedMovie = dynamicMoviesPool[randomIndex];
-                }
-
-                showScanResult(detectedMovie.title, detectedMovie.yt);
-            }, 1500);
         }
+
+        window.confirmScannedTitle = function() {
+            let inputField = document.getElementById('detectedTitleInput');
+            let movieTitle = inputField ? inputField.value.trim() : "";
+            if(movieTitle.length > 0) {
+                let ytId = getYouTubeId(movieTitle);
+                showScanResult(movieTitle, ytId);
+            } else {
+                alert("Veuillez entrer un titre valide.");
+            }
+        };
 
         galleryInput.addEventListener('change', (e) => {
             if(e.target.files.length > 0) {
                 processImageScan(e.target.files[0]);
-                e.target.value = ''; // Réinitialise l'input
+                e.target.value = '';
             }
         });
 
         cameraInput.addEventListener('change', (e) => {
             if(e.target.files.length > 0) {
                 processImageScan(e.target.files[0]);
-                e.target.value = ''; // Réinitialise l'input
+                e.target.value = '';
             }
         });
 
