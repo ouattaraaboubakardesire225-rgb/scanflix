@@ -170,14 +170,14 @@
             50% { transform: scale(1.3); opacity: 0.6; }
         }
 
-        /* Bouton d'installation PWA */
+        /* Bouton d'installation PWA Ultra-Rapide */
         .install-pwa-btn {
             width: 100%;
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(229, 9, 20, 0.15));
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            color: #ffb703;
-            padding: 12px;
-            border-radius: 14px;
+            background: linear-gradient(135deg, #f59e0b, #e50914);
+            border: none;
+            color: #fff;
+            padding: 14px;
+            border-radius: 16px;
             font-size: 12px;
             font-weight: 800;
             letter-spacing: 0.5px;
@@ -187,10 +187,12 @@
             justify-content: center;
             gap: 8px;
             margin-bottom: 16px;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.1);
+            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+            transition: transform 0.2s;
         }
+        .install-pwa-btn:active { transform: scale(0.96); }
 
-        /* Grille Tendances (Sans numéros, avec superbes couleurs) */
+        /* Grille Tendances (Sans chiffres, couleurs modernes) */
         .trends-header {
             display: flex;
             justify-content: space-between;
@@ -490,7 +492,7 @@
                     <span>⚡ Résultat en quelques secondes</span>
                 </div>
 
-                <!-- Bouton d'installation PWA -->
+                <!-- Bouton d'installation direct -->
                 <button class="install-pwa-btn" id="installAppBtn">
                     📥 Installer l'application sur l'appareil
                 </button>
@@ -502,7 +504,7 @@
                     </div>
                 </div>
 
-                <!-- Sélection de Films et Animes Tendances (Sans chiffres, couleurs modernes) -->
+                <!-- Grille Tendances Moderne -->
                 <div class="trends-header">
                     <span>Tendances & Classiques</span>
                 </div>
@@ -608,23 +610,35 @@
     </div>
 
     <script>
-        // Installation PWA
+        // Gestion de l'installation PWA instantanée et fluide
         let deferredPrompt;
         const installBtn = document.getElementById('installAppBtn');
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            installBtn.style.display = 'flex';
         });
 
         installBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 let { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('Application installée avec succès');
+                }
                 deferredPrompt = null;
             } else {
-                alert("Pour installer Scanflix : appuyez sur les trois points (⋮) de votre navigateur mobile, puis choisissez 'Ajouter à l'écran d'accueil'.");
+                // Guide visuel ultra clair si le navigateur requiert l'action manuelle native
+                modalTitle.innerText = "📥 Installer Scanflix";
+                modalBody.innerHTML = `
+                    <p style="margin-bottom: 10px; color: #fff;">Pour installer l'application instantanément sur votre écran d'accueil :</p>
+                    <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 12px; border-radius: 12px; font-size: 12px; line-height: 1.6;">
+                        1. Appuyez sur les <strong>3 points (⋮)</strong> en haut à droite de votre navigateur.<br>
+                        2. Sélectionnez <strong>"Installer l'application"</strong> ou <strong>"Ajouter à l'écran d'accueil"</strong>.<br>
+                        3. Confirmez pour placer l'icône sur votre téléphone !
+                    </div>
+                `;
+                modal.style.display = 'flex';
             }
         });
 
@@ -708,7 +722,6 @@
             }
         }
 
-        // Affichage dynamique et varié des résultats IA
         function showScanResult(movieTitle, youtubeEmbedUrl) {
             addToHistory(movieTitle);
             modalTitle.innerText = "✨ Scène Identifiée : " + movieTitle;
@@ -738,7 +751,6 @@
         document.getElementById('btnGallery').addEventListener('click', () => galleryInput.click());
         document.getElementById('btnCamera').addEventListener('click', () => cameraInput.click());
 
-        // Liste variée de films et animes pour simuler l'IA dynamiquement
         const detectedMoviesPool = [
             { title: "Demon Slayer : Le Train de l'Infini", url: "https://www.youtube.com/embed/VQGCidnXRVs" },
             { title: "Jujutsu Kaisen", url: "https://www.youtube.com/embed/pkR4aMwhM3A" },
