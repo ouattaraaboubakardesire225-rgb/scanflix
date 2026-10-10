@@ -30,7 +30,7 @@
             background-image: radial-gradient(circle at 50% 0%, rgba(255, 107, 0, 0.15) 0%, transparent 50%),
                               radial-gradient(circle at 10% 100%, rgba(0, 210, 255, 0.1) 0%, transparent 40%);
             min-height: 100vh;
-            padding-bottom: 100px;
+            padding-bottom: 120px;
         }
 
         .app-container {
@@ -48,6 +48,20 @@
             padding-top: 8px;
         }
 
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .menu-icon-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
         .logo-container {
             display: flex;
             align-items: center;
@@ -56,19 +70,19 @@
 
         .logo-icon {
             background: linear-gradient(135deg, #ff6b00, #ff3300);
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 14px;
             box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4);
         }
 
         .logo-text {
             font-family: 'Cinzel', serif;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
         }
 
@@ -76,18 +90,18 @@
             color: var(--accent-orange);
         }
 
-        .header-install-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--border-glass);
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
+        .header-right {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 12px;
+        }
+
+        .header-action-icon {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
         }
 
         /* Section principale Scan */
@@ -103,10 +117,9 @@
 
         .scan-header h2 {
             font-family: 'Cinzel', serif;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             margin-bottom: 6px;
-            letter-spacing: 0.5px;
         }
 
         .scan-header p {
@@ -121,7 +134,7 @@
             background: rgba(0, 0, 0, 0.4);
             border: 1px dashed rgba(0, 210, 255, 0.3);
             border-radius: 16px;
-            padding: 24px 16px;
+            padding: 22px 16px;
             text-align: center;
             margin-bottom: 16px;
             cursor: pointer;
@@ -132,8 +145,8 @@
         .drop-zone span::before, .drop-zone span::after {
             content: '';
             position: absolute;
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             border-color: var(--accent-blue);
             border-style: solid;
         }
@@ -146,11 +159,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .drop-icon {
-            font-size: 24px;
+            font-size: 20px;
             color: var(--accent-blue);
         }
 
@@ -197,7 +210,7 @@
             justify-content: center;
         }
 
-        /* Boutons d'action */
+        /* Boutons d'action Galerie / Caméra */
         .action-buttons-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -263,30 +276,89 @@
             padding: 12px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            font-size: 18px;
+            justify-content: flex-end;
+            align-items: center;
         }
 
         .trend-1 { background: linear-gradient(135deg, #c2410c, #7c2d12); }
         .trend-2 { background: linear-gradient(135deg, #0e7490, #164e63); }
         .trend-3 { background: linear-gradient(135deg, #6b21a8, #3b0764); }
 
-        .trend-card span:first-child {
-            font-size: 16px;
-        }
-
-        .trend-card .trend-icon {
-            align-self: center;
+        .trend-icon {
             background: rgba(255,255,255,0.2);
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 12px;
+            color: #fff;
+        }
+
+        /* Barre de discussion flottante */
+        .floating-chat-bar {
+            position: fixed;
+            bottom: 75px;
+            left: 12px;
+            right: 12px;
+            max-width: 456px;
+            margin: 0 auto;
+            background: rgba(18, 24, 38, 0.95);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(25px);
+            border-radius: 28px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            z-index: 999;
+        }
+
+        .chat-plus-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .chat-model-badge {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .chat-mic-btn, .chat-send-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-send-btn {
+            background: #fff;
+            color: #000;
+            border-radius: 50%;
         }
 
         /* Barre de navigation inférieure */
@@ -300,7 +372,7 @@
             border-top: 1px solid var(--border-glass);
             display: flex;
             justify-content: space-around;
-            padding: 12px 0;
+            padding: 10px 0;
             z-index: 1000;
         }
 
@@ -310,84 +382,163 @@
             align-items: center;
             text-decoration: none;
             color: var(--text-muted);
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
-            gap: 4px;
+            gap: 2px;
         }
 
         .nav-item.active {
             color: var(--accent-orange);
         }
+
+        .app-view { display: none; }
+        .app-view.active-view { display: block; }
     </style>
 </head>
 <body>
     <div class="app-container">
         <!-- En-tête -->
         <header class="app-header">
-            <div class="logo-container">
-                <div class="logo-icon">▶</div>
-                <h1 class="logo-text">Scan<span>flix</span></h1>
+            <div class="header-left">
+                <button class="menu-icon-btn">☰</button>
+                <div class="logo-container">
+                    <div class="logo-icon">▶</div>
+                    <h1 class="logo-text">SCAN<span>flix</span></h1>
+                </div>
             </div>
-            <button class="header-install-btn">
-                <span>⬇</span> Installer
-            </button>
+            <div class="header-right">
+                <button class="header-action-icon">💬</button>
+                <button class="header-action-icon">⋮</button>
+            </div>
         </header>
 
-        <!-- Section Scan -->
-        <section class="scan-section">
-            <div class="scan-header">
-                <h2>DÉTECTER UNE SCÈNE</h2>
-                <p>Scannez une image ou décrivez la scène à la voix.</p>
-            </div>
-
-            <div class="drop-zone">
-                <span></span>
-                <div class="drop-content">
-                    <div class="drop-icon">🔲</div>
-                    <div class="drop-text">Déposez une capture d'écran</div>
+        <!-- VUE ACCUEIL -->
+        <div id="view-accueil" class="app-view active-view">
+            <section class="scan-section">
+                <div class="scan-header">
+                    <h2>DÉTECTER UNE SCÈNE</h2>
+                    <p>Scannez une image ou décrivez la scène à la voix.</p>
                 </div>
-            </div>
 
-            <div class="search-bar-box">
-                <input type="text" placeholder="Ex : Rengoku vs Akaza...">
-                <button class="search-mic-btn">🎤</button>
-            </div>
-
-            <div class="action-buttons-grid">
-                <button class="action-btn gallery-btn">📁 GALERIE</button>
-                <button class="action-btn camera-btn">📷 CAMÉRA</button>
-            </div>
-        </section>
-
-        <!-- Tendances -->
-        <section class="trends-section">
-            <div class="trends-header">
-                <h2>TENDANCES ACTUELLES</h2>
-                <a href="#" class="see-all">Voir tout</a>
-            </div>
-            <div class="trends-grid">
-                <div class="trend-card trend-1">
-                    <span>1</span>
-                    <div class="trend-icon">↓</div>
+                <!-- Zone de dépôt avec coins lumineux -->
+                <div class="drop-zone" id="dropZone">
+                    <span></span>
+                    <div class="drop-content">
+                        <div class="drop-icon">🔲</div>
+                        <div class="drop-text">Déposez une capture d'écran</div>
+                    </div>
                 </div>
-                <div class="trend-card trend-2">
-                    <span>2</span>
-                    <div class="trend-icon">↓</div>
-                </div>
-                <div class="trend-card trend-3">
-                    <span>3</span>
-                    <div class="trend-icon">↓</div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Navigation -->
+                <div class="search-bar-box">
+                    <input type="text" placeholder="Ex : Rengoku vs Akaza...">
+                    <button class="search-mic-btn">🎤</button>
+                </div>
+
+                <input type="file" id="galleryInput" accept="image/*" style="display: none;">
+                <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
+
+                <div class="action-buttons-grid">
+                    <button class="action-btn gallery-btn" id="btnGallery">📁 GALERIE</button>
+                    <button class="action-btn camera-btn" id="btnCamera">📷 CAMÉRA</button>
+                </div>
+            </section>
+
+            <!-- Tendances -->
+            <section class="trends-section">
+                <div class="trends-header">
+                    <h2>TENDANCES ACTUELLES</h2>
+                    <a href="#" class="see-all">Voir tout</a>
+                </div>
+                <div class="trends-grid">
+                    <div class="trend-card trend-1">
+                        <div class="trend-icon">↓</div>
+                    </div>
+                    <div class="trend-card trend-2">
+                        <div class="trend-icon">↓</div>
+                    </div>
+                    <div class="trend-card trend-3">
+                        <div class="trend-icon">↓</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- VUE FAVORIS -->
+        <div id="view-favoris" class="app-view">
+            <section class="scan-section">
+                <div class="scan-header">
+                    <h2>Favoris</h2>
+                    <p>Vos films et scènes enregistrés.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- VUE BIBLIOTHÈQUE -->
+        <div id="view-biblio" class="app-view">
+            <section class="scan-section">
+                <div class="scan-header">
+                    <h2>Bibliothèque</h2>
+                    <p>Historique de vos analyses.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- VUE COMPTE -->
+        <div id="view-compte" class="app-view">
+            <section class="scan-section">
+                <div class="scan-header">
+                    <h2>Compte</h2>
+                    <p>Paramètres de votre profil.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Barre de discussion flottante -->
+        <div class="floating-chat-bar">
+            <button class="chat-plus-btn">+</button>
+            <div class="chat-model-badge">Scanflix AI v2.0</div>
+            <button class="chat-mic-btn">🎤</button>
+            <button class="chat-send-btn">⬆</button>
+        </div>
+
+        <!-- Barre de navigation -->
         <nav class="bottom-nav">
-            <a href="#" class="nav-item active"><span>🏠</span> ACCUEIL</a>
-            <a href="#" class="nav-item"><span>❤️</span> FAVORIS</a>
-            <a href="#" class="nav-item"><span>📚</span> BIBLIO</a>
-            <a href="#" class="nav-item"><span>👤</span> COMPTE</a>
+            <a href="#" class="nav-item active" data-target="view-accueil">
+                <span>🏠</span> ACCUEIL
+            </a>
+            <a href="#" class="nav-item" data-target="view-favoris">
+                <span>❤️</span> FAVORIS
+            </a>
+            <a href="#" class="nav-item" data-target="view-biblio">
+                <span>📚</span> BIBLIO
+            </a>
+            <a href="#" class="nav-item" data-target="view-compte">
+                <span>👤</span> COMPTE
+            </a>
         </nav>
     </div>
+
+    <script>
+        const navItems = document.querySelectorAll('.nav-item');
+        const appViews = document.querySelectorAll('.app-view');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                navItems.forEach(nav => nav.classList.remove('active'));
+                appViews.forEach(view => view.classList.remove('active-view'));
+
+                item.classList.add('active');
+                document.getElementById(item.getAttribute('data-target')).classList.add('active-view');
+            });
+        });
+
+        const galleryInput = document.getElementById('galleryInput');
+        const cameraInput = document.getElementById('cameraInput');
+
+        document.getElementById('btnGallery').addEventListener('click', () => galleryInput.click());
+        document.getElementById('dropZone').addEventListener('click', () => galleryInput.click());
+        document.getElementById('btnCamera').addEventListener('click', () => cameraInput.click());
+    </script>
 </body>
 </html>
