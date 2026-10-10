@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scanflix</title>
+    <!-- Configuration PWA -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#07090e">
+    
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -276,15 +280,18 @@
             padding: 12px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
+            justify-content: space-between;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 18px;
         }
 
         .trend-1 { background: linear-gradient(135deg, #c2410c, #7c2d12); }
         .trend-2 { background: linear-gradient(135deg, #0e7490, #164e63); }
         .trend-3 { background: linear-gradient(135deg, #6b21a8, #3b0764); }
 
-        .trend-icon {
+        .trend-card .trend-icon {
+            align-self: center;
             background: rgba(255,255,255,0.2);
             width: 30px;
             height: 30px;
@@ -293,7 +300,6 @@
             align-items: center;
             justify-content: center;
             font-size: 12px;
-            color: #fff;
         }
 
         /* Barre de discussion flottante */
@@ -391,13 +397,14 @@
             color: var(--accent-orange);
         }
 
+        /* Gestion des vues */
         .app-view { display: none; }
         .app-view.active-view { display: block; }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- En-tête -->
+        <!-- En-tête Commun -->
         <header class="app-header">
             <div class="header-left">
                 <button class="menu-icon-btn">☰</button>
@@ -430,10 +437,11 @@
                 </div>
 
                 <div class="search-bar-box">
-                    <input type="text" placeholder="Ex : Rengoku vs Akaza...">
-                    <button class="search-mic-btn">🎤</button>
+                    <input type="text" id="searchInput" placeholder="Ex : Rengoku vs Akaza...">
+                    <button class="search-mic-btn" id="micBtnSearch">🎤</button>
                 </div>
 
+                <!-- Inputs fichiers cachés -->
                 <input type="file" id="galleryInput" accept="image/*" style="display: none;">
                 <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
 
@@ -467,8 +475,8 @@
         <div id="view-favoris" class="app-view">
             <section class="scan-section">
                 <div class="scan-header">
-                    <h2>Favoris</h2>
-                    <p>Vos films et scènes enregistrés.</p>
+                    <h2>Mes Favoris</h2>
+                    <p>Retrouvez vos films et scènes sauvegardés.</p>
                 </div>
             </section>
         </div>
@@ -478,7 +486,7 @@
             <section class="scan-section">
                 <div class="scan-header">
                     <h2>Bibliothèque</h2>
-                    <p>Historique de vos analyses.</p>
+                    <p>Historique de vos analyses et recherches.</p>
                 </div>
             </section>
         </div>
@@ -487,8 +495,8 @@
         <div id="view-compte" class="app-view">
             <section class="scan-section">
                 <div class="scan-header">
-                    <h2>Compte</h2>
-                    <p>Paramètres de votre profil.</p>
+                    <h2>Mon Compte</h2>
+                    <p>Gérez votre abonnement et vos préférences.</p>
                 </div>
             </section>
         </div>
@@ -501,7 +509,7 @@
             <button class="chat-send-btn">⬆</button>
         </div>
 
-        <!-- Barre de navigation -->
+        <!-- Barre de navigation inférieure -->
         <nav class="bottom-nav">
             <a href="#" class="nav-item active" data-target="view-accueil">
                 <span>🏠</span> ACCUEIL
@@ -519,6 +527,20 @@
     </div>
 
     <script>
+        // Enregistrement du Service Worker pour PWA
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+              .then(registration => {
+                console.log('ServiceWorker enregistré avec succès: ', registration.scope);
+              })
+              .catch(error => {
+                console.log('Échec de l\'enregistrement du ServiceWorker: ', error);
+              });
+          });
+        }
+
+        // Navigation entre les onglets
         const navItems = document.querySelectorAll('.nav-item');
         const appViews = document.querySelectorAll('.app-view');
 
@@ -529,16 +551,29 @@
                 appViews.forEach(view => view.classList.remove('active-view'));
 
                 item.classList.add('active');
-                document.getElementById(item.getAttribute('data-target')).classList.add('active-view');
+                const targetId = item.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active-view');
             });
         });
 
+        // Gestion des fichiers (Galerie et Caméra)
         const galleryInput = document.getElementById('galleryInput');
         const cameraInput = document.getElementById('cameraInput');
+        const btnGallery = document.getElementById('btnGallery');
+        const btnCamera = document.getElementById('btnCamera');
+        const dropZone = document.getElementById('dropZone');
 
-        document.getElementById('btnGallery').addEventListener('click', () => galleryInput.click());
-        document.getElementById('dropZone').addEventListener('click', () => galleryInput.click());
-        document.getElementById('btnCamera').addEventListener('click', () => cameraInput.click());
+        btnGallery.addEventListener('click', () => {
+            galleryInput.click();
+        });
+
+        dropZone.addEventListener('click', () => {
+            galleryInput.click();
+        });
+
+        btnCamera.addEventListener('click', () => {
+            cameraInput.click();
+        });
     </script>
 </body>
 </html>
