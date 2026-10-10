@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scanflix</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0b0f19;
-            --card-bg: rgba(18, 24, 38, 0.75);
-            --border-glass: rgba(255, 255, 255, 0.08);
-            --accent-orange: #ff7a00;
-            --accent-blue: #00f0ff;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
+            --bg-dark: #07090e;
+            --card-bg: rgba(13, 17, 28, 0.9);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --accent-orange: #ff6b00;
+            --accent-blue: #00d2ff;
+            --text-main: #f8fafc;
+            --text-muted: #64748b;
         }
 
         * {
@@ -21,15 +21,16 @@
             margin: 0;
             padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            background-image: radial-gradient(circle at 50% 10%, rgba(255, 122, 0, 0.15) 0%, transparent 50%),
-                              radial-gradient(circle at 10% 90%, rgba(0, 240, 255, 0.1) 0%, transparent 40%);
+            background-image: radial-gradient(circle at 50% 0%, rgba(255, 107, 0, 0.15) 0%, transparent 50%),
+                              radial-gradient(circle at 10% 100%, rgba(0, 210, 255, 0.1) 0%, transparent 40%);
             min-height: 100vh;
-            padding-bottom: 90px;
+            padding-bottom: 100px;
         }
 
         .app-container {
@@ -44,7 +45,7 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 20px;
-            padding-top: 10px;
+            padding-top: 8px;
         }
 
         .logo-container {
@@ -54,7 +55,7 @@
         }
 
         .logo-icon {
-            background: linear-gradient(135deg, #ff7a00, #ff4500);
+            background: linear-gradient(135deg, #ff6b00, #ff3300);
             width: 38px;
             height: 38px;
             border-radius: 12px;
@@ -62,119 +63,133 @@
             align-items: center;
             justify-content: center;
             font-size: 16px;
-            box-shadow: 0 4px 15px rgba(255, 122, 0, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4);
         }
 
         .logo-text {
             font-family: 'Cinzel', serif;
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 22px;
+            font-weight: 800;
         }
 
         .logo-text span {
             color: var(--accent-orange);
         }
 
-        /* Carte Installation PWA */
-        .install-card {
-            background: var(--card-bg);
+        .header-install-btn {
+            background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--border-glass);
-            backdrop-filter: blur(16px);
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .install-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-            font-size: 13px;
-            letter-spacing: 0.5px;
-            color: var(--text-muted);
-        }
-
-        .install-btn {
-            width: 100%;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
-            padding: 14px;
-            border-radius: 14px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 600;
-            font-size: 14px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 20px rgba(0,0,0,0.4);
-            transition: all 0.3s ease;
+            gap: 6px;
         }
 
-        .pwa-badge {
-            background: var(--accent-orange);
-            color: #000;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 800;
-        }
-
-        /* Section Scan */
+        /* Section principale Scan */
         .scan-section {
             background: var(--card-bg);
             border: 1px solid var(--border-glass);
-            backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 24px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
 
         .scan-header h2 {
             font-family: 'Cinzel', serif;
-            font-size: 22px;
+            font-size: 20px;
+            font-weight: 700;
             margin-bottom: 6px;
+            letter-spacing: 0.5px;
         }
 
         .scan-header p {
             color: var(--text-muted);
-            font-size: 13px;
+            font-size: 12px;
             margin-bottom: 16px;
         }
 
-        .voice-search-box {
+        /* Zone de dépôt avec coins lumineux bleus */
+        .drop-zone {
+            position: relative;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px dashed rgba(0, 210, 255, 0.3);
+            border-radius: 16px;
+            padding: 24px 16px;
+            text-align: center;
+            margin-bottom: 16px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .drop-zone::before, .drop-zone::after,
+        .drop-zone span::before, .drop-zone span::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-color: var(--accent-blue);
+            border-style: solid;
+        }
+        .drop-zone::before { top: 6px; left: 6px; border-width: 2px 0 0 2px; }
+        .drop-zone::after { top: 6px; right: 6px; border-width: 2px 2px 0 0; }
+        .drop-zone span::before { bottom: 6px; left: 6px; border-width: 0 0 2px 2px; }
+        .drop-zone span::after { bottom: 6px; right: 6px; border-width: 0 2px 2px 0; }
+
+        .drop-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .drop-icon {
+            font-size: 24px;
+            color: var(--accent-blue);
+        }
+
+        .drop-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Barre de recherche */
+        .search-bar-box {
             display: flex;
             align-items: center;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.5);
             border: 1px solid var(--border-glass);
             border-radius: 14px;
-            padding: 6px 6px 6px 14px;
+            padding: 8px 8px 8px 14px;
             margin-bottom: 16px;
         }
 
-        .voice-search-box input {
+        .search-bar-box input {
             background: transparent;
             border: none;
             color: #fff;
-            font-size: 14px;
+            font-size: 13px;
             width: 100%;
             outline: none;
         }
 
-        .voice-search-box input::placeholder {
+        .search-bar-box input::placeholder {
             color: var(--text-muted);
         }
 
-        .mic-btn {
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid rgba(0, 240, 255, 0.3);
+        .search-mic-btn {
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid rgba(0, 210, 255, 0.3);
             color: var(--accent-blue);
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             border-radius: 10px;
             cursor: pointer;
             display: flex;
@@ -182,72 +197,96 @@
             justify-content: center;
         }
 
-        /* Boutons d'action (Galerie / Caméra) */
+        /* Boutons d'action */
         .action-buttons-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
 
-        .action-card {
-            background: rgba(15, 22, 36, 0.8);
-            border-radius: 16px;
-            padding: 20px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .gallery-card {
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.1);
-        }
-
-        .camera-card {
-            border: 1px solid rgba(255, 122, 0, 0.3);
-            box-shadow: 0 4px 20px rgba(255, 122, 0, 0.1);
-        }
-
-        .action-card:active {
-            transform: scale(0.96);
-        }
-
-        .icon-glow {
-            width: 50px;
-            height: 50px;
+        .action-btn {
             border-radius: 14px;
+            padding: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .blue-glow {
-            background: rgba(0, 240, 255, 0.1);
-            color: var(--accent-blue);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
-        }
-
-        .orange-glow {
-            background: rgba(255, 122, 0, 0.1);
-            color: var(--accent-orange);
-            box-shadow: 0 0 15px rgba(255, 122, 0, 0.2);
-        }
-
-        .action-card span {
-            font-size: 12px;
-            font-weight: 700;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 800;
             letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .gallery-btn {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            color: #fff;
+        }
+
+        .camera-btn {
+            background: linear-gradient(135deg, #ff6b00, #ff4500);
+            border: none;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4);
         }
 
         /* Tendances */
+        .trends-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
         .trends-section h2 {
             font-family: 'Cinzel', serif;
-            font-size: 16px;
-            margin-bottom: 12px;
+            font-size: 14px;
             letter-spacing: 0.5px;
+        }
+
+        .see-all {
+            color: var(--accent-orange);
+            font-size: 12px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .trends-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .trend-card {
+            height: 140px;
+            border-radius: 16px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .trend-1 { background: linear-gradient(135deg, #c2410c, #7c2d12); }
+        .trend-2 { background: linear-gradient(135deg, #0e7490, #164e63); }
+        .trend-3 { background: linear-gradient(135deg, #6b21a8, #3b0764); }
+
+        .trend-card span:first-child {
+            font-size: 16px;
+        }
+
+        .trend-card .trend-icon {
+            align-self: center;
+            background: rgba(255,255,255,0.2);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
         }
 
         /* Barre de navigation inférieure */
@@ -256,8 +295,8 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(11, 15, 25, 0.9);
-            backdrop-filter: blur(20px);
+            background: rgba(7, 9, 14, 0.95);
+            backdrop-filter: blur(25px);
             border-top: 1px solid var(--border-glass);
             display: flex;
             justify-content: space-around;
@@ -272,16 +311,12 @@
             text-decoration: none;
             color: var(--text-muted);
             font-size: 10px;
-            font-weight: 600;
+            font-weight: 700;
             gap: 4px;
         }
 
         .nav-item.active {
             color: var(--accent-orange);
-        }
-
-        .nav-icon {
-            font-size: 18px;
         }
     </style>
 </head>
@@ -293,73 +328,65 @@
                 <div class="logo-icon">▶</div>
                 <h1 class="logo-text">Scan<span>flix</span></h1>
             </div>
+            <button class="header-install-btn">
+                <span>⬇</span> Installer
+            </button>
         </header>
 
-        <!-- Section Installation PWA -->
-        <section class="install-card">
-            <div class="install-info">
-                <span class="device-icon">📱</span>
-                <span class="install-title">INSTALLATION RAPIDE</span>
-            </div>
-            <button id="installBtn" class="install-btn">
-                <span class="pwa-badge">PWA</span> INSTALLATION RAPIDE
-            </button>
-        </section>
-
-        <!-- Section Détection de scène -->
+        <!-- Section Scan -->
         <section class="scan-section">
             <div class="scan-header">
-                <h2>Détecter une scène</h2>
+                <h2>DÉTECTER UNE SCÈNE</h2>
                 <p>Scannez une image ou décrivez la scène à la voix.</p>
             </div>
 
-            <!-- Barre de recherche / description vocale -->
-            <div class="voice-search-box">
-                <input type="text" placeholder="Décrivez la scène (ex: Rengoku vs...)">
-                <button class="mic-btn" aria-label="Recherche vocale">🎤</button>
+            <div class="drop-zone">
+                <span></span>
+                <div class="drop-content">
+                    <div class="drop-icon">🔲</div>
+                    <div class="drop-text">Déposez une capture d'écran</div>
+                </div>
             </div>
 
-            <!-- Boutons Galerie & Caméra (Design Futuriste & Couleurs associées) -->
+            <div class="search-bar-box">
+                <input type="text" placeholder="Ex : Rengoku vs Akaza...">
+                <button class="search-mic-btn">🎤</button>
+            </div>
+
             <div class="action-buttons-grid">
-                <button class="action-card gallery-card">
-                    <div class="icon-glow blue-glow">
-                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                    </div>
-                    <span>GALERIE</span>
-                </button>
-
-                <button class="action-card camera-card">
-                    <div class="icon-glow orange-glow">
-                        <svg viewBox="0 0 24 24" width="32" height="32" stroke="currentColor" stroke-width="1.5" fill="none"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                    </div>
-                    <span>CAMÉRA</span>
-                </button>
+                <button class="action-btn gallery-btn">📁 GALERIE</button>
+                <button class="action-btn camera-btn">📷 CAMÉRA</button>
             </div>
         </section>
 
-        <!-- Section Tendances -->
+        <!-- Tendances -->
         <section class="trends-section">
-            <h2>TENDANCES ACTUELLES</h2>
+            <div class="trends-header">
+                <h2>TENDANCES ACTUELLES</h2>
+                <a href="#" class="see-all">Voir tout</a>
+            </div>
+            <div class="trends-grid">
+                <div class="trend-card trend-1">
+                    <span>1</span>
+                    <div class="trend-icon">↓</div>
+                </div>
+                <div class="trend-card trend-2">
+                    <span>2</span>
+                    <div class="trend-icon">↓</div>
+                </div>
+                <div class="trend-card trend-3">
+                    <span>3</span>
+                    <div class="trend-icon">↓</div>
+                </div>
+            </div>
         </section>
 
-        <!-- Barre de navigation inférieure -->
+        <!-- Navigation -->
         <nav class="bottom-nav">
-            <a href="#" class="nav-item active">
-                <span class="nav-icon">🏠</span>
-                <span>ACCUEIL</span>
-            </a>
-            <a href="#" class="nav-item">
-                <span class="nav-icon">❤️</span>
-                <span>FAVORIS</span>
-            </a>
-            <a href="#" class="nav-item">
-                <span class="nav-icon">📚</span>
-                <span>BIBLIO</span>
-            </a>
-            <a href="#" class="nav-item">
-                <span class="nav-icon">👤</span>
-                <span>COMPTE</span>
-            </a>
+            <a href="#" class="nav-item active"><span>🏠</span> ACCUEIL</a>
+            <a href="#" class="nav-item"><span>❤️</span> FAVORIS</a>
+            <a href="#" class="nav-item"><span>📚</span> BIBLIO</a>
+            <a href="#" class="nav-item"><span>👤</span> COMPTE</a>
         </nav>
     </div>
 </body>
