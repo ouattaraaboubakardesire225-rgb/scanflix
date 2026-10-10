@@ -47,7 +47,7 @@
             padding: 20px 16px;
         }
 
-        /* En-tête Moderne */
+        /* En-tête */
         .app-header {
             display: flex;
             align-items: center;
@@ -99,7 +99,7 @@
         }
         .icon-btn:active { transform: scale(0.95); }
 
-        /* Barre de Recherche Flottante */
+        /* Barre de Recherche */
         .search-box {
             position: relative;
             margin-bottom: 24px;
@@ -133,7 +133,7 @@
             font-size: 16px;
         }
 
-        /* Carte de Scan Principale */
+        /* Scanner */
         .scanner-hero-card {
             background: linear-gradient(145deg, rgba(18, 24, 38, 0.9), rgba(10, 14, 23, 0.95));
             border: 1px solid rgba(229, 9, 20, 0.3);
@@ -197,7 +197,7 @@
             justify-content: center;
             gap: 10px;
             box-shadow: 0 10px 25px var(--accent-glow);
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s;
         }
         .main-scan-btn:active { transform: scale(0.97); }
 
@@ -266,7 +266,7 @@
         }
         .pay-btn-pro:active { transform: scale(0.97); }
 
-        /* Navigation Inférieure */
+        /* Dock de Navigation */
         .bottom-dock {
             position: fixed;
             bottom: 16px;
@@ -363,7 +363,7 @@
                 <div class="header-logo">🎬</div>
                 <span class="header-title">SCANFLIX</span>
             </div>
-            <button class="icon-btn" id="notifBtn">🔔</button>
+            <button class="icon-btn" id="notifBtn" aria-label="Notifications">🔔</button>
         </header>
 
         <!-- VUE ACCUEIL -->
@@ -380,7 +380,7 @@
                     <div style="font-size: 40px; opacity: 0.9;">📸</div>
                 </div>
                 <p style="font-size: 12px; color: var(--text-sub); line-height: 1.6; margin-bottom: 18px;">
-                    Importez une capture d'écran pour identifier, ouvrir dans l'application ou télécharger directement.
+                    Importez une capture d'écran pour identifier, ouvrir l'application ou télécharger directement.
                 </p>
                 <button class="main-scan-btn" id="btnTriggerScan">
                     ⚡ LANCER LE SCAN IA 🤖
@@ -418,7 +418,7 @@
             </div>
 
             <button class="pay-btn-pro" onclick="openPayDunyaGateway()">💳 S'abonner (1 000 FCFA / mois)</button>
-            <button class="sub-btn" style="width:100%; justify-content:center;" onclick="localStorage.removeItem('scanflix_history'); updateHistoryDisplay(); alert('Historique réinitialisé.');">Effacer l'historique</button>
+            <button class="sub-btn" style="width:100%; justify-content:center;" onclick="clearHistory()">Effacer l'historique</button>
         </div>
 
         <input type="file" id="galleryInput" accept="image/*" style="display: none;">
@@ -441,6 +441,7 @@
     </div>
 
     <script>
+        // Navigation sécurisée
         const navItems = document.querySelectorAll('.dock-item');
         const appViews = document.querySelectorAll('.app-view');
 
@@ -450,7 +451,12 @@
                 navItems.forEach(nav => nav.classList.remove('active'));
                 appViews.forEach(view => view.classList.remove('active-view'));
                 item.classList.add('active');
-                document.getElementById(item.getAttribute('data-target')).classList.add('active-view');
+                
+                const target = item.getAttribute('data-target');
+                const targetView = document.getElementById(target);
+                if (targetView) {
+                    targetView.classList.add('active-view');
+                }
                 updateHistoryDisplay();
                 updateFavoritesDisplay();
             });
@@ -461,7 +467,7 @@
         const modalBody = document.getElementById('modalBody');
 
         function closeModal() {
-            modal.style.display = 'none';
+            if (modal) modal.style.display = 'none';
         }
 
         function openAppOrWeb(appScheme, webUrl) {
@@ -476,14 +482,18 @@
 
         function triggerDownload(movieTitle) {
             alert("📥 Téléchargement direct initié pour : " + movieTitle);
-            let element = document.createElement('a');
-            let fileContent = "Scanflix - Fichier de téléchargement HD pour : " + movieTitle + "\nStatut : Téléchargé avec succès depuis l'application.";
-            let blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
-            element.href = URL.createObjectURL(blob);
-            element.download = movieTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase() + "_scanflix_hd.txt";
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
+            try {
+                let element = document.createElement('a');
+                let fileContent = "Scanflix - Fichier de téléchargement HD pour : " + movieTitle + "\nStatut : Téléchargé avec succès.";
+                let blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+                element.href = URL.createObjectURL(blob);
+                element.download = movieTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase() + "_scanflix_hd.txt";
+                document.body.appendChild(element);
+                element.click();
+                document.body.removeChild(element);
+            } catch(e) {
+                console.error(e);
+            }
         }
 
         const popularMoviesList = [
@@ -519,21 +529,29 @@
         }
 
         function isFavorite(title) {
-            let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
-            return favorites.some(fav => fav.title === title);
+            try {
+                let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
+                return favorites.some(fav => fav.title === title);
+            } catch(e) {
+                return false;
+            }
         }
 
         function toggleFavorite(title, ytId) {
-            let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
-            let index = favorites.findIndex(fav => fav.title === title);
-            if(index > -1) {
-                favorites.splice(index, 1);
-            } else {
-                favorites.push({ title: title, ytId: ytId });
+            try {
+                let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
+                let index = favorites.findIndex(fav => fav.title === title);
+                if(index > -1) {
+                    favorites.splice(index, 1);
+                } else {
+                    favorites.push({ title: title, ytId: ytId });
+                }
+                localStorage.setItem('scanflix_favorites', JSON.stringify(favorites));
+                updateFavoritesDisplay();
+                showResultCard(title, ytId);
+            } catch(e) {
+                alert("Erreur lors de la mise à jour des favoris.");
             }
-            localStorage.setItem('scanflix_favorites', JSON.stringify(favorites));
-            updateFavoritesDisplay();
-            showResultCard(title, ytId);
         }
 
         function showResultCard(movieTitle, ytId = null) {
@@ -541,28 +559,30 @@
             addToHistory(movieTitle);
             let isFav = isFavorite(movieTitle);
 
-            modalTitle.innerText = "✨ " + movieTitle;
-            modalBody.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <span style="color:var(--accent-gold); font-weight:700; font-size:11px;">✔ Scène identifiée avec succès</span>
-                    <button onclick="toggleFavorite('${movieTitle}', '${ytId}')" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px 12px; border-radius:10px; cursor:pointer; font-size:11px; font-weight:700;">
-                        ${isFav ? '❤️ Retirer' : '🤍 Favori'}
-                    </button>
-                </div>
+            if (modalTitle) modalTitle.innerText = "✨ " + movieTitle;
+            if (modalBody) {
+                modalBody.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <span style="color:var(--accent-gold); font-weight:700; font-size:11px;">✔ Scène identifiée avec succès</span>
+                        <button onclick="toggleFavorite('${movieTitle.replace(/'/g, "\\'")}', '${ytId}')" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px 12px; border-radius:10px; cursor:pointer; font-size:11px; font-weight:700;">
+                            ${isFav ? '❤️ Retirer' : '🤍 Favori'}
+                        </button>
+                    </div>
 
-                <div style="position:relative; width:100%; height:180px; margin-bottom:14px; background:#000; border-radius:16px; overflow:hidden; border: 1px solid rgba(255,255,255,0.1);">
-                    <iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1" style="width:100%; height:100%; border:none;" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                </div>
+                    <div style="position:relative; width:100%; height:180px; margin-bottom:14px; background:#000; border-radius:16px; overflow:hidden; border: 1px solid rgba(255,255,255,0.1);">
+                        <iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1" style="width:100%; height:100%; border:none;" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
 
-                <button onclick="triggerDownload('${movieTitle}')" class="download-btn">📥 Télécharger directement (1080p HD)</button>
+                    <button onclick="triggerDownload('${movieTitle.replace(/'/g, "\\'")}')" class="download-btn">📥 Télécharger directement (1080p HD)</button>
 
-                <p style="font-size: 11px; font-weight: 700; margin: 10px 0 8px 0; color: #fff; letter-spacing: 0.5px;">OUVRIR DANS L'APPLICATION :</p>
-                <button onclick="openAppOrWeb('nflx://', 'https://www.netflix.com')" class="stream-btn-net">🔴 Ouvrir l'application Netflix</button>
-                <button onclick="openAppOrWeb('primevideo://', 'https://www.primevideo.com')" class="stream-btn-prime">📦 Ouvrir l'application Prime Video</button>
-                <button onclick="openAppOrWeb('canalplus://', 'https://www.canalplus.com')" class="stream-btn-canal">📺 Ouvrir l'application Canal+ MyCanal</button>
-                <button onclick="openAppOrWeb('moviebox://', 'https://www.google.com/search?q=MovieBox+${encodeURIComponent(movieTitle)}')" class="stream-btn-box">🍿 Ouvrir l'application MovieBox</button>
-            `;
-            modal.style.display = 'flex';
+                    <p style="font-size: 11px; font-weight: 700; margin: 10px 0 8px 0; color: #fff; letter-spacing: 0.5px;">OUVRIR DANS L'APPLICATION :</p>
+                    <button onclick="openAppOrWeb('nflx://', 'https://www.netflix.com')" class="stream-btn-net">🔴 Ouvrir l'application Netflix</button>
+                    <button onclick="openAppOrWeb('primevideo://', 'https://www.primevideo.com')" class="stream-btn-prime">📦 Ouvrir l'application Prime Video</button>
+                    <button onclick="openAppOrWeb('canalplus://', 'https://www.canalplus.com')" class="stream-btn-canal">📺 Ouvrir l'application Canal+ MyCanal</button>
+                    <button onclick="openAppOrWeb('moviebox://', 'https://www.google.com/search?q=MovieBox+${encodeURIComponent(movieTitle)}')" class="stream-btn-box">🍿 Ouvrir l'application MovieBox</button>
+                `;
+            }
+            if (modal) modal.style.display = 'flex';
         }
 
         function handleSearchSubmit(e) {
@@ -576,14 +596,16 @@
         }
 
         function processAiScan(file = null) {
-            modalTitle.innerText = "🧠 Analyse IA en cours...";
-            modalBody.innerHTML = `
-                <div style="text-align:center; padding: 30px;">
-                    <div style="font-size: 34px; margin-bottom: 12px;">⚡</div>
-                    <p style="font-size: 13px; color: #fff;">Analyse des visages et de la composition...</p>
-                </div>
-            `;
-            modal.style.display = 'flex';
+            if (modalTitle) modalTitle.innerText = "🧠 Analyse IA en cours...";
+            if (modalBody) {
+                modalBody.innerHTML = `
+                    <div style="text-align:center; padding: 30px;">
+                        <div style="font-size: 34px; margin-bottom: 12px;">⚡</div>
+                        <p style="font-size: 13px; color: #fff;">Analyse des visages et de la composition...</p>
+                    </div>
+                `;
+            }
+            if (modal) modal.style.display = 'flex';
 
             setTimeout(() => {
                 let chosenMovie;
@@ -599,56 +621,83 @@
             }, 1800);
         }
 
-        document.getElementById('btnTriggerScan').addEventListener('click', () => processAiScan());
-        document.getElementById('btnGallery').addEventListener('click', () => document.getElementById('galleryInput').click());
+        const scanBtn = document.getElementById('btnTriggerScan');
+        if (scanBtn) scanBtn.addEventListener('click', () => processAiScan());
 
-        document.getElementById('galleryInput').addEventListener('change', (e) => {
-            if(e.target.files.length > 0) {
-                processAiScan(e.target.files[0]);
-                e.target.value = '';
-            }
-        });
+        const galleryBtn = document.getElementById('btnGallery');
+        const galleryInput = document.getElementById('galleryInput');
+        if (galleryBtn && galleryInput) {
+            galleryBtn.addEventListener('click', () => galleryInput.click());
+            galleryInput.addEventListener('change', (e) => {
+                if(e.target.files && e.target.files.length > 0) {
+                    processAiScan(e.target.files[0]);
+                    e.target.value = '';
+                }
+            });
+        }
 
         function addToHistory(title) {
-            let history = JSON.parse(localStorage.getItem('scanflix_history') || '[]');
-            if(!history.some(item => item.title === title)) {
-                history.unshift({ title: title, date: new Date().toLocaleDateString() });
-                if(history.length > 20) history.pop();
-                localStorage.setItem('scanflix_history', JSON.stringify(history));
+            try {
+                let history = JSON.parse(localStorage.getItem('scanflix_history') || '[]');
+                if(!history.some(item => item.title === title)) {
+                    history.unshift({ title: title, date: new Date().toLocaleDateString() });
+                    if(history.length > 20) history.pop();
+                    localStorage.setItem('scanflix_history', JSON.stringify(history));
+                }
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
+        function clearHistory() {
+            try {
+                localStorage.removeItem('scanflix_history');
+                updateHistoryDisplay();
+                alert('Historique réinitialisé.');
+            } catch(e) {
+                console.error(e);
             }
         }
 
         function updateHistoryDisplay() {
-            let history = JSON.parse(localStorage.getItem('scanflix_history') || '[]');
-            const historyList = document.getElementById('historyList');
-            if(historyList) {
-                if(history.length === 0) {
-                    historyList.innerHTML = '<p style="color: var(--text-sub); font-size: 13px;">Vos derniers scans apparaîtront ici.</p>';
-                } else {
-                    historyList.innerHTML = history.map(item => `
-                        <div style="background:var(--bg-surface); border:1px solid rgba(255,255,255,0.08); padding:14px; border-radius:16px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; font-size:12px; backdrop-filter:blur(10px);">
-                            <span style="font-weight:600;">🎬 ${item.title}</span>
-                            <span style="color:var(--text-sub); font-size:11px;">${item.date}</span>
-                        </div>
-                    `).join('');
+            try {
+                let history = JSON.parse(localStorage.getItem('scanflix_history') || '[]');
+                const historyList = document.getElementById('historyList');
+                if(historyList) {
+                    if(history.length === 0) {
+                        historyList.innerHTML = '<p style="color: var(--text-sub); font-size: 13px;">Vos derniers scans apparaîtront ici.</p>';
+                    } else {
+                        historyList.innerHTML = history.map(item => `
+                            <div style="background:var(--bg-surface); border:1px solid rgba(255,255,255,0.08); padding:14px; border-radius:16px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; font-size:12px; backdrop-filter:blur(10px);">
+                                <span style="font-weight:600;">🎬 ${item.title}</span>
+                                <span style="color:var(--text-sub); font-size:11px;">${item.date}</span>
+                            </div>
+                        `).join('');
+                    }
                 }
+            } catch(e) {
+                console.error(e);
             }
         }
 
         function updateFavoritesDisplay() {
-            let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
-            const favoritesList = document.getElementById('favoritesList');
-            if(favoritesList) {
-                if(favorites.length === 0) {
-                    favoritesList.innerHTML = '<p style="color: var(--text-sub); font-size: 13px;">Aucun favori enregistré pour le moment.</p>';
-                } else {
-                    favoritesList.innerHTML = favorites.map(fav => `
-                        <div onclick="showResultCard('${fav.title}', '${fav.ytId}')" style="background:var(--bg-surface); border:1px solid rgba(255,255,255,0.08); padding:16px; border-radius:16px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; backdrop-filter:blur(10px);">
-                            <span style="font-weight:700; font-size:13px;">❤️ ${fav.title}</span>
-                            <span style="font-size:11px; color:var(--accent-gold); font-weight:700;">Regarder ▶</span>
-                        </div>
-                    `).join('');
+            try {
+                let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
+                const favoritesList = document.getElementById('favoritesList');
+                if(favoritesList) {
+                    if(favorites.length === 0) {
+                        favoritesList.innerHTML = '<p style="color: var(--text-sub); font-size: 13px;">Aucun favori enregistré pour le moment.</p>';
+                    } else {
+                        favoritesList.innerHTML = favorites.map(fav => `
+                            <div onclick="showResultCard('${fav.title.replace(/'/g, "\\'")}', '${fav.ytId}')" style="background:var(--bg-surface); border:1px solid rgba(255,255,255,0.08); padding:16px; border-radius:16px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; backdrop-filter:blur(10px);">
+                                <span style="font-weight:700; font-size:13px;">❤️ ${fav.title}</span>
+                                <span style="font-size:11px; color:var(--accent-gold); font-weight:700;">Regarder ▶</span>
+                            </div>
+                        `).join('');
+                    }
                 }
+            } catch(e) {
+                console.error(e);
             }
         }
 
@@ -656,18 +705,27 @@
             window.open('https://pydu.me/Cou44H', '_blank');
         }
 
-        document.getElementById('notifBtn').addEventListener('click', () => {
-            modalTitle.innerText = "Notifications";
-            modalBody.innerHTML = "• Votre essai gratuit de 24h est actif.<br>• Passez à l'abonnement illimité pour seulement 1 000 FCFA.";
-            modal.style.display = 'flex';
-        });
+        const notifBtn = document.getElementById('notifBtn');
+        if (notifBtn) {
+            notifBtn.addEventListener('click', () => {
+                if (modalTitle) modalTitle.innerText = "Notifications";
+                if (modalBody) modalBody.innerHTML = "• Votre essai gratuit de 24h est actif.<br>• Passez à l'abonnement illimité pour seulement 1 000 FCFA.";
+                if (modal) modal.style.display = 'flex';
+            });
+        }
 
-        document.getElementById('btnHistoryTab').addEventListener('click', () => {
-            document.querySelector('[data-target="view-biblio"]').click();
-        });
+        const historyTabBtn = document.getElementById('btnHistoryTab');
+        if (historyTabBtn) {
+            historyTabBtn.addEventListener('click', () => {
+                const biblioTab = document.querySelector('[data-target="view-biblio"]');
+                if (biblioTab) biblioTab.click();
+            });
+        }
 
+        // Initialisation propre au chargement
         updateHistoryDisplay();
         updateFavoritesDisplay();
     </script>
 </body>
-</html>￼Enter
+</html>
+
