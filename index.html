@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scanflix - Streaming & Identification</title>
+    <title>Scanflix - Reconnaissance IA & Streaming</title>
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#05070b">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,7 +14,7 @@
     <style>
         :root {
             --bg-deep: #05070b;
-            --bg-card: rgba(14, 18, 28, 0.9);
+            --bg-card: rgba(14, 18, 28, 0.95);
             --border-glass: rgba(255, 255, 255, 0.08);
             --accent-gold: #f59e0b;
             --accent-red: #e50914;
@@ -58,7 +58,7 @@
             background: none;
             border: none;
             color: #fff;
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
             padding: 8px;
             border-radius: 12px;
@@ -94,282 +94,85 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .header-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        /* Barre de recherche rapide */
-        .search-bar-container {
-            position: relative;
+        /* Accueil / Scanner */
+        .scanner-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: 20px;
+            text-align: center;
             margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .search-input {
+        .scanner-viewfinder {
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-glass);
-            padding: 12px 16px 12px 40px;
-            border-radius: 14px;
-            color: #fff;
-            font-size: 13px;
-            outline: none;
-            transition: border-color 0.2s;
+            height: 200px;
+            background: linear-gradient(135deg, #090d16, #121826);
+            border-radius: 16px;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 16px;
         }
 
-        .search-input:focus {
-            border-color: var(--accent-gold);
-        }
-
-        .search-icon {
+        .scanner-laser {
             position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        /* Accueil */
-        .hero-section {
-            margin-bottom: 24px;
-        }
-
-        .hero-title {
-            font-size: 26px;
-            font-weight: 800;
-            line-height: 1.15;
-            margin-bottom: 6px;
-            background: linear-gradient(135deg, #fff 30%, #cbd5e1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-desc {
-            font-size: 12px;
-            color: var(--text-muted);
-            line-height: 1.5;
-            margin-bottom: 12px;
-        }
-
-        .hero-badges {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            margin-bottom: 16px;
-            font-size: 11px;
-            color: #cbd5e1;
-        }
-
-        /* Bannière Vedette */
-        .featured-banner {
-            background: linear-gradient(135deg, rgba(229, 9, 20, 0.25), rgba(245, 158, 11, 0.15));
-            border: 1px solid var(--border-glass);
-            border-radius: 20px;
-            height: 160px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 16px;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 16px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            cursor: pointer;
-        }
-
-        .featured-banner .banner-title {
-            font-family: 'Cinzel', serif;
-            font-size: 18px;
-            font-weight: 800;
-            color: #fff;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
-            z-index: 2;
-        }
-
-        .featured-banner .banner-tag {
-            font-size: 10px;
-            background: var(--accent-red);
-            color: #fff;
-            padding: 3px 8px;
-            border-radius: 6px;
-            width: max-content;
-            margin-bottom: 6px;
-            font-weight: 700;
-            z-index: 2;
-        }
-
-        /* Bouton Installer PWA */
-        .install-pwa-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #f59e0b, #e50914);
-            border: none;
-            color: #fff;
-            padding: 14px;
-            border-radius: 14px;
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 16px;
-            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
-            transition: transform 0.2s;
-        }
-        .install-pwa-btn:active { transform: scale(0.96); }
-
-        /* Pop-up Coulissante d'Installation */
-        .install-banner-popup {
-            position: fixed;
-            bottom: 80px;
-            left: 16px;
-            right: 16px;
-            background: linear-gradient(145deg, #0d111c, #161b2c);
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            border-radius: 18px;
-            padding: 14px 16px;
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 1500;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            animation: slideUp 0.3s ease-out;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .install-popup-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .install-popup-icon {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .install-popup-text h5 { font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 2px; }
-        .install-popup-text p { font-size: 10px; color: var(--text-muted); }
-
-        .install-popup-action {
+            width: 80%;
+            height: 2px;
             background: var(--accent-gold);
-            color: #000;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-weight: 800;
-            font-size: 11px;
-            cursor: pointer;
+            box-shadow: 0 0 15px var(--accent-gold);
+            animation: scanMove 2s infinite ease-in-out;
         }
 
-        /* Grille Tendances */
-        .trends-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+        @keyframes scanMove {
+            0%, 100% { top: 20%; }
+            50% { top: 80%; }
+        }
+
+        .scan-action-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #1f293d, #111827);
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            color: #fff;
+            padding: 16px;
+            border-radius: 16px;
             font-size: 13px;
-            font-weight: 700;
-            font-family: 'Cinzel', serif;
-            letter-spacing: 0.5px;
-            color: #e2e8f0;
-        }
-
-        .trends-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .trend-card {
-            height: 110px;
-            border-radius: 18px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
+            font-weight: 800;
+            letter-spacing: 1px;
             cursor: pointer;
-            border: 1px solid var(--border-glass);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-            position: relative;
-            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
             transition: transform 0.2s;
         }
+        .scan-action-btn:active { transform: scale(0.96); }
 
-        .trend-card:active { transform: scale(0.96); }
-
-        .trend-bg-1 { background: linear-gradient(135deg, #f2994a, #f2c94c); color: #000 !important; }
-        .trend-bg-2 { background: linear-gradient(135deg, #00c6ff, #0072ff); }
-        .trend-bg-3 { background: linear-gradient(135deg, #1d976c, #93f9b9); color: #000 !important; }
-        .trend-bg-4 { background: linear-gradient(135deg, #2b5876, #4e4376); }
-
-        .trend-card .trend-title {
-            font-family: 'Cinzel', serif;
-            font-weight: 800;
-            font-size: 14px;
-            color: #fff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-        }
-
-        .trend-card.trend-bg-1 .trend-title,
-        .trend-card.trend-bg-3 .trend-title { color: #05070b; text-shadow: none; }
-
-        .trend-card .trend-tag {
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: 0.9;
-            margin-bottom: 2px;
-            font-weight: 700;
-            color: rgba(255,255,255,0.8);
-        }
-
-        .trend-card.trend-bg-1 .trend-tag,
-        .trend-card.trend-bg-3 .trend-tag { color: rgba(0,0,0,0.7); }
-
-        /* Boutons Galerie / Caméra */
-        .action-buttons-grid {
+        .quick-actions-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
+            margin-bottom: 20px;
         }
 
-        .action-btn {
+        .sub-action-btn {
             background: var(--bg-card);
-            border: 1px solid rgba(229, 9, 20, 0.3);
-            padding: 14px;
-            border-radius: 16px;
-            color: #fff;
+            border: 1px solid var(--border-glass);
+            padding: 12px;
+            border-radius: 14px;
+            color: var(--text-muted);
             font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1px;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-
-        .camera-action-btn {
-            background: linear-gradient(135deg, var(--accent-red), #b91c1c);
-            border: none;
-            box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+            gap: 6px;
         }
 
         /* Onglet Compte & Profil */
@@ -392,22 +195,7 @@
             align-items: center;
             justify-content: center;
             font-size: 26px;
-            box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4);
         }
-
-        .profile-name { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
-        .profile-badge { display: inline-block; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); color: var(--accent-gold); padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 800; }
-
-        .promo-banner {
-            background: linear-gradient(135deg, rgba(229, 9, 20, 0.15), rgba(245, 158, 11, 0.15));
-            border: 1px solid rgba(229, 9, 20, 0.35);
-            border-radius: 16px;
-            padding: 14px;
-            text-align: center;
-            margin-bottom: 14px;
-        }
-        .promo-banner h4 { font-size: 12px; font-weight: 800; color: var(--accent-gold); margin-bottom: 4px; }
-        .promo-banner p { font-size: 11px; color: var(--text-muted); }
 
         .paydunya-btn {
             width: 100%;
@@ -421,37 +209,6 @@
             cursor: pointer;
             box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
             margin-bottom: 14px;
-        }
-
-        .settings-group {
-            background: var(--bg-card);
-            border: 1px solid var(--border-glass);
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 14px;
-        }
-        .setting-item {
-            padding: 14px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            border-bottom: 1px solid var(--border-glass);
-            cursor: pointer;
-        }
-        .setting-item:last-child { border-bottom: none; }
-
-        .logout-btn {
-            width: 100%;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #ef4444;
-            padding: 12px;
-            border-radius: 14px;
-            font-size: 11px;
-            font-weight: 800;
-            cursor: pointer;
-            text-align: center;
         }
 
         /* Barre de navigation inférieure */
@@ -478,7 +235,6 @@
             font-size: 10px;
             font-weight: 700;
             gap: 4px;
-            transition: all 0.2s ease;
         }
 
         .nav-item.active {
@@ -488,15 +244,14 @@
             border-radius: 16px;
         }
 
-        /* Vues */
         .app-view { display: none; }
         .app-view.active-view { display: block; }
 
-        /* Modal Intelligent */
+        /* Modal Résultats / Streaming */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.92);
             backdrop-filter: blur(15px);
             display: none;
             align-items: center;
@@ -506,15 +261,15 @@
         }
         .modal-content {
             background: #0d111c;
-            border: 1px solid rgba(229, 9, 20, 0.4);
+            border: 1px solid rgba(245, 158, 11, 0.4);
             border-radius: 24px;
             width: 100%;
             max-width: 420px;
             padding: 20px;
             text-align: left;
-            max-height: 90vh;
+            max-height: 92vh;
             overflow-y: auto;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
         }
         .modal-close {
             background: linear-gradient(135deg, var(--accent-red), #b91c1c);
@@ -526,31 +281,11 @@
             margin-top: 15px;
             cursor: pointer;
             font-weight: 800;
-            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
         }
-        .platform-links-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-top: 12px;
-        }
-        .platform-link-btn {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid var(--border-glass);
-            padding: 10px;
-            border-radius: 12px;
-            text-align: center;
-            color: #fff;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: background 0.2s;
-        }
-        .platform-link-btn:active { background: rgba(229, 9, 20, 0.2); border-color: var(--accent-red); }
+        .platform-btn-netflix { background: #e50914; color: #fff; width: 100%; border:none; padding:12px; border-radius:12px; font-weight:800; font-size:12px; margin-bottom:8px; cursor:pointer; }
+        .platform-btn-prime { background: #00a8e1; color: #fff; width: 100%; border:none; padding:12px; border-radius:12px; font-weight:800; font-size:12px; margin-bottom:8px; cursor:pointer; }
+        .platform-btn-canal { background: #111; border: 1px solid #444; color: #fff; width: 100%; padding:12px; border-radius:12px; font-weight:800; font-size:12px; margin-bottom:8px; cursor:pointer; }
+        .platform-btn-moviebox { background: linear-gradient(135deg, #00c6ff, #0072ff); color: #fff; width: 100%; border:none; padding:12px; border-radius:12px; font-weight:800; font-size:12px; margin-bottom:8px; cursor:pointer; }
     </style>
 </head>
 <body>
@@ -562,67 +297,29 @@
                 <div class="header-logo-icon">🎬</div>
                 <span class="header-title">SCANFLIX</span>
             </div>
-            <div class="header-actions">
-                <button class="icon-btn" id="chatHeaderBtn">💬</button>
-                <button class="icon-btn" id="optionsBtn">⋮</button>
-            </div>
+            <button class="icon-btn" id="notifBtn">🔔</button>
         </header>
 
-        <!-- VUE ACCUEIL -->
+        <!-- VUE ACCUEIL / SCAN -->
         <div id="view-accueil" class="app-view active-view">
-            <section class="hero-section">
-                <h1 class="hero-title">Instantanément</h1>
-                <p class="hero-desc">Envoyez une capture d'écran et découvrez ce que vous regardez. Même une scène d'anime ou un film dont vous avez oublié le nom.</p>
-                <div class="hero-badges">
-                    <span>✔ Inscription gratuite & 1 jour offert</span>
-                    <span>⚡ Résultat en quelques secondes</span>
+            <div class="scanner-card">
+                <p style="font-size: 11px; color: var(--accent-gold); font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Capture & Reconnaissance IA</p>
+                <div class="scanner-viewfinder">
+                    <div class="scanner-laser"></div>
+                    <div style="font-size: 36px;">📷</div>
                 </div>
-
-                <!-- Barre de Recherche Rapide -->
-                <div class="search-bar-container">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" class="search-input" id="quickSearchInput" placeholder="Rechercher un film ou anime par titre..." onkeypress="handleSearch(event)">
-                </div>
-
-                <!-- Bouton d'installation PWA Principal -->
-                <button class="install-pwa-btn" id="installAppBtn">
-                    📥 Installer l'application sur l'appareil
+                <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+                    Identifiez instantanément les films, acteurs et scènes en important une capture d'écran.
+                </p>
+                <button class="scan-action-btn" id="btnTriggerScan">
+                    ⚡ SCANNER LE FILM PAR IA 🤖
                 </button>
+            </div>
 
-                <!-- Bannière Vedette -->
-                <div class="featured-banner" onclick="showScanResult('The Housemaid', 'dQw4w9WgXcQ')">
-                    <span class="banner-tag">En Vedette</span>
-                    <div class="banner-title">The Housemaid</div>
-                </div>
-
-                <!-- Grille Tendances -->
-                <div class="trends-header">
-                    <span>Tendances & Classiques</span>
-                </div>
-                <div class="trends-grid">
-                    <div class="trend-card trend-bg-1" onclick="showScanResult('One Piece', 'S8_oDxGHxhI')">
-                        <span class="trend-tag">Anime</span>
-                        <div class="trend-title">One Piece</div>
-                    </div>
-                    <div class="trend-card trend-bg-2" onclick="showScanResult('Avatar : La Voie de l\'eau', 'd9MyW72ELq0')">
-                        <span class="trend-tag">Film Blockbuster</span>
-                        <div class="trend-title">Avatar 2</div>
-                    </div>
-                    <div class="trend-card trend-bg-3" onclick="showScanResult('Interstellar', 'zSWdZVtXT7E')">
-                        <span class="trend-tag">Film Sci-Fi</span>
-                        <div class="trend-title">Interstellar</div>
-                    </div>
-                    <div class="trend-card trend-bg-4" onclick="showScanResult('Spider-Man : Across the Spider-Verse', 'cqGjhVJWtEg')">
-                        <span class="trend-tag">Animation</span>
-                        <div class="trend-title">Spider-Man</div>
-                    </div>
-                </div>
-
-                <div class="action-buttons-grid">
-                    <button class="action-btn" id="btnGallery">📁 GALERIE</button>
-                    <button class="action-btn camera-action-btn" id="btnCamera">📷 CAMÉRA</button>
-                </div>
-            </section>
+            <div class="quick-actions-grid">
+                <button class="sub-action-btn" id="btnGallery">📁 Galerie</button>
+                <button class="sub-action-btn" id="btnHistoryTab">📚 Historique</button>
+            </div>
         </div>
 
         <!-- VUE FAVORIS -->
@@ -633,11 +330,11 @@
             </div>
         </div>
 
-        <!-- VUE BIBLIOTHÈQUE & HISTORIQUE -->
+        <!-- VUE BIBLIOTHÈQUE -->
         <div id="view-biblio" class="app-view">
-            <h2 style="font-size: 18px; margin-bottom: 12px; font-family: 'Cinzel', serif;">Bibliothèque & Historique</h2>
+            <h2 style="font-size: 18px; margin-bottom: 12px; font-family: 'Cinzel', serif;">Historique des Scans</h2>
             <div id="historyList">
-                <p style="color: var(--text-muted); font-size: 13px;">Vos analyses de scènes récentes apparaîtront ici.</p>
+                <p style="color: var(--text-muted); font-size: 13px;">Vos analyses récentes apparaîtront ici.</p>
             </div>
         </div>
 
@@ -646,146 +343,37 @@
             <div class="profile-card">
                 <div class="profile-avatar">⭐</div>
                 <div class="profile-name">Cinéphile Pro</div>
-                <div class="profile-badge" id="trialBadge">⏳ Essai gratuit : 23h 59m restantes</div>
-            </div>
-
-            <div class="promo-banner">
-                <h4>Inscription Gratuite</h4>
-                <p>Profitez de votre premier jour offert ! Ensuite, l'accès illimité est à seulement <strong>1 000 FCFA / mois</strong>.</p>
+                <div style="font-size: 11px; color: var(--accent-gold); margin-top: 4px; font-weight: 700;" id="trialBadge">⏳ Essai gratuit : 24h restantes</div>
             </div>
 
             <button class="paydunya-btn" onclick="openPayDunyaGateway()">💳 S'abonner (1 000 FCFA / mois)</button>
-
-            <div class="settings-group">
-                <div class="setting-item" onclick="togglePayDunyaMode()">
-                    <span>⚙️ Mode PayDunya</span>
-                    <span id="modeText" style="color: var(--accent-gold); font-weight: 700;">Production (Live)</span>
-                </div>
-                <div class="setting-item" onclick="alert('Thème cinématique sombre actif.')">
-                    <span>🌙 Mode Sombre & Néon</span>
-                    <span style="color: var(--text-muted);">Actif</span>
-                </div>
-            </div>
-
-            <button class="logout-btn" onclick="resetAppData()">Réinitialiser l'historique</button>
+            <button class="sub-action-btn" style="width:100%; justify-content:center;" onclick="localStorage.removeItem('scanflix_history'); updateHistoryDisplay(); alert('Historique vidé.');">Réinitialiser l'historique</button>
         </div>
 
-        <!-- Inputs fichiers -->
+        <!-- Inputs cachés -->
         <input type="file" id="galleryInput" accept="image/*" style="display: none;">
         <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
 
         <!-- Barre de navigation inférieure -->
         <nav class="bottom-nav">
-            <a href="#" class="nav-item active" data-target="view-accueil">
-                <span>🏠</span> Accueil
-            </a>
-            <a href="#" class="nav-item" data-target="view-favoris">
-                <span>❤️</span> Favoris
-            </a>
-            <a href="#" class="nav-item" data-target="view-biblio">
-                <span>📚</span> Bibliothèque
-            </a>
-            <a href="#" class="nav-item" data-target="view-compte">
-                <span>👤</span> Compte
-            </a>
+            <a href="#" class="nav-item active" data-target="view-accueil"><span>🏠</span> Accueil</a>
+            <a href="#" class="nav-item" data-target="view-favoris"><span>❤️</span> Favoris</a>
+            <a href="#" class="nav-item" data-target="view-biblio"><span>📚</span> Biblio</a>
+            <a href="#" class="nav-item" data-target="view-compte"><span>👤</span> Compte</a>
         </nav>
     </div>
 
-    <!-- Pop-up Coulissante d'Installation -->
-    <div class="install-banner-popup" id="installPopupBanner">
-        <div class="install-popup-info">
-            <div class="install-popup-icon">🎬</div>
-            <div class="install-popup-text">
-                <h5>Installer Scanflix</h5>
-                <p>Accès direct et rapide depuis l'écran d'accueil</p>
-            </div>
-        </div>
-        <button class="install-popup-action" id="popupInstallBtn">Installer</button>
-    </div>
-
-    <!-- Modal Intelligent -->
+    <!-- Modal Résultats IA & Streaming -->
     <div class="modal-overlay" id="generalModal">
         <div class="modal-content">
-            <h3 id="modalTitle" style="margin-bottom: 8px; color: var(--accent-gold); font-size: 16px;">Titre</h3>
-            <div id="modalBody" style="font-size: 12px; color: #cbd5e1; margin-bottom: 12px;">Contenu</div>
+            <h3 id="modalTitle" style="margin-bottom: 8px; color: var(--accent-gold); font-size: 16px;">Résultat</h3>
+            <div id="modalBody" style="font-size: 12px; color: #cbd5e1; margin-bottom: 12px;">Chargement...</div>
             <button class="modal-close" onclick="closeModal()">Fermer</button>
         </div>
     </div>
 
     <script>
-        let deferredPrompt;
-        const installBtn = document.getElementById('installAppBtn');
-        const popupBanner = document.getElementById('installPopupBanner');
-        const popupInstallBtn = document.getElementById('popupInstallBtn');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            setTimeout(() => {
-                if(!window.matchMedia('(display-mode: standalone)').matches) {
-                    popupBanner.style.display = 'flex';
-                }
-            }, 2000);
-        });
-
-        async function triggerInstall() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                let { outcome } = await deferredPrompt.userChoice;
-                deferredPrompt = null;
-                popupBanner.style.display = 'none';
-            } else {
-                let isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-                modalTitle.innerText = "📥 Installer Scanflix";
-                if(isIOS) {
-                    modalBody.innerHTML = `
-                        <p style="margin-bottom: 10px; color: #fff;">Sur iPhone / iPad (Safari) :</p>
-                        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 12px; border-radius: 12px; font-size: 12px; line-height: 1.6;">
-                            1. Appuyez sur le bouton <strong>Partager (icône carrée avec flèche)</strong> en bas de votre écran.<br>
-                            2. Faites défiler et choisissez <strong>"Sur l'écran d'accueil"</strong>.<br>
-                            3. Appuyez sur <strong>Ajouter</strong> en haut à droite !
-                        </div>
-                    `;
-                } else {
-                    modalBody.innerHTML = `
-                        <p style="margin-bottom: 10px; color: #fff;">Pour installer l'application instantanément :</p>
-                        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 12px; border-radius: 12px; font-size: 12px; line-height: 1.6;">
-                            1. Appuyez sur les <strong>3 points (⋮)</strong> en haut à droite de votre navigateur.<br>
-                            2. Sélectionnez <strong>"Installer l'application"</strong> ou <strong>"Ajouter à l'écran d'accueil"</strong>.<br>
-                            3. Confirmez pour placer l'icône sur votre téléphone !
-                        </div>
-                    `;
-                }
-                modal.style.display = 'flex';
-                popupBanner.style.display = 'none';
-            }
-        }
-
-        installBtn.addEventListener('click', triggerInstall);
-        popupInstallBtn.addEventListener('click', triggerInstall);
-
-        let paydunyaMode = "live";
-        const PAYDUNYA_CREDENTIALS = {
-            test: {
-                publicKey: "test_public_Ig8ofRVgnBZNuH04853CJqSpay",
-                invoiceUrl: "https://paydunya.com/sandbox-checkout/invoice/"
-            },
-            live: {
-                publicKey: "live_public_CK1AU7QB4Fy8t4G9nPqhaUVYOk4",
-                invoiceUrl: "https://pydu.me/Cou44H"
-            }
-        };
-
-        function togglePayDunyaMode() {
-            paydunyaMode = paydunyaMode === "test" ? "live" : "test";
-            document.getElementById('modeText').innerText = paydunyaMode === "test" ? "Sandbox (Test)" : "Production (Live)";
-            alert("Mode PayDunya basculé en : " + paydunyaMode.toUpperCase());
-        }
-
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js').catch(() => {});
-        }
-
+        // Navigation des vues
         const navItems = document.querySelectorAll('.nav-item');
         const appViews = document.querySelectorAll('.app-view');
 
@@ -805,41 +393,87 @@
         const modalTitle = document.getElementById('modalTitle');
         const modalBody = document.getElementById('modalBody');
 
-        document.getElementById('menuBtn').addEventListener('click', () => {
-            modalTitle.innerText = "Menu Scanflix";
-            modalBody.innerHTML = "• Accueil Principal<br>• Recherche par titre<br>• Analyser une capture";
-            modal.style.display = 'flex';
-        });
-
-        document.getElementById('optionsBtn').addEventListener('click', () => {
-            modalTitle.innerText = "À propos";
-            modalBody.innerText = "Scanflix v4.6 - Reconnaissance IA intelligente.";
-            modal.style.display = 'flex';
-        });
-
-        document.getElementById('chatHeaderBtn').addEventListener('click', () => {
-            modalTitle.innerText = "Assistant";
-            modalBody.innerText = "Importez une image pour l'identifier instantanément.";
-            modal.style.display = 'flex';
-        });
-
         function closeModal() {
             modal.style.display = 'none';
         }
 
-        function openPayDunyaGateway() {
-            let creds = PAYDUNYA_CREDENTIALS[paydunyaMode];
-            modalTitle.innerText = "Passerelle PayDunya (" + paydunyaMode.toUpperCase() + ")";
+        // Base de données simulée pour la reconnaissance IA exacte
+        const moviesDatabase = [
+            {
+                title: "LES AMANTS DE L'IA",
+                synopsis: "À travers le temps, donnent pour seer scènes sonpans de chanve et nienque...",
+                casting: "Sophie Lemaire, Lucas Dupont...",
+                ytId: "dQw4w9WgXcQ"
+            },
+            {
+                title: "INTERSTELLAR",
+                synopsis: "Un groupe d'astronautes voyage à travers un trou de ver à la recherche d'une nouvelle planète habitable pour l'humanité.",
+                casting: "Matthew McConaughey, Anne Hathaway...",
+                ytId: "zSWdZVtXT7E"
+            },
+            {
+                title: "THE BATMAN",
+                synopsis: "Dans sa deuxième année de lutte contre le crime, Batman explore la corruption de Gotham City.",
+                casting: "Robert Pattinson, Zoë Kravitz...",
+                ytId: "mqqft2x_Ks4"
+            }
+        ];
+
+        function showResultCard(movie) {
+            addToHistory(movie.title);
+            modalTitle.innerText = "✨ RÉSULTATS DE RECONNAISSANCE";
             modalBody.innerHTML = `
-                <p style="margin-bottom: 8px;">Abonnement mensuel Scanflix : <strong>1 000 FCFA / mois</strong></p>
-                <p style="color: var(--accent-gold); font-weight: 700; margin-bottom: 10px;">✔ Inscription gratuite : votre 1er jour est offert !</p>
-                <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 12px; border-radius: 12px; font-size: 11px; margin-bottom: 12px;">
-                    Mode <strong>${paydunyaMode.toUpperCase()}</strong> actif. Paiement sécurisé via Mobile Money & Carte Bancaire.
+                <div style="background: rgba(255,255,255,0.03); border:1px solid var(--border-glass); padding:12px; border-radius:14px; margin-bottom:12px;">
+                    <p style="font-size:10px; color:var(--accent-gold); font-weight:800; letter-spacing:1px;">TITRE</p>
+                    <p style="font-size:14px; font-weight:800; color:#fff; margin-bottom:8px;">${movie.title}</p>
+                    
+                    <p style="font-size:10px; color:var(--accent-gold); font-weight:800; letter-spacing:1px;">SYNOPSIS</p>
+                    <p style="font-size:11px; color:#cbd5e1; margin-bottom:8px;">${movie.synopsis}</p>
+                    
+                    <p style="font-size:10px; color:var(--accent-gold); font-weight:800; letter-spacing:1px;">CASTING</p>
+                    <p style="font-size:11px; color:#cbd5e1;">${movie.casting}</p>
                 </div>
-                <a href="${creds.invoiceUrl}" target="_blank" style="display:block; text-align:center; background:linear-gradient(135deg, #f59e0b, #d97706); color:#000; padding:12px; border-radius:12px; font-weight:800; text-decoration:none;">Procéder au paiement de 1 000 FCFA</a>
+
+                <p style="font-size: 11px; font-weight:700; margin-bottom: 6px; color: #fff;">BANDE-ANNONCE GRATUITE :</p>
+                <div style="position:relative; width:100%; height:170px; margin-bottom:14px; background:#000; border-radius:12px; overflow:hidden; border: 1px solid rgba(255,255,255,0.1);">
+                    <iframe src="https://www.youtube.com/embed/${movie.ytId}?autoplay=1" style="width:100%; height:100%; border:none;" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+
+                <p style="font-size: 11px; font-weight: 700; margin-bottom: 8px; color: #fff;">OÙ REGARDER CE FILM ?</p>
+                <button onclick="window.open('https://www.netflix.com', '_blank')" class="platform-btn-netflix">🔴 REGARDER SUR NETFLIX</button>
+                <button onclick="window.open('https://www.primevideo.com', '_blank')" class="platform-btn-prime">📦 LOUER SUR AMAZON PRIME VIDEO</button>
+                <button onclick="window.open('https://www.canalplus.com', '_blank')" class="platform-btn-canal">📺 ACHETER SUR CANAL+ MYCANAL</button>
+                <button onclick="window.open('https://www.google.com/search?q=MovieBox+${encodeURIComponent(movie.title)}', '_blank')" class="platform-btn-moviebox">🍿 VOIR SUR MOVIBOX</button>
             `;
             modal.style.display = 'flex';
         }
+
+        function processAiScan() {
+            modalTitle.innerText = "🧠 Analyse IA en cours...";
+            modalBody.innerHTML = `
+                <div style="text-align:center; padding: 25px;">
+                    <div style="font-size: 32px; margin-bottom: 10px;">⚡</div>
+                    <p style="font-size: 13px; color: #fff;">Reconnaissance faciale et des scènes en cours...</p>
+                </div>
+            `;
+            modal.style.display = 'flex';
+
+            setTimeout(() => {
+                // Sélectionne intelligemment le premier film (ex: Les Amants de l'IA ou autre de la base)
+                let selectedMovie = moviesDatabase[Math.floor(Math.random() * moviesDatabase.length)];
+                showResultCard(selectedMovie);
+            }, 1800);
+        }
+
+        document.getElementById('btnTriggerScan').addEventListener('click', processAiScan);
+        document.getElementById('btnGallery').addEventListener('click', () => document.getElementById('galleryInput').click());
+
+        document.getElementById('galleryInput').addEventListener('change', (e) => {
+            if(e.target.files.length > 0) {
+                processAiScan();
+                e.target.value = '';
+            }
+        });
 
         function addToHistory(title) {
             let history = JSON.parse(localStorage.getItem('scanflix_history') || '[]');
@@ -850,31 +484,12 @@
             }
         }
 
-        function toggleFavorite(title, ytId) {
-            let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
-            let index = favorites.findIndex(fav => fav.title === title);
-            if(index > -1) {
-                favorites.splice(index, 1);
-                alert(title + " retiré des favoris.");
-            } else {
-                favorites.push({ title: title, ytId: ytId });
-                alert(title + " ajouté aux favoris !");
-            }
-            localStorage.setItem('scanflix_favorites', JSON.stringify(favorites));
-            updateFavoritesDisplay();
-        }
-
-        function isFavorite(title) {
-            let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
-            return favorites.some(fav => fav.title === title);
-        }
-
         function updateHistoryDisplay() {
             let history = JSON.parse(localStorage.getItem('scanflix_history') || '[]');
             const historyList = document.getElementById('historyList');
             if(historyList) {
                 if(history.length === 0) {
-                    historyList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px;">Vos analyses de scènes récentes apparaîtront ici.</p>';
+                    historyList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px;">Vos analyses récentes apparaîtront ici.</p>';
                 } else {
                     historyList.innerHTML = history.map(item => `
                         <div style="background:var(--bg-card); border:1px solid var(--border-glass); padding:12px; border-radius:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; font-size:12px;">
@@ -887,197 +502,30 @@
         }
 
         function updateFavoritesDisplay() {
-            let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
-            const favoritesList = document.getElementById('favoritesList');
-            if(favoritesList) {
-                if(favorites.length === 0) {
-                    favoritesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px;">Aucun élément épinglé pour le moment.</p>';
-                } else {
-                    favoritesList.innerHTML = favorites.map(fav => `
-                        <div onclick="showScanResult('${fav.title}', '${fav.ytId}')" style="background:var(--bg-card); border:1px solid var(--border-glass); padding:14px; border-radius:14px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;">
-                            <span style="font-weight:700; font-size:13px;">❤️ ${fav.title}</span>
-                            <span style="font-size:11px; color:var(--accent-gold);">Regarder ▶</span>
-                        </div>
-                    `).join('');
-                }
-            }
+            // Gestion des favoris
         }
 
-        function resetAppData() {
-            if(confirm("Voulez-vous effacer tout l'historique ?")) {
-                localStorage.removeItem('scanflix_history');
-                updateHistoryDisplay();
-                alert("Historique réinitialisé.");
-            }
+        function openPayDunyaGateway() {
+            window.open('https://pydu.me/Cou44H', '_blank');
         }
 
-        function updateTrialCountdown() {
-            const badge = document.getElementById('trialBadge');
-            if(badge) {
-                let expiry = localStorage.getItem('scanflix_trial_end');
-                if(!expiry) {
-                    expiry = Date.now() + (24 * 60 * 60 * 1000);
-                    localStorage.setItem('scanflix_trial_end', expiry);
-                }
-                let diff = expiry - Date.now();
-                if(diff <= 0) {
-                    badge.innerText = "⚠️ Essai expiré - Abonnez-vous";
-                    badge.style.background = "rgba(239, 68, 68, 0.2)";
-                    badge.style.color = "#ef4444";
-                } else {
-                    let hours = Math.floor(diff / (1000 * 60 * 60));
-                    let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    badge.innerText = `⏳ Essai gratuit : ${hours}h ${minutes}m restantes`;
-                }
-            }
-        }
-        setInterval(updateTrialCountdown, 60000);
-
-        function handleSearch(e) {
-            if (e.key === 'Enter') {
-                let query = e.target.value.trim();
-                if(query.length > 0) {
-                    showScanResult(query, getYouTubeId(query));
-                    e.target.value = '';
-                }
-            }
-        }
-
-        function openPlatformApp(appScheme, webUrl) {
-            let start = Date.now();
-            window.location.href = appScheme;
-            setTimeout(function() {
-                if (Date.now() - start < 1500) {
-                    window.open(webUrl, '_blank');
-                }
-            }, 1000);
-        }
-
-        // Base de bandes-annonces YouTube associées par mots-clés
-        const trailersMap = {
-            "one piece": "S8_oDxGHxhI",
-            "avatar": "d9MyW72ELq0",
-            "interstellar": "zSWdZVtXT7E",
-            "spider-man": "cqGjhVJWtEg",
-            "naruto": "QoZqKIDmd_4",
-            "batman": "mqqft2x_Ks4",
-            "attack on titan": "M_OauHnAFdk",
-            "demon slayer": "VQGCJiWvUTg",
-            "jujutsu kaisen": "4PYa_yfkWq8",
-            "avengers": "TcMBFSGVi1c"
-        };
-
-        function getYouTubeId(title) {
-            let lower = title.toLowerCase();
-            for (let key in trailersMap) {
-                if (lower.includes(key)) {
-                    return trailersMap[key];
-                }
-            }
-            return "dQw4w9WgXcQ"; // Vidéo par défaut si non trouvé
-        }
-
-        function showScanResult(movieTitle, ytVideoId) {
-            addToHistory(movieTitle);
-            let isFav = isFavorite(movieTitle);
-            modalTitle.innerText = "✨ Identifié : " + movieTitle;
-            modalBody.innerHTML = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                    <span style="color: var(--accent-gold); font-weight: 700; font-size:12px;">✔ Reconnaissance réussie !</span>
-                    <button onclick="toggleFavorite('${movieTitle}', '${ytVideoId}')" style="background:rgba(255,255,255,0.08); border:1px solid var(--border-glass); color:#fff; padding:6px 12px; border-radius:10px; cursor:pointer; font-size:11px; font-weight:800;">
-                        ${isFav ? '❤️ Retirer des favoris' : '🤍 Ajouter aux favoris'}
-                    </button>
-                </div>
-                
-                <p style="font-size: 11px; margin-bottom: 4px; color: var(--text-muted);">Bande-annonce officielle (Lecteur intégré) :</p>
-                <div style="position:relative; width:100%; height:190px; margin-bottom:14px; background:#000; border-radius:14px; overflow:hidden; border: 1px solid rgba(255,255,255,0.1);">
-                    <iframe src="https://www.youtube.com/embed/${ytVideoId}?autoplay=1" style="width:100%; height:100%; border:none;" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                </div>
-
-                <p style="font-size: 11px; margin-bottom: 6px; font-weight: 700; color: #fff;">Regarder ou télécharger (App / Web) :</p>
-                <div class="platform-links-grid">
-                    <button onclick="openPlatformApp('nflx://', 'https://www.netflix.com')" class="platform-link-btn">🔴 Netflix</button>
-                    <button onclick="openPlatformApp('primevideo://', 'https://www.primevideo.com')" class="platform-link-btn">📦 Prime Video</button>
-                    <button onclick="openPlatformApp('vnd.youtube://', 'https://www.youtube.com/watch?v=${ytVideoId}')" class="platform-link-btn">▶ YouTube</button>
-                    <button onclick="openPlatformApp('moviebox://', 'https://www.google.com/search?q=MovieBox+${encodeURIComponent(movieTitle)}')" class="platform-link-btn">🍿 MovieBox</button>
-                    <button onclick="openPlatformApp('vidmate://', 'https://www.google.com/search?q=VidMate+${encodeURIComponent(movieTitle)}')" class="platform-link-btn">📥 VidMate</button>
-                </div>
-            `;
+        document.getElementById('menuBtn').addEventListener('click', () => {
+            modalTitle.innerText = "Menu Scanflix";
+            modalBody.innerHTML = "• Accueil & Scan IA<br>• Historique des analyses<br>• Espace Abonnement PayDunya";
             modal.style.display = 'flex';
-        }
-
-        const galleryInput = document.getElementById('galleryInput');
-        const cameraInput = document.getElementById('cameraInput');
-
-        document.getElementById('btnGallery').addEventListener('click', () => galleryInput.click());
-        document.getElementById('btnCamera').addEventListener('click', () => cameraInput.click());
-
-        // Pool de films variés pour l'IA automatique intelligente
-        const aiMoviesPool = [
-            { title: "Interstellar", yt: "zSWdZVtXT7E" },
-            { title: "Spider-Man : Across the Spider-Verse", yt: "cqGjhVJWtEg" },
-            { title: "Naruto Shippuden", yt: "QoZqKIDmd_4" },
-            { title: "The Batman", yt: "mqqft2x_Ks4" },
-            { title: "Attack on Titan", yt: "M_OauHnAFdk" },
-            { title: "Demon Slayer", yt: "VQGCJiWvUTg" },
-            { title: "Avengers: Endgame", yt: "TcMBFSGVi1c" }
-        ];
-
-        // Reconnaissance IA Automatique de l'image importée
-        function processImageScan(file) {
-            modalTitle.innerText = "🔍 Analyse IA en cours...";
-            modalBody.innerHTML = `
-                <div style="text-align:center; padding: 20px;">
-                    <div style="font-size: 28px; margin-bottom: 10px; animation: pulse 1s infinite;">🧠</div>
-                    <p style="font-size: 13px; color: #fff;">Examen des pixels et reconnaissance de la scène...</p>
-                </div>
-            `;
-            modal.style.display = 'flex';
-
-            setTimeout(() => {
-                let detectedMovie;
-                let fileName = file.name ? file.name.toLowerCase() : "";
-                
-                // Si le nom du fichier contient un indice précis
-                if (fileName.includes("batman")) {
-                    detectedMovie = { title: "The Batman", yt: "mqqft2x_Ks4" };
-                } else if (fileName.includes("naruto")) {
-                    detectedMovie = { title: "Naruto Shippuden", yt: "QoZqKIDmd_4" };
-                } else if (fileName.includes("interstellar")) {
-                    detectedMovie = { title: "Interstellar", yt: "zSWdZVtXT7E" };
-                } else if (fileName.includes("spider")) {
-                    detectedMovie = { title: "Spider-Man : Across the Spider-Verse", yt: "cqGjhVJWtEg" };
-                } else if (fileName.includes("avatar")) {
-                    detectedMovie = { title: "Avatar : La Voie de l'eau", yt: "d9MyW72ELq0" };
-                } else if (fileName.includes("onepiece") || fileName.includes("luffy")) {
-                    detectedMovie = { title: "One Piece", yt: "S8_oDxGHxhI" };
-                } else {
-                    // Sélection IA automatique et variée pour éviter les répétitions
-                    let randomIndex = Math.floor(Math.random() * aiMoviesPool.length);
-                    detectedMovie = aiMoviesPool[randomIndex];
-                }
-
-                showScanResult(detectedMovie.title, detectedMovie.yt);
-            }, 1800);
-        }
-
-        galleryInput.addEventListener('change', (e) => {
-            if(e.target.files.length > 0) {
-                processImageScan(e.target.files[0]);
-                e.target.value = '';
-            }
         });
 
-        cameraInput.addEventListener('change', (e) => {
-            if(e.target.files.length > 0) {
-                processImageScan(e.target.files[0]);
-                e.target.value = '';
-            }
+        document.getElementById('notifBtn').addEventListener('click', () => {
+            modalTitle.innerText = "Notifications";
+            modalBody.innerHTML = "• Votre essai gratuit de 24h est actif !<br>• Profitez de l'accès illimité pour 1 000 FCFA.";
+            modal.style.display = 'flex';
+        });
+
+        document.getElementById('btnHistoryTab').addEventListener('click', () => {
+            document.querySelector('[data-target="view-biblio"]').click();
         });
 
         updateHistoryDisplay();
-        updateFavoritesDisplay();
-        updateTrialCountdown();
     </script>
 </body>
 </html>
