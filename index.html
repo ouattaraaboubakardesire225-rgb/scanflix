@@ -5,17 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scanflix - Streaming & Identification</title>
     <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#030508">
+    <meta name="theme-color" content="#05070b">
     
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-deep: #030508;
-            --bg-card: rgba(13, 17, 28, 0.9);
+            --bg-deep: #05070b;
+            --bg-card: rgba(14, 18, 28, 0.9);
             --border-glass: rgba(255, 255, 255, 0.08);
             --accent-gold: #f59e0b;
             --accent-red: #e50914;
-            --accent-orange: #ff7a00;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
         }
@@ -31,8 +30,8 @@
         body {
             background-color: var(--bg-deep);
             color: var(--text-main);
-            background-image: radial-gradient(circle at 50% 0%, rgba(229, 9, 20, 0.18) 0%, transparent 50%),
-                              radial-gradient(circle at 10% 100%, rgba(245, 158, 11, 0.12) 0%, transparent 50%);
+            background-image: radial-gradient(circle at 50% 0%, rgba(229, 9, 20, 0.15) 0%, transparent 55%),
+                              radial-gradient(circle at 10% 100%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
             min-height: 100vh;
             padding-bottom: 110px;
         }
@@ -43,13 +42,13 @@
             padding: 16px;
         }
 
-        /* En-tête */
+        /* En-tête style MovieBox */
         .app-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 24px;
-            padding-top: 10px;
+            margin-bottom: 20px;
+            padding-top: 8px;
         }
 
         .icon-btn {
@@ -71,8 +70,8 @@
         }
 
         .header-logo-icon {
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
             border-radius: 10px;
             display: flex;
@@ -129,48 +128,45 @@
             color: #cbd5e1;
         }
 
-        /* Logo Central Lumineux */
-        .hero-visual {
-            background: linear-gradient(135deg, rgba(229, 9, 20, 0.15), rgba(245, 158, 11, 0.08));
+        /* Bannière style MovieBox en vedette */
+        .featured-banner {
+            background: linear-gradient(135deg, rgba(229, 9, 20, 0.2), rgba(245, 158, 11, 0.1));
             border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            height: 170px;
+            border-radius: 20px;
+            height: 180px;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 16px;
             position: relative;
             overflow: hidden;
-            margin-bottom: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            margin-bottom: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            cursor: pointer;
         }
 
-        .central-logo-box {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
-            border-radius: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            box-shadow: 0 10px 30px rgba(229, 9, 20, 0.5);
-            position: relative;
-        }
-
-        .sparkle {
-            position: absolute;
+        .featured-banner .banner-title {
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            font-weight: 800;
             color: #fff;
-            font-size: 16px;
-            animation: pulse 2s infinite;
-        }
-        .sparkle-1 { top: 6px; right: 8px; }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.3); opacity: 0.6; }
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+            z-index: 2;
         }
 
-        /* Bouton d'installation PWA Ultra-Rapide */
+        .featured-banner .banner-tag {
+            font-size: 10px;
+            background: var(--accent-red);
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 6px;
+            width: max-content;
+            margin-bottom: 6px;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        /* Bouton Installer PWA */
         .install-pwa-btn {
             width: 100%;
             background: linear-gradient(135deg, #f59e0b, #e50914);
@@ -186,19 +182,19 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
             transition: transform 0.2s;
         }
         .install-pwa-btn:active { transform: scale(0.96); }
 
-        /* Grille Tendances (Sans chiffres, couleurs modernes) */
+        /* Grille Tendances Moderne */
         .trends-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            font-size: 13px;
+            margin-bottom: 12px;
+            font-size: 14px;
             font-weight: 700;
             font-family: 'Cinzel', serif;
             letter-spacing: 0.5px;
@@ -209,11 +205,11 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .trend-card {
-            height: 110px;
+            height: 120px;
             border-radius: 18px;
             padding: 14px;
             display: flex;
@@ -368,13 +364,13 @@
             text-align: center;
         }
 
-        /* Barre de navigation inférieure */
+        /* Barre de navigation inférieure style MovieBox */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(3, 5, 8, 0.95);
+            background: rgba(5, 7, 11, 0.95);
             backdrop-filter: blur(25px);
             border-top: 1px solid var(--border-glass);
             display: flex;
@@ -492,36 +488,35 @@
                     <span>⚡ Résultat en quelques secondes</span>
                 </div>
 
-                <!-- Bouton d'installation direct -->
+                <!-- Bouton d'installation PWA -->
                 <button class="install-pwa-btn" id="installAppBtn">
                     📥 Installer l'application sur l'appareil
                 </button>
 
-                <div class="hero-visual">
-                    <div class="central-logo-box">
-                        ▶
-                        <div class="sparkle sparkle-1">✨</div>
-                    </div>
+                <!-- Bannière Vedette Style MovieBox -->
+                <div class="featured-banner" onclick="showScanResult('The Housemaid', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ')">
+                    <span class="banner-tag">En Vedette</span>
+                    <div class="banner-title">The Housemaid</div>
                 </div>
 
-                <!-- Grille Tendances Moderne -->
+                <!-- Grille Tendances -->
                 <div class="trends-header">
                     <span>Tendances & Classiques</span>
                 </div>
                 <div class="trends-grid">
-                    <div class="trend-card trend-bg-1" onclick="showScanResult('Demon Slayer : Kimetsu no Yaiba', 'https://www.youtube.com/embed/VQGCidnXRVs')">
+                    <div class="trend-card trend-bg-1" onclick="showScanResult('Demon Slayer : Kimetsu no Yaiba', 'https://www.youtube.com/watch?v=VQGCidnXRVs')">
                         <span class="trend-tag">Anime</span>
                         <div class="trend-title">Demon Slayer</div>
                     </div>
-                    <div class="trend-card trend-bg-2" onclick="showScanResult('Jujutsu Kaisen', 'https://www.youtube.com/embed/pkR4aMwhM3A')">
+                    <div class="trend-card trend-bg-2" onclick="showScanResult('Jujutsu Kaisen', 'https://www.youtube.com/watch?v=pkR4aMwhM3A')">
                         <span class="trend-tag">Anime</span>
                         <div class="trend-title">Jujutsu Kaisen</div>
                     </div>
-                    <div class="trend-card trend-bg-3" onclick="showScanResult('Interstellar', 'https://www.youtube.com/embed/zSWdZVtXT7E')">
+                    <div class="trend-card trend-bg-3" onclick="showScanResult('Interstellar', 'https://www.youtube.com/watch?v=zSWdZVtXT7E')">
                         <span class="trend-tag">Film Sci-Fi</span>
                         <div class="trend-title">Interstellar</div>
                     </div>
-                    <div class="trend-card trend-bg-4" onclick="showScanResult('Spider-Man : Across the Spider-Verse', 'https://www.youtube.com/embed/cqGjhVJWtEg')">
+                    <div class="trend-card trend-bg-4" onclick="showScanResult('Spider-Man : Across the Spider-Verse', 'https://www.youtube.com/watch?v=cqGjhVJWtEg')">
                         <span class="trend-tag">Animation</span>
                         <div class="trend-title">Spider-Man</div>
                     </div>
@@ -583,19 +578,19 @@
         <input type="file" id="galleryInput" accept="image/*" style="display: none;">
         <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
 
-        <!-- Barre de navigation inférieure -->
+        <!-- Barre de navigation inférieure style MovieBox -->
         <nav class="bottom-nav">
             <a href="#" class="nav-item active" data-target="view-accueil">
-                <span>🏠</span> ACCUEIL
+                <span>🏠</span> Accueil
             </a>
             <a href="#" class="nav-item" data-target="view-favoris">
-                <span>❤️</span> FAVORIS
+                <span>❤️</span> Favoris
             </a>
             <a href="#" class="nav-item" data-target="view-biblio">
-                <span>📚</span> BIBLIOTHÈQUE
+                <span>📚</span> Bibliothèque
             </a>
             <a href="#" class="nav-item" data-target="view-compte">
-                <span>👤</span> COMPTE
+                <span>👤</span> Compte
             </a>
         </nav>
     </div>
@@ -610,7 +605,6 @@
     </div>
 
     <script>
-        // Gestion de l'installation PWA instantanée et fluide
         let deferredPrompt;
         const installBtn = document.getElementById('installAppBtn');
 
@@ -623,12 +617,8 @@
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 let { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    console.log('Application installée avec succès');
-                }
                 deferredPrompt = null;
             } else {
-                // Guide visuel ultra clair si le navigateur requiert l'action manuelle native
                 modalTitle.innerText = "📥 Installer Scanflix";
                 modalBody.innerHTML = `
                     <p style="margin-bottom: 10px; color: #fff;">Pour installer l'application instantanément sur votre écran d'accueil :</p>
@@ -658,7 +648,6 @@
             navigator.serviceWorker.register('./sw.js').catch(() => {});
         }
 
-        // Navigation entre vues
         const navItems = document.querySelectorAll('.nav-item');
         const appViews = document.querySelectorAll('.app-view');
 
@@ -722,24 +711,40 @@
             }
         }
 
-        function showScanResult(movieTitle, youtubeEmbedUrl) {
+        // Fonction intelligente pour ouvrir l'application mobile ou basculer vers le site web
+        function openPlatformApp(appScheme, webUrl) {
+            // Tente d'ouvrir l'application installée sur le téléphone
+            let start = Date.now();
+            window.location.href = appScheme;
+            
+            // Si l'application n'est pas installée, après un court délai, bascule vers le site web de secours
+            setTimeout(function() {
+                if (Date.now() - start < 1500) {
+                    window.open(webUrl, '_blank');
+                }
+            }, 1000);
+        }
+
+        function showScanResult(movieTitle, youtubeUrl) {
             addToHistory(movieTitle);
             modalTitle.innerText = "✨ Scène Identifiée : " + movieTitle;
             modalBody.innerHTML = `
                 <p style="margin-bottom: 10px; color: var(--accent-gold); font-weight: 700;">✔ Reconnaissance réussie par l'IA !</p>
                 
                 <p style="font-size: 11px; margin-bottom: 4px; color: var(--text-muted);">Bande-annonce officielle :</p>
-                <div style="position:relative; width:100%; height:190px; margin-bottom:14px; background:#000; border-radius:12px; overflow:hidden;">
-                    <iframe src="${youtubeEmbedUrl}" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>
+                <div style="position:relative; width:100%; height:160px; margin-bottom:14px; background: linear-gradient(135deg, #1e1b4b, #311026); border-radius:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; border: 1px solid rgba(255,255,255,0.1); overflow:hidden;">
+                    <div style="font-size: 32px; margin-bottom: 4px;">▶️</div>
+                    <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px;">Bande-annonce de ${movieTitle}</div>
+                    <a href="${youtubeUrl}" target="_blank" style="background:#e50914; color:#fff; padding:6px 14px; border-radius:8px; text-decoration:none; font-size:11px; font-weight:800; box-shadow: 0 4px 12px rgba(229,9,20,0.5);">Ouvrir sur YouTube</a>
                 </div>
 
-                <p style="font-size: 11px; margin-bottom: 6px; font-weight: 700; color: #fff;">Regarder ou télécharger sur vos plateformes :</p>
+                <p style="font-size: 11px; margin-bottom: 6px; font-weight: 700; color: #fff;">Regarder ou télécharger (App / Web) :</p>
                 <div class="platform-links-grid">
-                    <a href="https://www.netflix.com" target="_blank" class="platform-link-btn">🔴 Netflix</a>
-                    <a href="https://www.primevideo.com" target="_blank" class="platform-link-btn">📦 Prime Video</a>
-                    <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(movieTitle + ' bande annonce')}" target="_blank" class="platform-link-btn">▶ YouTube</a>
-                    <a href="https://www.google.com/search?q=MovieBox+${encodeURIComponent(movieTitle)}" target="_blank" class="platform-link-btn">🍿 MovieBox</a>
-                    <a href="https://www.google.com/search?q=VidMate+${encodeURIComponent(movieTitle)}" target="_blank" class="platform-link-btn">📥 VidMate</a>
+                    <button onclick="openPlatformApp('nflx://', 'https://www.netflix.com')" class="platform-link-btn">🔴 Netflix</button>
+                    <button onclick="openPlatformApp('primevideo://', 'https://www.primevideo.com')" class="platform-link-btn">📦 Prime Video</button>
+                    <button onclick="openPlatformApp('vnd.youtube://', '${youtubeUrl}')" class="platform-link-btn">▶ YouTube</button>
+                    <button onclick="openPlatformApp('moviebox://', 'https://www.google.com/search?q=MovieBox')" class="platform-link-btn">🍿 MovieBox</button>
+                    <button onclick="openPlatformApp('vidmate://', 'https://www.google.com/search?q=VidMate')" class="platform-link-btn">📥 VidMate</button>
                 </div>
             `;
             modal.style.display = 'flex';
@@ -752,11 +757,11 @@
         document.getElementById('btnCamera').addEventListener('click', () => cameraInput.click());
 
         const detectedMoviesPool = [
-            { title: "Demon Slayer : Le Train de l'Infini", url: "https://www.youtube.com/embed/VQGCidnXRVs" },
-            { title: "Jujutsu Kaisen", url: "https://www.youtube.com/embed/pkR4aMwhM3A" },
-            { title: "Interstellar", url: "https://www.youtube.com/embed/zSWdZVtXT7E" },
-            { title: "Spider-Man : Across the Spider-Verse", url: "https://www.youtube.com/embed/cqGjhVJWtEg" },
-            { title: "Attack on Titan : Final Season", url: "https://www.youtube.com/embed/M_OauHnAFcI" }
+            { title: "Demon Slayer : Le Train de l'Infini", url: "https://www.youtube.com/watch?v=VQGCidnXRVs" },
+            { title: "Jujutsu Kaisen", url: "https://www.youtube.com/watch?v=pkR4aMwhM3A" },
+            { title: "Interstellar", url: "https://www.youtube.com/watch?v=zSWdZVtXT7E" },
+            { title: "Spider-Man : Across the Spider-Verse", url: "https://www.youtube.com/watch?v=cqGjhVJWtEg" },
+            { title: "Attack on Titan : Final Season", url: "https://www.youtube.com/watch?v=M_OauHnAFcI" }
         ];
 
         galleryInput.addEventListener('change', (e) => {
