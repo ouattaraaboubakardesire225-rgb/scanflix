@@ -6,6 +6,9 @@
     <title>Scanflix - Streaming & Identification</title>
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#05070b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Scanflix">
     
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -42,7 +45,7 @@
             padding: 16px;
         }
 
-        /* En-tête style MovieBox */
+        /* En-tête */
         .app-header {
             display: flex;
             align-items: center;
@@ -97,50 +100,81 @@
             align-items: center;
         }
 
+        /* Barre de recherche rapide */
+        .search-bar-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            padding: 12px 16px 12px 40px;
+            border-radius: 14px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-gold);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
         /* Accueil */
         .hero-section {
             margin-bottom: 24px;
         }
 
         .hero-title {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
             line-height: 1.15;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             background: linear-gradient(135deg, #fff 30%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero-desc {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-muted);
             line-height: 1.5;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .hero-badges {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            margin-bottom: 18px;
-            font-size: 12px;
+            gap: 4px;
+            margin-bottom: 16px;
+            font-size: 11px;
             color: #cbd5e1;
         }
 
-        /* Bannière style MovieBox en vedette */
+        /* Bannière Vedette */
         .featured-banner {
-            background: linear-gradient(135deg, rgba(229, 9, 20, 0.2), rgba(245, 158, 11, 0.1));
+            background: linear-gradient(135deg, rgba(229, 9, 20, 0.25), rgba(245, 158, 11, 0.15));
             border: 1px solid var(--border-glass);
             border-radius: 20px;
-            height: 180px;
+            height: 160px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             padding: 16px;
             position: relative;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5);
             cursor: pointer;
         }
@@ -172,8 +206,8 @@
             background: linear-gradient(135deg, #f59e0b, #e50914);
             border: none;
             color: #fff;
-            padding: 14px;
-            border-radius: 16px;
+            padding: 12px;
+            border-radius: 14px;
             font-size: 12px;
             font-weight: 800;
             letter-spacing: 0.5px;
@@ -182,19 +216,73 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
             transition: transform 0.2s;
         }
         .install-pwa-btn:active { transform: scale(0.96); }
 
-        /* Grille Tendances Moderne */
+        /* Pop-up Coulissante d'Installation Automatique */
+        .install-banner-popup {
+            position: fixed;
+            bottom: 80px;
+            left: 16px;
+            right: 16px;
+            background: linear-gradient(145deg, #0d111c, #161b2c);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 18px;
+            padding: 14px 16px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1500;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .install-popup-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .install-popup-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .install-popup-text h5 { font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 2px; }
+        .install-popup-text p { font-size: 10px; color: var(--text-muted); }
+
+        .install-popup-action {
+            background: var(--accent-gold);
+            color: #000;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        /* Grille Tendances */
         .trends-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            font-size: 14px;
+            margin-bottom: 10px;
+            font-size: 13px;
             font-weight: 700;
             font-family: 'Cinzel', serif;
             letter-spacing: 0.5px;
@@ -205,11 +293,11 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .trend-card {
-            height: 120px;
+            height: 110px;
             border-radius: 18px;
             padding: 14px;
             display: flex;
@@ -225,8 +313,8 @@
 
         .trend-card:active { transform: scale(0.96); }
 
-        .trend-bg-1 { background: linear-gradient(135deg, #ff416c, #ff4b2b); }
-        .trend-bg-2 { background: linear-gradient(135deg, #8a2387, #e94057, #f27121); }
+        .trend-bg-1 { background: linear-gradient(135deg, #f2994a, #f2c94c); color: #000 !important; }
+        .trend-bg-2 { background: linear-gradient(135deg, #00c6ff, #0072ff); }
         .trend-bg-3 { background: linear-gradient(135deg, #1d976c, #93f9b9); color: #000 !important; }
         .trend-bg-4 { background: linear-gradient(135deg, #2b5876, #4e4376); }
 
@@ -238,6 +326,7 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.6);
         }
 
+        .trend-card.trend-bg-1 .trend-title,
         .trend-card.trend-bg-3 .trend-title { color: #05070b; text-shadow: none; }
 
         .trend-card .trend-tag {
@@ -250,6 +339,7 @@
             color: rgba(255,255,255,0.8);
         }
 
+        .trend-card.trend-bg-1 .trend-tag,
         .trend-card.trend-bg-3 .trend-tag { color: rgba(0,0,0,0.7); }
 
         /* Boutons Galerie / Caméra */
@@ -364,7 +454,7 @@
             text-align: center;
         }
 
-        /* Barre de navigation inférieure style MovieBox */
+        /* Barre de navigation inférieure */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -488,13 +578,19 @@
                     <span>⚡ Résultat en quelques secondes</span>
                 </div>
 
-                <!-- Bouton d'installation PWA -->
+                <!-- Barre de Recherche Rapide -->
+                <div class="search-bar-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" id="quickSearchInput" placeholder="Rechercher un film ou anime par titre..." onkeypress="handleSearch(event)">
+                </div>
+
+                <!-- Bouton d'installation PWA Principal -->
                 <button class="install-pwa-btn" id="installAppBtn">
                     📥 Installer l'application sur l'appareil
                 </button>
 
-                <!-- Bannière Vedette Style MovieBox -->
-                <div class="featured-banner" onclick="showScanResult('The Housemaid', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ')">
+                <!-- Bannière Vedette -->
+                <div class="featured-banner" onclick="showScanResult('The Housemaid', 'dQw4w9WgXcQ')">
                     <span class="banner-tag">En Vedette</span>
                     <div class="banner-title">The Housemaid</div>
                 </div>
@@ -504,19 +600,19 @@
                     <span>Tendances & Classiques</span>
                 </div>
                 <div class="trends-grid">
-                    <div class="trend-card trend-bg-1" onclick="showScanResult('Demon Slayer : Kimetsu no Yaiba', 'https://www.youtube.com/watch?v=VQGCidnXRVs')">
+                    <div class="trend-card trend-bg-1" onclick="showScanResult('One Piece', 'S8_oDxGHxhI')">
                         <span class="trend-tag">Anime</span>
-                        <div class="trend-title">Demon Slayer</div>
+                        <div class="trend-title">One Piece</div>
                     </div>
-                    <div class="trend-card trend-bg-2" onclick="showScanResult('Jujutsu Kaisen', 'https://www.youtube.com/watch?v=pkR4aMwhM3A')">
-                        <span class="trend-tag">Anime</span>
-                        <div class="trend-title">Jujutsu Kaisen</div>
+                    <div class="trend-card trend-bg-2" onclick="showScanResult('Avatar : La Voie de l\'eau', 'd9MyW72ELq0')">
+                        <span class="trend-tag">Film Blockbuster</span>
+                        <div class="trend-title">Avatar 2</div>
                     </div>
-                    <div class="trend-card trend-bg-3" onclick="showScanResult('Interstellar', 'https://www.youtube.com/watch?v=zSWdZVtXT7E')">
+                    <div class="trend-card trend-bg-3" onclick="showScanResult('Interstellar', 'zSWdZVtXT7E')">
                         <span class="trend-tag">Film Sci-Fi</span>
                         <div class="trend-title">Interstellar</div>
                     </div>
-                    <div class="trend-card trend-bg-4" onclick="showScanResult('Spider-Man : Across the Spider-Verse', 'https://www.youtube.com/watch?v=cqGjhVJWtEg')">
+                    <div class="trend-card trend-bg-4" onclick="showScanResult('Spider-Man : Across the Spider-Verse', 'cqGjhVJWtEg')">
                         <span class="trend-tag">Animation</span>
                         <div class="trend-title">Spider-Man</div>
                     </div>
@@ -537,7 +633,7 @@
             </div>
         </div>
 
-        <!-- VUE BIBLIOTHÈQUE -->
+        <!-- VUE BIBLIOTHÈQUE & HISTORIQUE -->
         <div id="view-biblio" class="app-view">
             <h2 style="font-size: 18px; margin-bottom: 12px; font-family: 'Cinzel', serif;">Bibliothèque & Historique</h2>
             <div id="historyList">
@@ -550,7 +646,7 @@
             <div class="profile-card">
                 <div class="profile-avatar">⭐</div>
                 <div class="profile-name">Cinéphile Pro</div>
-                <div class="profile-badge">1 JOUR OFFERT 🎉</div>
+                <div class="profile-badge" id="trialBadge">⏳ Essai gratuit : 23h 59m restantes</div>
             </div>
 
             <div class="promo-banner">
@@ -578,7 +674,7 @@
         <input type="file" id="galleryInput" accept="image/*" style="display: none;">
         <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
 
-        <!-- Barre de navigation inférieure style MovieBox -->
+        <!-- Barre de navigation inférieure -->
         <nav class="bottom-nav">
             <a href="#" class="nav-item active" data-target="view-accueil">
                 <span>🏠</span> Accueil
@@ -595,6 +691,18 @@
         </nav>
     </div>
 
+    <!-- Pop-up Coulissante d'Installation Automatique -->
+    <div class="install-banner-popup" id="installPopupBanner">
+        <div class="install-popup-info">
+            <div class="install-popup-icon">🎬</div>
+            <div class="install-popup-text">
+                <h5>Installer Scanflix</h5>
+                <p>Accès direct et rapide depuis l'écran d'accueil</p>
+            </div>
+        </div>
+        <button class="install-popup-action" id="popupInstallBtn">Installer</button>
+    </div>
+
     <!-- Modal Intelligent -->
     <div class="modal-overlay" id="generalModal">
         <div class="modal-content">
@@ -605,37 +713,70 @@
     </div>
 
     <script>
+        // Gestion de l'installation PWA Intelligente (Bannière Pop-up + Détection iOS/Android)
         let deferredPrompt;
         const installBtn = document.getElementById('installAppBtn');
+        const popupBanner = document.getElementById('installPopupBanner');
+        const popupInstallBtn = document.getElementById('popupInstallBtn');
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
+            // Affiche la bannière élégante après 2 secondes
+            setTimeout(() => {
+                if(!window.matchMedia('(display-mode: standalone)').matches) {
+                    popupBanner.style.display = 'flex';
+                }
+            }, 2000);
         });
 
-        installBtn.addEventListener('click', async () => {
+        async function triggerInstall() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 let { outcome } = await deferredPrompt.userChoice;
                 deferredPrompt = null;
+                popupBanner.style.display = 'none';
             } else {
+                // Détection automatique iOS vs Android pour un guide sur-mesure
+                let isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
                 modalTitle.innerText = "📥 Installer Scanflix";
-                modalBody.innerHTML = `
-                    <p style="margin-bottom: 10px; color: #fff;">Pour installer l'application instantanément sur votre écran d'accueil :</p>
-                    <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 12px; border-radius: 12px; font-size: 12px; line-height: 1.6;">
-                        1. Appuyez sur les <strong>3 points (⋮)</strong> en haut à droite de votre navigateur.<br>
-                        2. Sélectionnez <strong>"Installer l'application"</strong> ou <strong>"Ajouter à l'écran d'accueil"</strong>.<br>
-                        3. Confirmez pour placer l'icône sur votre téléphone !
-                    </div>
-                `;
+                if(isIOS) {
+                    modalBody.innerHTML = `
+                        <p style="margin-bottom: 10px; color: #fff;">Sur iPhone / iPad (Safari) :</p>
+                        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 12px; border-radius: 12px; font-size: 12px; line-height: 1.6;">
+                            1. Appuyez sur le bouton <strong>Partager (icône carrée avec flèche)</strong> en bas de votre écran.<br>
+                            2. Faites défiler et choisissez <strong>"Sur l'écran d'accueil"</strong>.<br>
+                            3. Appuyez sur <strong>Ajouter</strong> en haut à droite !
+                        </div>
+                    `;
+                } else {
+                    modalBody.innerHTML = `
+                        <p style="margin-bottom: 10px; color: #fff;">Pour installer l'application instantanément :</p>
+                        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 12px; border-radius: 12px; font-size: 12px; line-height: 1.6;">
+                            1. Appuyez sur les <strong>3 points (⋮)</strong> en haut à droite de votre navigateur.<br>
+                            2. Sélectionnez <strong>"Installer l'application"</strong> ou <strong>"Ajouter à l'écran d'accueil"</strong>.<br>
+                            3. Confirmez pour placer l'icône sur votre téléphone !
+                        </div>
+                    `;
+                }
                 modal.style.display = 'flex';
+                popupBanner.style.display = 'none';
             }
-        });
+        }
+
+        installBtn.addEventListener('click', triggerInstall);
+        popupInstallBtn.addEventListener('click', triggerInstall);
 
         let paydunyaMode = "live";
         const PAYDUNYA_CREDENTIALS = {
-            test: { publicKey: "test_public_Ig8ofRVgnBZNuH04853CJqSpay" },
-            live: { publicKey: "live_public_CK1AU7QB4Fy8t4G9nPqhaUVYOk4" }
+            test: {
+                publicKey: "test_public_Ig8ofRVgnBZNuH04853CJqSpay",
+                invoiceUrl: "https://paydunya.com/sandbox-checkout/invoice/"
+            },
+            live: {
+                publicKey: "live_public_CK1AU7QB4Fy8t4G9nPqhaUVYOk4",
+                invoiceUrl: "https://paydunya.com/checkout/invoice/va1VDW7LBcwtlAgcsjgu"
+            }
         };
 
         function togglePayDunyaMode() {
@@ -658,6 +799,8 @@
                 appViews.forEach(view => view.classList.remove('active-view'));
                 item.classList.add('active');
                 document.getElementById(item.getAttribute('data-target')).classList.add('active-view');
+                updateHistoryDisplay();
+                updateFavoritesDisplay();
             });
         });
 
@@ -667,19 +810,19 @@
 
         document.getElementById('menuBtn').addEventListener('click', () => {
             modalTitle.innerText = "Menu Scanflix";
-            modalBody.innerHTML = "• Accueil Principal<br>• Analyser une capture<br>• Paramètres de l'IA";
+            modalBody.innerHTML = "• Accueil Principal<br>• Recherche par titre<br>• Analyser une capture";
             modal.style.display = 'flex';
         });
 
         document.getElementById('optionsBtn').addEventListener('click', () => {
             modalTitle.innerText = "À propos";
-            modalBody.innerText = "Scanflix - Reconnaissance d'animes et films par IA.";
+            modalBody.innerText = "Scanflix v4.2 - Reconnaissance d'animes et films par IA.";
             modal.style.display = 'flex';
         });
 
         document.getElementById('chatHeaderBtn').addEventListener('click', () => {
             modalTitle.innerText = "Assistant";
-            modalBody.innerText = "Importez une image pour lancer l'identification.";
+            modalBody.innerText = "Importez une image ou tapez un titre pour lancer l'identification.";
             modal.style.display = 'flex';
         });
 
@@ -688,36 +831,124 @@
         }
 
         function openPayDunyaGateway() {
+            let creds = PAYDUNYA_CREDENTIALS[paydunyaMode];
             modalTitle.innerText = "Passerelle PayDunya (" + paydunyaMode.toUpperCase() + ")";
             modalBody.innerHTML = `
                 <p style="margin-bottom: 8px;">Abonnement mensuel Scanflix : <strong>1 000 FCFA / mois</strong></p>
                 <p style="color: var(--accent-gold); font-weight: 700; margin-bottom: 10px;">✔ Inscription gratuite : votre 1er jour est offert !</p>
-                <button onclick="alert('Redirection vers le paiement sécurisé de 1000 FCFA via PayDunya...')" style="width:100%; background:linear-gradient(135deg, #f59e0b, #d97706); color:#000; border:none; padding:12px; border-radius:12px; font-weight:800; cursor:pointer;">Payer 1 000 FCFA / mois</button>
+                <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 12px; border-radius: 12px; font-size: 11px; margin-bottom: 12px;">
+                    Mode <strong>${paydunyaMode.toUpperCase()}</strong> actif. Paiement sécurisé via Mobile Money & Carte Bancaire.
+                </div>
+                <a href="${creds.invoiceUrl}" target="_blank" style="display:block; text-align:center; background:linear-gradient(135deg, #f59e0b, #d97706); color:#000; padding:12px; border-radius:12px; font-weight:800; text-decoration:none;">Procéder au paiement de 1 000 FCFA</a>
             `;
             modal.style.display = 'flex';
         }
 
         function addToHistory(title) {
             let history = JSON.parse(localStorage.getItem('scanflix_history') || '[]');
-            history.unshift({ title: title, date: new Date().toLocaleDateString() });
-            if(history.length > 15) history.pop();
-            localStorage.setItem('scanflix_history', JSON.stringify(history));
+            if(!history.some(item => item.title === title)) {
+                history.unshift({ title: title, date: new Date().toLocaleDateString() });
+                if(history.length > 20) history.pop();
+                localStorage.setItem('scanflix_history', JSON.stringify(history));
+            }
+        }
+
+        function toggleFavorite(title, ytId) {
+            let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
+            let index = favorites.findIndex(fav => fav.title === title);
+            if(index > -1) {
+                favorites.splice(index, 1);
+                alert(title + " retiré des favoris.");
+            } else {
+                favorites.push({ title: title, ytId: ytId });
+                alert(title + " ajouté aux favoris !");
+            }
+            localStorage.setItem('scanflix_favorites', JSON.stringify(favorites));
+            updateFavoritesDisplay();
+        }
+
+        function isFavorite(title) {
+            let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
+            return favorites.some(fav => fav.title === title);
+        }
+
+        function updateHistoryDisplay() {
+            let history = JSON.parse(localStorage.getItem('scanflix_history') || '[]');
+            const historyList = document.getElementById('historyList');
+            if(historyList) {
+                if(history.length === 0) {
+                    historyList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px;">Vos analyses de scènes récentes apparaîtront ici.</p>';
+                } else {
+                    historyList.innerHTML = history.map(item => `
+                        <div style="background:var(--bg-card); border:1px solid var(--border-glass); padding:12px; border-radius:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; font-size:12px;">
+                            <span>🎬 ${item.title}</span>
+                            <span style="color:var(--text-muted); font-size:10px;">${item.date}</span>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        function updateFavoritesDisplay() {
+            let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
+            const favoritesList = document.getElementById('favoritesList');
+            if(favoritesList) {
+                if(favorites.length === 0) {
+                    favoritesList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px;">Aucun élément épinglé pour le moment.</p>';
+                } else {
+                    favoritesList.innerHTML = favorites.map(fav => `
+                        <div onclick="showScanResult('${fav.title}', '${fav.ytId}')" style="background:var(--bg-card); border:1px solid var(--border-glass); padding:14px; border-radius:14px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;">
+                            <span style="font-weight:700; font-size:13px;">❤️ ${fav.title}</span>
+                            <span style="font-size:11px; color:var(--accent-gold);">Regarder ▶</span>
+                        </div>
+                    `).join('');
+                }
+            }
         }
 
         function resetAppData() {
             if(confirm("Voulez-vous effacer tout l'historique ?")) {
                 localStorage.removeItem('scanflix_history');
+                updateHistoryDisplay();
                 alert("Historique réinitialisé.");
             }
         }
 
-        // Fonction intelligente pour ouvrir l'application mobile ou basculer vers le site web
+        function updateTrialCountdown() {
+            const badge = document.getElementById('trialBadge');
+            if(badge) {
+                let expiry = localStorage.getItem('scanflix_trial_end');
+                if(!expiry) {
+                    expiry = Date.now() + (24 * 60 * 60 * 1000);
+                    localStorage.setItem('scanflix_trial_end', expiry);
+                }
+                let diff = expiry - Date.now();
+                if(diff <= 0) {
+                    badge.innerText = "⚠️ Essai expiré - Abonnez-vous";
+                    badge.style.background = "rgba(239, 68, 68, 0.2)";
+                    badge.style.color = "#ef4444";
+                } else {
+                    let hours = Math.floor(diff / (1000 * 60 * 60));
+                    let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    badge.innerText = `⏳ Essai gratuit : ${hours}h ${minutes}m restantes`;
+                }
+            }
+        }
+        setInterval(updateTrialCountdown, 60000);
+
+        function handleSearch(e) {
+            if (e.key === 'Enter') {
+                let query = e.target.value.trim();
+                if(query.length > 0) {
+                    showScanResult(query, 'dQw4w9WgXcQ');
+                    e.target.value = '';
+                }
+            }
+        }
+
         function openPlatformApp(appScheme, webUrl) {
-            // Tente d'ouvrir l'application installée sur le téléphone
             let start = Date.now();
             window.location.href = appScheme;
-            
-            // Si l'application n'est pas installée, après un court délai, bascule vers le site web de secours
             setTimeout(function() {
                 if (Date.now() - start < 1500) {
                     window.open(webUrl, '_blank');
@@ -725,26 +956,30 @@
             }, 1000);
         }
 
-        function showScanResult(movieTitle, youtubeUrl) {
+        function showScanResult(movieTitle, ytVideoId) {
             addToHistory(movieTitle);
-            modalTitle.innerText = "✨ Scène Identifiée : " + movieTitle;
+            let isFav = isFavorite(movieTitle);
+            modalTitle.innerText = "✨ Identifié : " + movieTitle;
             modalBody.innerHTML = `
-                <p style="margin-bottom: 10px; color: var(--accent-gold); font-weight: 700;">✔ Reconnaissance réussie par l'IA !</p>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <span style="color: var(--accent-gold); font-weight: 700; font-size:12px;">✔ Reconnaissance réussie !</span>
+                    <button onclick="toggleFavorite('${movieTitle}', '${ytVideoId}')" style="background:rgba(255,255,255,0.08); border:1px solid var(--border-glass); color:#fff; padding:6px 12px; border-radius:10px; cursor:pointer; font-size:11px; font-weight:800;">
+                        ${isFav ? '❤️ Retirer des favoris' : '🤍 Ajouter aux favoris'}
+                    </button>
+                </div>
                 
-                <p style="font-size: 11px; margin-bottom: 4px; color: var(--text-muted);">Bande-annonce officielle :</p>
-                <div style="position:relative; width:100%; height:160px; margin-bottom:14px; background: linear-gradient(135deg, #1e1b4b, #311026); border-radius:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; border: 1px solid rgba(255,255,255,0.1); overflow:hidden;">
-                    <div style="font-size: 32px; margin-bottom: 4px;">▶️</div>
-                    <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px;">Bande-annonce de ${movieTitle}</div>
-                    <a href="${youtubeUrl}" target="_blank" style="background:#e50914; color:#fff; padding:6px 14px; border-radius:8px; text-decoration:none; font-size:11px; font-weight:800; box-shadow: 0 4px 12px rgba(229,9,20,0.5);">Ouvrir sur YouTube</a>
+                <p style="font-size: 11px; margin-bottom: 4px; color: var(--text-muted);">Bande-annonce officielle (Lecteur intégré) :</p>
+                <div style="position:relative; width:100%; height:190px; margin-bottom:14px; background:#000; border-radius:14px; overflow:hidden; border: 1px solid rgba(255,255,255,0.1);">
+                    <iframe src="https://www.youtube.com/embed/${ytVideoId}?autoplay=1" style="width:100%; height:100%; border:none;" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
 
                 <p style="font-size: 11px; margin-bottom: 6px; font-weight: 700; color: #fff;">Regarder ou télécharger (App / Web) :</p>
                 <div class="platform-links-grid">
                     <button onclick="openPlatformApp('nflx://', 'https://www.netflix.com')" class="platform-link-btn">🔴 Netflix</button>
                     <button onclick="openPlatformApp('primevideo://', 'https://www.primevideo.com')" class="platform-link-btn">📦 Prime Video</button>
-                    <button onclick="openPlatformApp('vnd.youtube://', '${youtubeUrl}')" class="platform-link-btn">▶ YouTube</button>
-                    <button onclick="openPlatformApp('moviebox://', 'https://www.google.com/search?q=MovieBox')" class="platform-link-btn">🍿 MovieBox</button>
-                    <button onclick="openPlatformApp('vidmate://', 'https://www.google.com/search?q=VidMate')" class="platform-link-btn">📥 VidMate</button>
+                    <button onclick="openPlatformApp('vnd.youtube://', 'https://www.youtube.com/watch?v=${ytVideoId}')" class="platform-link-btn">▶ YouTube</button>
+                    <button onclick="openPlatformApp('moviebox://', 'https://www.google.com/search?q=MovieBox+${encodeURIComponent(movieTitle)}')" class="platform-link-btn">🍿 MovieBox</button>
+                    <button onclick="openPlatformApp('vidmate://', 'https://www.google.com/search?q=VidMate+${encodeURIComponent(movieTitle)}')" class="platform-link-btn">📥 VidMate</button>
                 </div>
             `;
             modal.style.display = 'flex';
@@ -757,11 +992,10 @@
         document.getElementById('btnCamera').addEventListener('click', () => cameraInput.click());
 
         const detectedMoviesPool = [
-            { title: "Demon Slayer : Le Train de l'Infini", url: "https://www.youtube.com/watch?v=VQGCidnXRVs" },
-            { title: "Jujutsu Kaisen", url: "https://www.youtube.com/watch?v=pkR4aMwhM3A" },
-            { title: "Interstellar", url: "https://www.youtube.com/watch?v=zSWdZVtXT7E" },
-            { title: "Spider-Man : Across the Spider-Verse", url: "https://www.youtube.com/watch?v=cqGjhVJWtEg" },
-            { title: "Attack on Titan : Final Season", url: "https://www.youtube.com/watch?v=M_OauHnAFcI" }
+            { title: "One Piece", yt: "S8_oDxGHxhI" },
+            { title: "Avatar : La Voie de l'eau", yt: "d9MyW72ELq0" },
+            { title: "Interstellar", yt: "zSWdZVtXT7E" },
+            { title: "Spider-Man : Across the Spider-Verse", yt: "cqGjhVJWtEg" }
         ];
 
         galleryInput.addEventListener('change', (e) => {
@@ -771,7 +1005,7 @@
                 modal.style.display = 'flex';
                 setTimeout(() => {
                     let randomMovie = detectedMoviesPool[Math.floor(Math.random() * detectedMoviesPool.length)];
-                    showScanResult(randomMovie.title, randomMovie.url);
+                    showScanResult(randomMovie.title, randomMovie.yt);
                 }, 1500);
             }
         });
@@ -783,10 +1017,14 @@
                 modal.style.display = 'flex';
                 setTimeout(() => {
                     let randomMovie = detectedMoviesPool[Math.floor(Math.random() * detectedMoviesPool.length)];
-                    showScanResult(randomMovie.title, randomMovie.url);
+                    showScanResult(randomMovie.title, randomMovie.yt);
                 }, 1500);
             }
         });
+
+        updateHistoryDisplay();
+        updateFavoritesDisplay();
+        updateTrialCountdown();
     </script>
 </body>
 </html>
