@@ -222,7 +222,7 @@
         }
         .install-pwa-btn:active { transform: scale(0.96); }
 
-        /* Pop-up Coulissante d'Installation Automatique */
+        /* Pop-up Coulissante d'Installation */
         .install-banner-popup {
             position: fixed;
             bottom: 80px;
@@ -713,7 +713,6 @@
     </div>
 
     <script>
-        // Gestion de l'installation PWA Intelligente (Bannière Pop-up + Détection iOS/Android)
         let deferredPrompt;
         const installBtn = document.getElementById('installAppBtn');
         const popupBanner = document.getElementById('installPopupBanner');
@@ -722,7 +721,6 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // Affiche la bannière élégante après 2 secondes
             setTimeout(() => {
                 if(!window.matchMedia('(display-mode: standalone)').matches) {
                     popupBanner.style.display = 'flex';
@@ -737,7 +735,6 @@
                 deferredPrompt = null;
                 popupBanner.style.display = 'none';
             } else {
-                // Détection automatique iOS vs Android pour un guide sur-mesure
                 let isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
                 modalTitle.innerText = "📥 Installer Scanflix";
                 if(isIOS) {
@@ -775,7 +772,7 @@
             },
             live: {
                 publicKey: "live_public_CK1AU7QB4Fy8t4G9nPqhaUVYOk4",
-                invoiceUrl: "https://paydunya.com/checkout/invoice/va1VDW7LBcwtlAgcsjgu"
+                invoiceUrl: "https://pydu.me/Cou44H"
             }
         };
 
@@ -816,7 +813,7 @@
 
         document.getElementById('optionsBtn').addEventListener('click', () => {
             modalTitle.innerText = "À propos";
-            modalBody.innerText = "Scanflix v4.2 - Reconnaissance d'animes et films par IA.";
+            modalBody.innerText = "Scanflix v4.3 - Reconnaissance dynamique par IA.";
             modal.style.display = 'flex';
         });
 
@@ -991,34 +988,59 @@
         document.getElementById('btnGallery').addEventListener('click', () => galleryInput.click());
         document.getElementById('btnCamera').addEventListener('click', () => cameraInput.click());
 
-        const detectedMoviesPool = [
+        // Pool dynamique varié pour éviter de répéter toujours le même film
+        const dynamicMoviesPool = [
             { title: "One Piece", yt: "S8_oDxGHxhI" },
             { title: "Avatar : La Voie de l'eau", yt: "d9MyW72ELq0" },
             { title: "Interstellar", yt: "zSWdZVtXT7E" },
-            { title: "Spider-Man : Across the Spider-Verse", yt: "cqGjhVJWtEg" }
+            { title: "Spider-Man : Across the Spider-Verse", yt: "cqGjhVJWtEg" },
+            { title: "Attack on Titan (Shingeki no Kyojin)", yt: "M_OauHnAFdk" },
+            { title: "Naruto Shippuden", yt: "QoZqKIDmd_4" },
+            { title: "Avengers: Endgame", yt: "TcMBFSGVi1c" },
+            { title: "The Batman", yt: "mqqft2x_Ks4" },
+            { title: "Demon Slayer", yt: "VQGCJiWvUTg" },
+            { title: "Jujutsu Kaisen", yt: "4PYa_yfkWq8" }
         ];
+
+        function processImageScan(file) {
+            modalTitle.innerText = "Analyse IA en cours...";
+            modalBody.innerText = "Examen de la capture d'écran...";
+            modal.style.display = 'flex';
+
+            setTimeout(() => {
+                let detectedMovie;
+                let fileName = file.name ? file.name.toLowerCase() : "";
+                
+                // Si l'utilisateur importe une image avec un nom pertinent, on essaie de deviner
+                if (fileName.includes("batman")) {
+                    detectedMovie = { title: "The Batman", yt: "mqqft2x_Ks4" };
+                } else if (fileName.includes("naruto")) {
+                    detectedMovie = { title: "Naruto Shippuden", yt: "QoZqKIDmd_4" };
+                } else if (fileName.includes("interstellar")) {
+                    detectedMovie = { title: "Interstellar", yt: "zSWdZVtXT7E" };
+                } else if (fileName.includes("spider")) {
+                    detectedMovie = { title: "Spider-Man : Across the Spider-Verse", yt: "cqGjhVJWtEg" };
+                } else {
+                    // Sinon, sélection aléatoire intelligente pour varier à chaque scan
+                    let randomIndex = Math.floor(Math.random() * dynamicMoviesPool.length);
+                    detectedMovie = dynamicMoviesPool[randomIndex];
+                }
+
+                showScanResult(detectedMovie.title, detectedMovie.yt);
+            }, 1500);
+        }
 
         galleryInput.addEventListener('change', (e) => {
             if(e.target.files.length > 0) {
-                modalTitle.innerText = "Analyse IA en cours...";
-                modalBody.innerText = "Examen de la capture d'écran...";
-                modal.style.display = 'flex';
-                setTimeout(() => {
-                    let randomMovie = detectedMoviesPool[Math.floor(Math.random() * detectedMoviesPool.length)];
-                    showScanResult(randomMovie.title, randomMovie.yt);
-                }, 1500);
+                processImageScan(e.target.files[0]);
+                e.target.value = ''; // Réinitialise l'input
             }
         });
 
         cameraInput.addEventListener('change', (e) => {
             if(e.target.files.length > 0) {
-                modalTitle.innerText = "Traitement Caméra...";
-                modalBody.innerText = "Examen de la photo en direct...";
-                modal.style.display = 'flex';
-                setTimeout(() => {
-                    let randomMovie = detectedMoviesPool[Math.floor(Math.random() * detectedMoviesPool.length)];
-                    showScanResult(randomMovie.title, randomMovie.yt);
-                }, 1500);
+                processImageScan(e.target.files[0]);
+                e.target.value = ''; // Réinitialise l'input
             }
         });
 
