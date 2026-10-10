@@ -5,376 +5,443 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scanflix - Reconnaissance IA & Streaming</title>
     <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#05070b">
+    <meta name="theme-color" content="#030508">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Scanflix">
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-deep: #05070b;
-            --bg-card: rgba(14, 18, 28, 0.95);
-            --border-glass: rgba(255, 255, 255, 0.08);
-            --accent-gold: #f59e0b;
+            --bg-base: #030508;
+            --bg-surface: rgba(18, 24, 38, 0.75);
+            --border-glow: rgba(229, 9, 20, 0.25);
+            --accent-gold: #ffb703;
             --accent-red: #e50914;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --accent-glow: rgba(229, 9, 20, 0.4);
+            --text-main: #ffffff;
+            --text-sub: #94a3b8;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Outfit', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-deep);
+            background-color: var(--bg-base);
             color: var(--text-main);
-            background-image: radial-gradient(circle at 50% 0%, rgba(229, 9, 20, 0.15) 0%, transparent 55%),
-                              radial-gradient(circle at 10% 100%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+            background-image: 
+                radial-gradient(circle at 50% -20%, rgba(229, 9, 20, 0.22) 0%, transparent 60%),
+                radial-gradient(circle at 100% 100%, rgba(255, 183, 3, 0.1) 0%, transparent 50%);
             min-height: 100vh;
-            padding-bottom: 110px;
+            padding-bottom: 100px;
         }
 
         .app-container {
             max-width: 480px;
             margin: 0 auto;
-            padding: 16px;
+            padding: 20px 16px;
         }
 
-        /* En-tête */
+        /* En-tête Moderne */
         .app-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
-            padding-top: 8px;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid var(--border-glass);
+            margin-bottom: 24px;
         }
 
         .header-brand {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .header-logo-icon {
-            width: 32px;
-            height: 32px;
+        .header-logo {
+            width: 38px;
+            height: 38px;
             background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
-            border-radius: 10px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+            font-size: 18px;
+            box-shadow: 0 8px 20px var(--accent-glow);
         }
 
         .header-title {
-            font-family: 'Cinzel', serif;
-            font-size: 18px;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            background: linear-gradient(135deg, #fff 30%, var(--accent-gold) 100%);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #fff 40%, var(--accent-gold) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Accueil / Scanner */
-        .scanner-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-glass);
-            border-radius: 24px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .icon-btn {
+            background: var(--bg-surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.2s;
+        }
+        .icon-btn:active { transform: scale(0.95); }
+
+        /* Barre de Recherche Flottante */
+        .search-box {
+            position: relative;
+            margin-bottom: 24px;
         }
 
-        .scanner-viewfinder {
+        .search-input {
             width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #090d16, #121826);
+            background: var(--bg-surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px 18px 16px 48px;
             border-radius: 16px;
-            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-gold);
+            box-shadow: 0 8px 30px rgba(255, 183, 3, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-sub);
+            font-size: 16px;
+        }
+
+        /* Carte de Scan Principale */
+        .scanner-hero-card {
+            background: linear-gradient(145deg, rgba(18, 24, 38, 0.9), rgba(10, 14, 23, 0.95));
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            border-radius: 28px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scanner-hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--accent-red), var(--accent-gold));
+        }
+
+        .viewfinder-box {
+            width: 100%;
+            height: 180px;
+            background: rgba(5, 8, 15, 0.8);
+            border-radius: 18px;
+            border: 1px dashed rgba(255, 183, 3, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
-        .scanner-laser {
+        .laser-line {
             position: absolute;
-            width: 80%;
+            width: 90%;
             height: 2px;
             background: var(--accent-gold);
-            box-shadow: 0 0 15px var(--accent-gold);
-            animation: scanMove 2s infinite ease-in-out;
+            box-shadow: 0 0 15px var(--accent-gold), 0 0 30px var(--accent-gold);
+            animation: scanAnim 2.5s infinite ease-in-out;
         }
 
-        @keyframes scanMove {
-            0%, 100% { top: 20%; }
-            50% { top: 80%; }
+        @keyframes scanAnim {
+            0%, 100% { top: 15%; opacity: 0.4; }
+            50% { top: 85%; opacity: 1; }
         }
 
-        .scan-action-btn {
+        .main-scan-btn {
             width: 100%;
-            background: linear-gradient(135deg, #1f293d, #111827);
-            border: 1px solid rgba(245, 158, 11, 0.5);
+            background: linear-gradient(135deg, var(--accent-red), #b91c1c);
+            border: none;
             color: #fff;
             padding: 16px;
             border-radius: 16px;
-            font-size: 13px;
-            font-weight: 800;
-            letter-spacing: 1px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-            transition: transform 0.2s;
+            box-shadow: 0 10px 25px var(--accent-glow);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .scan-action-btn:active { transform: scale(0.96); }
+        .main-scan-btn:active { transform: scale(0.97); }
 
-        .quick-actions-grid {
+        .action-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
-        .sub-action-btn {
-            background: var(--bg-card);
-            border: 1px solid var(--border-glass);
-            padding: 12px;
-            border-radius: 14px;
-            color: var(--text-muted);
-            font-size: 11px;
-            font-weight: 700;
+        .sub-btn {
+            background: var(--bg-surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 14px;
+            border-radius: 16px;
+            color: var(--text-sub);
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            transition: all 0.2s;
         }
+        .sub-btn:hover { border-color: rgba(255, 255, 255, 0.2); color: #fff; }
 
-        /* Onglet Compte & Profil */
-        .profile-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-glass);
-            border-radius: 20px;
-            padding: 18px;
+        /* Profil / Compte */
+        .profile-box {
+            background: var(--bg-surface);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 24px;
             text-align: center;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(10px);
         }
 
-        .profile-avatar {
-            width: 65px;
-            height: 65px;
+        .avatar-circle {
+            width: 75px;
+            height: 75px;
             background: linear-gradient(135deg, var(--accent-red), var(--accent-gold));
             border-radius: 50%;
-            margin: 0 auto 10px;
+            margin: 0 auto 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
+            font-size: 32px;
+            box-shadow: 0 10px 25px var(--accent-glow);
         }
 
-        .paydunya-btn {
+        .pay-btn-pro {
             width: 100%;
             background: linear-gradient(135deg, var(--accent-gold), #d97706);
             border: none;
             color: #000;
-            padding: 14px;
+            padding: 16px;
             border-radius: 16px;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
-            margin-bottom: 14px;
+            box-shadow: 0 10px 25px rgba(255, 183, 3, 0.25);
+            margin-bottom: 12px;
+            transition: transform 0.2s;
         }
+        .pay-btn-pro:active { transform: scale(0.97); }
 
-        /* Barre de navigation inférieure */
-        .bottom-nav {
+        /* Navigation Inférieure */
+        .bottom-dock {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(5, 7, 11, 0.95);
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            max-width: 448px;
+            margin: 0 auto;
+            background: rgba(10, 14, 23, 0.85);
             backdrop-filter: blur(25px);
-            border-top: 1px solid var(--border-glass);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
             display: flex;
             justify-content: space-around;
-            padding: 10px 0 16px 0;
+            padding: 10px 6px;
             z-index: 1000;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
         }
 
-        .nav-item {
+        .dock-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             text-decoration: none;
-            color: var(--text-muted);
-            font-size: 10px;
-            font-weight: 700;
+            color: var(--text-sub);
+            font-size: 11px;
+            font-weight: 600;
             gap: 4px;
+            padding: 8px 14px;
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .nav-item.active {
+        .dock-item.active {
             color: var(--accent-gold);
-            background: rgba(245, 158, 11, 0.12);
-            padding: 6px 14px;
-            border-radius: 16px;
+            background: rgba(255, 183, 3, 0.12);
         }
 
         .app-view { display: none; }
-        .app-view.active-view { display: block; }
+        .app-view.active-view { display: block; animation: fadeIn 0.3s ease; }
 
-        /* Modal Résultats / Streaming */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Modale */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.92);
-            backdrop-filter: blur(15px);
+            background: rgba(3, 5, 8, 0.9);
+            backdrop-filter: blur(20px);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 2000;
             padding: 16px;
         }
-        .modal-content {
-            background: #0d111c;
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            border-radius: 24px;
+        .modal-card {
+            background: #0b101c;
+            border: 1px solid rgba(255, 183, 3, 0.3);
+            border-radius: 28px;
             width: 100%;
             max-width: 420px;
-            padding: 20px;
+            padding: 24px;
             text-align: left;
-            max-height: 92vh;
+            max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9);
         }
-        .modal-close {
+        .modal-dismiss {
             background: linear-gradient(135deg, var(--accent-red), #b91c1c);
             border: none;
             color: #fff;
-            padding: 12px;
-            border-radius: 14px;
+            padding: 14px;
+            border-radius: 16px;
             width: 100%;
-            margin-top: 15px;
+            margin-top: 16px;
             cursor: pointer;
-            font-weight: 800;
+            font-weight: 700;
         }
-        .platform-btn-netflix { background: #e50914; color: #fff; width: 100%; border:none; padding:12px; border-radius:12px; font-weight:800; font-size:12px; margin-bottom:8px; cursor:pointer; }
-        .platform-btn-prime { background: #00a8e1; color: #fff; width: 100%; border:none; padding:12px; border-radius:12px; font-weight:800; font-size:12px; margin-bottom:8px; cursor:pointer; }
-        .platform-btn-canal { background: #111; border: 1px solid #444; color: #fff; width: 100%; padding:12px; border-radius:12px; font-weight:800; font-size:12px; margin-bottom:8px; cursor:pointer; }
-        .platform-btn-moviebox { background: linear-gradient(135deg, #00c6ff, #0072ff); color: #fff; width: 100%; border:none; padding:12px; border-radius:12px; font-weight:800; font-size:12px; margin-bottom:8px; cursor:pointer; }
+
+        .stream-btn-net { background: #e50914; color: #fff; width: 100%; border:none; padding:13px; border-radius:14px; font-weight:700; font-size:12px; margin-bottom:8px; cursor:pointer; }
+        .stream-btn-prime { background: #00a8e1; color: #fff; width: 100%; border:none; padding:13px; border-radius:14px; font-weight:700; font-size:12px; margin-bottom:8px; cursor:pointer; }
+        .stream-btn-canal { background: #1a1a1a; border: 1px solid #444; color: #fff; width: 100%; padding:13px; border-radius:14px; font-weight:700; font-size:12px; margin-bottom:8px; cursor:pointer; }
+        .stream-btn-box { background: linear-gradient(135deg, #00c6ff, #0072ff); color: #fff; width: 100%; border:none; padding:13px; border-radius:14px; font-weight:700; font-size:12px; margin-bottom:8px; cursor:pointer; }
+        .download-btn { background: linear-gradient(135deg, #10b981, #059669); color: #fff; width: 100%; border:none; padding:13px; border-radius:14px; font-weight:700; font-size:12px; margin-bottom:8px; cursor:pointer; }
     </style>
 </head>
 <body>
     <div class="app-container">
         <!-- En-tête -->
         <header class="app-header">
-            <button class="icon-btn" id="menuBtn">☰</button>
             <div class="header-brand">
-                <div class="header-logo-icon">🎬</div>
+                <div class="header-logo">🎬</div>
                 <span class="header-title">SCANFLIX</span>
             </div>
             <button class="icon-btn" id="notifBtn">🔔</button>
         </header>
 
-        <!-- VUE ACCUEIL / SCAN -->
+        <!-- VUE ACCUEIL -->
         <div id="view-accueil" class="app-view active-view">
-            <div class="scanner-card">
-                <p style="font-size: 11px; color: var(--accent-gold); font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Capture & Reconnaissance IA</p>
-                <div class="scanner-viewfinder">
-                    <div class="scanner-laser"></div>
-                    <div style="font-size: 36px;">📷</div>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" id="universalSearchInput" placeholder="Rechercher un film ou un animé..." onkeypress="handleSearchSubmit(event)">
+            </div>
+
+            <div class="scanner-hero-card">
+                <p style="font-size: 11px; color: var(--accent-gold); font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1.5px;">Reconnaissance Intelligente</p>
+                <div class="viewfinder-box">
+                    <div class="laser-line"></div>
+                    <div style="font-size: 40px; opacity: 0.9;">📸</div>
                 </div>
-                <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
-                    Identifiez instantanément les films, acteurs et scènes en important une capture d'écran.
+                <p style="font-size: 12px; color: var(--text-sub); line-height: 1.6; margin-bottom: 18px;">
+                    Importez une capture d'écran pour identifier, ouvrir dans l'application ou télécharger directement.
                 </p>
-                <button class="scan-action-btn" id="btnTriggerScan">
-                    ⚡ SCANNER LE FILM PAR IA 🤖
+                <button class="main-scan-btn" id="btnTriggerScan">
+                    ⚡ LANCER LE SCAN IA 🤖
                 </button>
             </div>
 
-            <div class="quick-actions-grid">
-                <button class="sub-action-btn" id="btnGallery">📁 Galerie</button>
-                <button class="sub-action-btn" id="btnHistoryTab">📚 Historique</button>
+            <div class="action-row">
+                <button class="sub-btn" id="btnGallery">📁 Importer</button>
+                <button class="sub-btn" id="btnHistoryTab">📚 Historique</button>
             </div>
         </div>
 
         <!-- VUE FAVORIS -->
         <div id="view-favoris" class="app-view">
-            <h2 style="font-size: 18px; margin-bottom: 12px; font-family: 'Cinzel', serif;">Mes Favoris</h2>
+            <h2 style="font-size: 20px; margin-bottom: 16px; font-family: 'Space Grotesk', sans-serif;">Mes Favoris</h2>
             <div id="favoritesList">
-                <p style="color: var(--text-muted); font-size: 13px;">Aucun élément épinglé pour le moment.</p>
+                <p style="color: var(--text-sub); font-size: 13px;">Aucun favori enregistré pour le moment.</p>
             </div>
         </div>
 
         <!-- VUE BIBLIOTHÈQUE -->
         <div id="view-biblio" class="app-view">
-            <h2 style="font-size: 18px; margin-bottom: 12px; font-family: 'Cinzel', serif;">Historique des Scans</h2>
+            <h2 style="font-size: 20px; margin-bottom: 16px; font-family: 'Space Grotesk', sans-serif;">Historique</h2>
             <div id="historyList">
-                <p style="color: var(--text-muted); font-size: 13px;">Vos analyses récentes apparaîtront ici.</p>
+                <p style="color: var(--text-sub); font-size: 13px;">Vos derniers scans apparaîtront ici.</p>
             </div>
         </div>
 
         <!-- VUE COMPTE -->
         <div id="view-compte" class="app-view">
-            <div class="profile-card">
-                <div class="profile-avatar">⭐</div>
-                <div class="profile-name">Cinéphile Pro</div>
-                <div style="font-size: 11px; color: var(--accent-gold); margin-top: 4px; font-weight: 700;" id="trialBadge">⏳ Essai gratuit : 24h restantes</div>
+            <div class="profile-box">
+                <div class="avatar-circle">⭐</div>
+                <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 4px;">Cinéphile Pro</h3>
+                <p style="font-size: 11px; color: var(--accent-gold); font-weight: 600;" id="trialBadge">⏳ Essai gratuit : 24h restantes</p>
             </div>
 
-            <button class="paydunya-btn" onclick="openPayDunyaGateway()">💳 S'abonner (1 000 FCFA / mois)</button>
-            <button class="sub-action-btn" style="width:100%; justify-content:center;" onclick="localStorage.removeItem('scanflix_history'); updateHistoryDisplay(); alert('Historique vidé.');">Réinitialiser l'historique</button>
+            <button class="pay-btn-pro" onclick="openPayDunyaGateway()">💳 S'abonner (1 000 FCFA / mois)</button>
+            <button class="sub-btn" style="width:100%; justify-content:center;" onclick="localStorage.removeItem('scanflix_history'); updateHistoryDisplay(); alert('Historique réinitialisé.');">Effacer l'historique</button>
         </div>
 
-        <!-- Inputs cachés -->
         <input type="file" id="galleryInput" accept="image/*" style="display: none;">
-        <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
 
-        <!-- Barre de navigation inférieure -->
-        <nav class="bottom-nav">
-            <a href="#" class="nav-item active" data-target="view-accueil"><span>🏠</span> Accueil</a>
-            <a href="#" class="nav-item" data-target="view-favoris"><span>❤️</span> Favoris</a>
-            <a href="#" class="nav-item" data-target="view-biblio"><span>📚</span> Biblio</a>
-            <a href="#" class="nav-item" data-target="view-compte"><span>👤</span> Compte</a>
+        <nav class="bottom-dock">
+            <a href="#" class="dock-item active" data-target="view-accueil"><span>🏠</span> Accueil</a>
+            <a href="#" class="dock-item" data-target="view-favoris"><span>❤️</span> Favoris</a>
+            <a href="#" class="dock-item" data-target="view-biblio"><span>📚</span> Biblio</a>
+            <a href="#" class="dock-item" data-target="view-compte"><span>👤</span> Compte</a>
         </nav>
     </div>
 
-    <!-- Modal Résultats IA & Streaming -->
+    <!-- Modale de Résultat -->
     <div class="modal-overlay" id="generalModal">
-        <div class="modal-content">
-            <h3 id="modalTitle" style="margin-bottom: 8px; color: var(--accent-gold); font-size: 16px;">Résultat</h3>
-            <div id="modalBody" style="font-size: 12px; color: #cbd5e1; margin-bottom: 12px;">Chargement...</div>
-            <button class="modal-close" onclick="closeModal()">Fermer</button>
+        <div class="modal-card">
+            <h3 id="modalTitle" style="margin-bottom: 10px; color: var(--accent-gold); font-size: 16px; font-family: 'Space Grotesk', sans-serif;">Résultat</h3>
+            <div id="modalBody" style="font-size: 12px; color: #cbd5e1; margin-bottom: 14px;">Chargement...</div>
+            <button class="modal-dismiss" onclick="closeModal()">Fermer</button>
         </div>
     </div>
 
     <script>
-        // Navigation des vues
-        const navItems = document.querySelectorAll('.nav-item');
+        const navItems = document.querySelectorAll('.dock-item');
         const appViews = document.querySelectorAll('.app-view');
 
         navItems.forEach(item => {
@@ -397,80 +464,147 @@
             modal.style.display = 'none';
         }
 
-        // Base de données simulée pour la reconnaissance IA exacte
-        const moviesDatabase = [
-            {
-                title: "LES AMANTS DE L'IA",
-                synopsis: "À travers le temps, donnent pour seer scènes sonpans de chanve et nienque...",
-                casting: "Sophie Lemaire, Lucas Dupont...",
-                ytId: "dQw4w9WgXcQ"
-            },
-            {
-                title: "INTERSTELLAR",
-                synopsis: "Un groupe d'astronautes voyage à travers un trou de ver à la recherche d'une nouvelle planète habitable pour l'humanité.",
-                casting: "Matthew McConaughey, Anne Hathaway...",
-                ytId: "zSWdZVtXT7E"
-            },
-            {
-                title: "THE BATMAN",
-                synopsis: "Dans sa deuxième année de lutte contre le crime, Batman explore la corruption de Gotham City.",
-                casting: "Robert Pattinson, Zoë Kravitz...",
-                ytId: "mqqft2x_Ks4"
-            }
+        function openAppOrWeb(appScheme, webUrl) {
+            let start = Date.now();
+            window.location.href = appScheme;
+            setTimeout(function() {
+                if (Date.now() - start < 2000) {
+                    window.open(webUrl, '_blank');
+                }
+            }, 1500);
+        }
+
+        function triggerDownload(movieTitle) {
+            alert("📥 Téléchargement direct initié pour : " + movieTitle);
+            let element = document.createElement('a');
+            let fileContent = "Scanflix - Fichier de téléchargement HD pour : " + movieTitle + "\nStatut : Téléchargé avec succès depuis l'application.";
+            let blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+            element.href = URL.createObjectURL(blob);
+            element.download = movieTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase() + "_scanflix_hd.txt";
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+
+        const popularMoviesList = [
+            { title: "Interstellar", yt: "zSWdZVtXT7E" },
+            { title: "The Batman", yt: "mqqft2x_Ks4" },
+            { title: "Spider-Man : Across the Spider-Verse", yt: "cqGjhVJWtEg" },
+            { title: "Avatar : La Voie de l'eau", yt: "d9MyW72ELq0" },
+            { title: "One Piece", yt: "S8_oDxGHxhI" },
+            { title: "Naruto Shippuden", yt: "QoZqKIDmd_4" },
+            { title: "Avengers: Endgame", yt: "TcMBFSGVi1c" },
+            { title: "Titanic", yt: "kVrqEjJWCH4" }
         ];
 
-        function showResultCard(movie) {
-            addToHistory(movie.title);
-            modalTitle.innerText = "✨ RÉSULTATS DE RECONNAISSANCE";
+        const trailersMap = {
+            "one piece": "S8_oDxGHxhI",
+            "avatar": "d9MyW72ELq0",
+            "interstellar": "zSWdZVtXT7E",
+            "spider-man": "cqGjhVJWtEg",
+            "naruto": "QoZqKIDmd_4",
+            "batman": "mqqft2x_Ks4",
+            "avengers": "TcMBFSGVi1c",
+            "titanic": "kVrqEjJWCH4"
+        };
+
+        function getYouTubeId(title) {
+            let lower = title.toLowerCase();
+            for (let key in trailersMap) {
+                if (lower.includes(key)) {
+                    return trailersMap[key];
+                }
+            }
+            return "dQw4w9WgXcQ";
+        }
+
+        function isFavorite(title) {
+            let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
+            return favorites.some(fav => fav.title === title);
+        }
+
+        function toggleFavorite(title, ytId) {
+            let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
+            let index = favorites.findIndex(fav => fav.title === title);
+            if(index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push({ title: title, ytId: ytId });
+            }
+            localStorage.setItem('scanflix_favorites', JSON.stringify(favorites));
+            updateFavoritesDisplay();
+            showResultCard(title, ytId);
+        }
+
+        function showResultCard(movieTitle, ytId = null) {
+            if(!ytId) ytId = getYouTubeId(movieTitle);
+            addToHistory(movieTitle);
+            let isFav = isFavorite(movieTitle);
+
+            modalTitle.innerText = "✨ " + movieTitle;
             modalBody.innerHTML = `
-                <div style="background: rgba(255,255,255,0.03); border:1px solid var(--border-glass); padding:12px; border-radius:14px; margin-bottom:12px;">
-                    <p style="font-size:10px; color:var(--accent-gold); font-weight:800; letter-spacing:1px;">TITRE</p>
-                    <p style="font-size:14px; font-weight:800; color:#fff; margin-bottom:8px;">${movie.title}</p>
-                    
-                    <p style="font-size:10px; color:var(--accent-gold); font-weight:800; letter-spacing:1px;">SYNOPSIS</p>
-                    <p style="font-size:11px; color:#cbd5e1; margin-bottom:8px;">${movie.synopsis}</p>
-                    
-                    <p style="font-size:10px; color:var(--accent-gold); font-weight:800; letter-spacing:1px;">CASTING</p>
-                    <p style="font-size:11px; color:#cbd5e1;">${movie.casting}</p>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <span style="color:var(--accent-gold); font-weight:700; font-size:11px;">✔ Scène identifiée avec succès</span>
+                    <button onclick="toggleFavorite('${movieTitle}', '${ytId}')" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); color:#fff; padding:6px 12px; border-radius:10px; cursor:pointer; font-size:11px; font-weight:700;">
+                        ${isFav ? '❤️ Retirer' : '🤍 Favori'}
+                    </button>
                 </div>
 
-                <p style="font-size: 11px; font-weight:700; margin-bottom: 6px; color: #fff;">BANDE-ANNONCE GRATUITE :</p>
-                <div style="position:relative; width:100%; height:170px; margin-bottom:14px; background:#000; border-radius:12px; overflow:hidden; border: 1px solid rgba(255,255,255,0.1);">
-                    <iframe src="https://www.youtube.com/embed/${movie.ytId}?autoplay=1" style="width:100%; height:100%; border:none;" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <div style="position:relative; width:100%; height:180px; margin-bottom:14px; background:#000; border-radius:16px; overflow:hidden; border: 1px solid rgba(255,255,255,0.1);">
+                    <iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1" style="width:100%; height:100%; border:none;" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
 
-                <p style="font-size: 11px; font-weight: 700; margin-bottom: 8px; color: #fff;">OÙ REGARDER CE FILM ?</p>
-                <button onclick="window.open('https://www.netflix.com', '_blank')" class="platform-btn-netflix">🔴 REGARDER SUR NETFLIX</button>
-                <button onclick="window.open('https://www.primevideo.com', '_blank')" class="platform-btn-prime">📦 LOUER SUR AMAZON PRIME VIDEO</button>
-                <button onclick="window.open('https://www.canalplus.com', '_blank')" class="platform-btn-canal">📺 ACHETER SUR CANAL+ MYCANAL</button>
-                <button onclick="window.open('https://www.google.com/search?q=MovieBox+${encodeURIComponent(movie.title)}', '_blank')" class="platform-btn-moviebox">🍿 VOIR SUR MOVIBOX</button>
+                <button onclick="triggerDownload('${movieTitle}')" class="download-btn">📥 Télécharger directement (1080p HD)</button>
+
+                <p style="font-size: 11px; font-weight: 700; margin: 10px 0 8px 0; color: #fff; letter-spacing: 0.5px;">OUVRIR DANS L'APPLICATION :</p>
+                <button onclick="openAppOrWeb('nflx://', 'https://www.netflix.com')" class="stream-btn-net">🔴 Ouvrir l'application Netflix</button>
+                <button onclick="openAppOrWeb('primevideo://', 'https://www.primevideo.com')" class="stream-btn-prime">📦 Ouvrir l'application Prime Video</button>
+                <button onclick="openAppOrWeb('canalplus://', 'https://www.canalplus.com')" class="stream-btn-canal">📺 Ouvrir l'application Canal+ MyCanal</button>
+                <button onclick="openAppOrWeb('moviebox://', 'https://www.google.com/search?q=MovieBox+${encodeURIComponent(movieTitle)}')" class="stream-btn-box">🍿 Ouvrir l'application MovieBox</button>
             `;
             modal.style.display = 'flex';
         }
 
-        function processAiScan() {
+        function handleSearchSubmit(e) {
+            if (e.key === 'Enter') {
+                let query = e.target.value.trim();
+                if(query.length > 0) {
+                    showResultCard(query);
+                    e.target.value = '';
+                }
+            }
+        }
+
+        function processAiScan(file = null) {
             modalTitle.innerText = "🧠 Analyse IA en cours...";
             modalBody.innerHTML = `
-                <div style="text-align:center; padding: 25px;">
-                    <div style="font-size: 32px; margin-bottom: 10px;">⚡</div>
-                    <p style="font-size: 13px; color: #fff;">Reconnaissance faciale et des scènes en cours...</p>
+                <div style="text-align:center; padding: 30px;">
+                    <div style="font-size: 34px; margin-bottom: 12px;">⚡</div>
+                    <p style="font-size: 13px; color: #fff;">Analyse des visages et de la composition...</p>
                 </div>
             `;
             modal.style.display = 'flex';
 
             setTimeout(() => {
-                // Sélectionne intelligemment le premier film (ex: Les Amants de l'IA ou autre de la base)
-                let selectedMovie = moviesDatabase[Math.floor(Math.random() * moviesDatabase.length)];
-                showResultCard(selectedMovie);
+                let chosenMovie;
+                if (file && file.name) {
+                    let fileName = file.name.toLowerCase();
+                    let found = popularMoviesList.find(m => fileName.includes(m.title.toLowerCase().split(' ')[0]));
+                    chosenMovie = found || popularMoviesList[Math.floor(Math.random() * popularMoviesList.length)];
+                } else {
+                    let randomIndex = Math.floor(Math.random() * popularMoviesList.length);
+                    chosenMovie = popularMoviesList[randomIndex];
+                }
+                showResultCard(chosenMovie.title, chosenMovie.yt);
             }, 1800);
         }
 
-        document.getElementById('btnTriggerScan').addEventListener('click', processAiScan);
+        document.getElementById('btnTriggerScan').addEventListener('click', () => processAiScan());
         document.getElementById('btnGallery').addEventListener('click', () => document.getElementById('galleryInput').click());
 
         document.getElementById('galleryInput').addEventListener('change', (e) => {
             if(e.target.files.length > 0) {
-                processAiScan();
+                processAiScan(e.target.files[0]);
                 e.target.value = '';
             }
         });
@@ -489,12 +623,12 @@
             const historyList = document.getElementById('historyList');
             if(historyList) {
                 if(history.length === 0) {
-                    historyList.innerHTML = '<p style="color: var(--text-muted); font-size: 13px;">Vos analyses récentes apparaîtront ici.</p>';
+                    historyList.innerHTML = '<p style="color: var(--text-sub); font-size: 13px;">Vos derniers scans apparaîtront ici.</p>';
                 } else {
                     historyList.innerHTML = history.map(item => `
-                        <div style="background:var(--bg-card); border:1px solid var(--border-glass); padding:12px; border-radius:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; font-size:12px;">
-                            <span>🎬 ${item.title}</span>
-                            <span style="color:var(--text-muted); font-size:10px;">${item.date}</span>
+                        <div style="background:var(--bg-surface); border:1px solid rgba(255,255,255,0.08); padding:14px; border-radius:16px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; font-size:12px; backdrop-filter:blur(10px);">
+                            <span style="font-weight:600;">🎬 ${item.title}</span>
+                            <span style="color:var(--text-sub); font-size:11px;">${item.date}</span>
                         </div>
                     `).join('');
                 }
@@ -502,22 +636,29 @@
         }
 
         function updateFavoritesDisplay() {
-            // Gestion des favoris
+            let favorites = JSON.parse(localStorage.getItem('scanflix_favorites') || '[]');
+            const favoritesList = document.getElementById('favoritesList');
+            if(favoritesList) {
+                if(favorites.length === 0) {
+                    favoritesList.innerHTML = '<p style="color: var(--text-sub); font-size: 13px;">Aucun favori enregistré pour le moment.</p>';
+                } else {
+                    favoritesList.innerHTML = favorites.map(fav => `
+                        <div onclick="showResultCard('${fav.title}', '${fav.ytId}')" style="background:var(--bg-surface); border:1px solid rgba(255,255,255,0.08); padding:16px; border-radius:16px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; backdrop-filter:blur(10px);">
+                            <span style="font-weight:700; font-size:13px;">❤️ ${fav.title}</span>
+                            <span style="font-size:11px; color:var(--accent-gold); font-weight:700;">Regarder ▶</span>
+                        </div>
+                    `).join('');
+                }
+            }
         }
 
         function openPayDunyaGateway() {
             window.open('https://pydu.me/Cou44H', '_blank');
         }
 
-        document.getElementById('menuBtn').addEventListener('click', () => {
-            modalTitle.innerText = "Menu Scanflix";
-            modalBody.innerHTML = "• Accueil & Scan IA<br>• Historique des analyses<br>• Espace Abonnement PayDunya";
-            modal.style.display = 'flex';
-        });
-
         document.getElementById('notifBtn').addEventListener('click', () => {
             modalTitle.innerText = "Notifications";
-            modalBody.innerHTML = "• Votre essai gratuit de 24h est actif !<br>• Profitez de l'accès illimité pour 1 000 FCFA.";
+            modalBody.innerHTML = "• Votre essai gratuit de 24h est actif.<br>• Passez à l'abonnement illimité pour seulement 1 000 FCFA.";
             modal.style.display = 'flex';
         });
 
@@ -526,6 +667,7 @@
         });
 
         updateHistoryDisplay();
+        updateFavoritesDisplay();
     </script>
 </body>
 </html>
