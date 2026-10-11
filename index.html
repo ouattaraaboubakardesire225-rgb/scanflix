@@ -256,7 +256,7 @@ function install(){
   var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
   $('ihText').textContent = ios
     ? 'Dans Safari, touche le bouton Partager (carré avec une flèche), puis « Sur l\u2019écran d\u2019accueil ».'
-    : 'Dans C: 'Dans Chrome, touche le menu ⋮ en haut à droite, puis « Installer l\u2019application » (ou « Ajouter à l\u2019écran d\u2019accueil »).';
+    : 'Dans Chrome, touche le menu ⋮ en haut à droite, puis « Installer l\u2019application » (ou « Ajouter à l\u2019écran d\u2019accueil »).';
   $('installHelp').classList.remove('hide');
 }
 $('btnInstall').onclick=install;
@@ -310,7 +310,9 @@ $('btnIdentify').onclick=function(){
     if(!j.title){ $('homeerr').textContent=j.error||'Film non trouvé.'; return; }
     saveHist(j); showResult(j);
   }).catch(function(){ loading(false); $('homeerr').textContent='Pas de connexion. Réessaie.'; });
-};/* ---------- Résultat ---------- */
+};
+
+/* ---------- Résultat ---------- */
 function showResult(f){
   $('rConf').textContent = f.confidence ? 'Fiabilité '+Math.round(f.confidence*100)+' %' : '';
   var meta=[f.year, (f.genres||[]).slice(0,2).join(', '), f.runtime?f.runtime+' min':''].filter(Boolean).join(' · ');
@@ -365,4 +367,4 @@ if(S.token){
 })();
 </script>
 </body>
-</html>
+      </html>
