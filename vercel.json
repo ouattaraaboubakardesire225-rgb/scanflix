@@ -1,0 +1,33 @@
+{
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/:route",
+      "destination": "/api/index?route=:route"
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "destination": "/api/index?route=manifest"
+    },
+    {
+      "source": "/sw.js",
+      "destination": "/api/index?route=sw"
+    },
+    {
+      "source": "/icon-192.png",
+      "destination": "/api/index?route=icon&s=192"
+    },
+    {
+      "source": "/icon-512.png",
+      "destination": "/api/index?route=icon&s=512"
+    },
+    {
+      "source": "/icon-maskable-512.png",
+      "destination": "/api/index?route=icon&s=maskable"
+    }
+  ]
+}
