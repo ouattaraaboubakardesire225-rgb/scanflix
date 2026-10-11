@@ -55,4 +55,314 @@ a{color:inherit;text-decoration:none}
 
 <!-- Connexion / inscription -->
 <section id="auth" class="wrap hide">
-  <div class="top"><div class="logo"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 11V6a2 2 0 0 1 2-2h5M21 4h5a2 2 0 0 1 2 2v5M28 21v5a2 2 0 0 1-2 2h-5M11 28H6a2 2 0 0 1-2-2v-5" stroke="#FF6B5A" stroke-width="2.5" stroke-linec
+  <div class="top"><div class="logo"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 11V6a2 2 0 0 1 2-2h5M21 4h5a2 2 0 0 1 2 2v5M28 21v5a2 2 0 0 1-2 2h-5M11 28H6a2 2 0 0 1-2-2v-5" stroke="#FF6B5A" stroke-width="2.5" stroke-linecap="round"/><path d="M13 11.5v9l7.5-4.5-7.5-4.5Z" fill="#FF6B5A"/></svg>ScanFlix</div></div>
+  <h1 style="font-size:32px;line-height:1.1;margin:18px 0 8px">Trouve n'importe quel film depuis une capture.</h1>
+  <p class="sub" style="margin:0 0 20px;line-height:1.45">Crée ton compte : <b style="color:var(--txt)">1 jour gratuit</b> pour tout essayer.</p>
+  <div class="field"><label for="em">E-mail</label><input id="em" type="email" autocomplete="email" inputmode="email"></div>
+  <div class="field"><label for="pw">Mot de passe</label><input id="pw" type="password" autocomplete="current-password"></div>
+  <div class="err" id="autherr" role="alert"></div>
+  <button class="btn" id="btnSignup">Créer mon compte (1 jour gratuit)</button>
+  <button class="btn ghost" id="btnLogin" style="margin-top:10px">J'ai déjà un compte</button>
+</section>
+
+<!-- Application -->
+<main id="app" class="hide">
+  <!-- Accueil -->
+  <section id="v-home" class="wrap">
+    <div class="top">
+      <div class="logo"><svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 11V6a2 2 0 0 1 2-2h5M21 4h5a2 2 0 0 1 2 2v5M28 21v5a2 2 0 0 1-2 2h-5M11 28H6a2 2 0 0 1-2-2v-5" stroke="#FF6B5A" stroke-width="2.5" stroke-linecap="round"/><path d="M13 11.5v9l7.5-4.5-7.5-4.5Z" fill="#FF6B5A"/></svg>ScanFlix</div>
+      <button class="pill" id="btnInstallTop">Installer</button>
+    </div>
+    <h1 style="font-size:32px;margin-bottom:8px">Quel est ce film&nbsp;?</h1>
+    <p class="sub" style="margin:0 0 16px;line-height:1.45">Importe une capture d'écran ou un GIF.</p>
+    <div class="drop" id="drop">
+      <img id="preview" class="hide" alt="Aperçu de la capture">
+      <div id="dropHint">
+        <div style="font-weight:700;font-size:18px">Ajoute ta capture</div>
+        <div class="sub" style="font-size:14px;margin-top:4px">PNG, JPG ou GIF animé</div>
+      </div>
+    </div>
+    <div class="row2">
+      <button class="btn dark" id="btnGallery">Galerie</button>
+      <button class="btn dark" id="btnPaste">Coller</button>
+    </div>
+    <input id="file" type="file" accept="image/*" class="hide">
+    <button class="btn" id="btnIdentify" disabled>Identifier le film</button>
+    <div class="err" id="homeerr" role="alert"></div>
+  </section>
+
+  <!-- Résultat -->
+  <section id="v-result" class="wrap hide">
+    <div class="top"><button class="pill" id="btnBack">Retour</button><span class="tag" id="rConf"></span></div>
+    <div id="rBody"></div>
+  </section>
+
+  <!-- Historique -->
+  <section id="v-hist" class="wrap hide">
+    <h1 style="font-size:28px;margin:8px 0 14px">Historique</h1>
+    <div id="histList"></div>
+  </section>
+
+  <!-- Compte -->
+  <section id="v-acc" class="wrap hide">
+    <h1 style="font-size:28px;margin:8px 0 14px">Compte</h1>
+    <div class="card" style="margin-bottom:12px">
+      <div class="sub" id="accEmail" style="font-size:14px"></div>
+      <div id="accStatus" style="font-weight:700;font-size:18px;margin-top:4px"></div>
+      <div class="sub" id="accUntil" style="font-size:14px;margin-top:2px"></div>
+    </div>
+    <button class="btn" id="btnPay" style="margin-bottom:10px"></button>
+    <button class="btn ghost" id="btnInstall" style="margin-bottom:10px">Installer l'application</button>
+    <button class="btn dark" id="btnLogout">Se déconnecter</button>
+  </section>
+
+  <nav class="nav" aria-label="Navigation">
+    <button data-v="home" class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1v-8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Accueil</button>
+    <button data-v="hist"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Historique</button>
+    <button data-v="acc"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Compte</button>
+  </nav>
+</main>
+
+<!-- Abonnement requis -->
+<div id="paywall" class="modal hide" role="dialog" aria-modal="true" aria-labelledby="pwT">
+  <div class="sheet">
+    <h2 id="pwT" style="font-size:24px">Ton jour gratuit est terminé</h2>
+    <p class="sub" style="margin:0;line-height:1.45">Abonne-toi pour continuer à identifier tes films : <b id="pwPrice" style="color:var(--txt)"></b> par mois, par mobile money ou carte.</p>
+    <button class="btn" id="pwPay">S'abonner</button>
+    <button class="btn dark" id="pwClose">Plus tard</button>
+  </div>
+</div>
+
+<!-- Aide à l'installation -->
+<div id="installHelp" class="modal hide" role="dialog" aria-modal="true" aria-labelledby="ihT">
+  <div class="sheet">
+    <h2 id="ihT" style="font-size:22px">Installer ScanFlix</h2>
+    <p class="sub" id="ihText" style="margin:0;line-height:1.5"></p>
+    <button class="btn dark" id="ihClose">Compris</button>
+  </div>
+</div>
+
+<div id="toast" class="toast hide" role="status"></div>
+
+<script>
+(function(){
+'use strict';
+var $ = function(id){return document.getElementById(id);};
+var S = { token: localStorage.getItem('sf_token')||'', me:null, img:null, deferred:null };
+
+/* ---------- Plateformes : ouverture directe des applications ---------- */
+var PLATFORMS = [
+  {name:'Netflix', pkg:'com.netflix.mediaclient', web:function(t){return 'https://www.netflix.com/search?q='+t;}},
+  {name:'Amazon Prime Video', pkg:'com.amazon.avod.thirdpartyclient', web:function(t){return 'https://www.primevideo.com/search/?phrase='+t;}},
+  {name:'Moviebox', pkg:'com.community.oneroom', web:function(t){return 'https://moviebox.ng/web/searchResult?keyword='+t;}},
+  {name:'YouTube', pkg:'com.google.android.youtube', web:function(t){return 'https://www.youtube.com/results?search_query='+t+'+film+complet';}},
+  {name:'Vidmate', pkg:'com.nemo.vidmate', web:function(t){return 'https://www.vidmate.com/';}}
+];
+var isAndroid = /android/i.test(navigator.userAgent);
+function platLink(p, title){
+  var t = encodeURIComponent(title), web = p.web(t);
+  if(!isAndroid) return web;
+  var u = new URL(web);
+  return 'intent://'+u.host+u.pathname+u.search+'#Intent;scheme='+u.protocol.replace(':','')+
+    ';package='+p.pkg+';S.browser_fallback_url='+encodeURIComponent(web)+';end';
+}
+
+/* ---------- Outils ---------- */
+function toast(msg){var t=$('toast');t.textContent=msg;t.classList.remove('hide');clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.add('hide');},3500);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function fcfa(n){return Number(n).toLocaleString('fr-FR').replace(/\u202f|\u00a0/g,' ')+' FCFA';}
+function dateFr(ms){return new Date(ms).toLocaleString('fr-FR',{day:'2-digit',month:'long',hour:'2-digit',minute:'2-digit'});}
+function api(path, opts){
+  opts = opts || {};
+  var h = {'Content-Type':'application/json'};
+  if(S.token) h.Authorization = 'Bearer '+S.token;
+  return fetch('/api/'+path, {method:opts.method||'GET', headers:h, body:opts.body?JSON.stringify(opts.body):undefined})
+    .then(function(r){return r.json().catch(function(){return {};}).then(function(j){j._status=r.status;return j;});});
+}
+
+/* ---------- Navigation ---------- */
+function show(v){
+  ['home','result','hist','acc'].forEach(function(x){$('v-'+x).classList.toggle('hide', x!==v);});
+  var tab = v==='result'?'home':v;
+  document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on', b.dataset.v===tab);});
+  if(v==='hist') renderHist();
+  if(v==='acc') renderAcc();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.nav button').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.v);});});
+
+/* ---------- Compte ---------- */
+function enter(){
+  $('auth').classList.add('hide'); $('app').classList.remove('hide'); show('home');
+}
+function leave(){
+  S.token=''; S.me=null; localStorage.removeItem('sf_token');
+  $('app').classList.add('hide'); $('auth').classList.remove('hide');
+}
+function setMe(me){ S.me=me; }
+function authCall(action){
+  var email=$('em').value.trim(), password=$('pw').value;
+  $('autherr').textContent='';
+  api('auth',{method:'POST',body:{action:action,email:email,password:password}}).then(function(j){
+    if(!j.token){ $('autherr').textContent=j.error||'Erreur. Réessaie.'; return; }
+    S.token=j.token; localStorage.setItem('sf_token',j.token); setMe(j.me); enter();
+    if(action==='signup') toast('Bienvenue ! 1 jour gratuit commence maintenant.');
+  }).catch(function(){ $('autherr').textContent='Pas de connexion. Réessaie.'; });
+}
+$('btnSignup').onclick=function(){authCall('signup');};
+$('btnLogin').onclick=function(){authCall('login');};
+$('btnLogout').onclick=leave;
+
+function renderAcc(){
+  var me=S.me; if(!me) return;
+  $('accEmail').textContent=me.email;
+  var label={admin:'Propriétaire : accès gratuit',paid:'Abonné',trial:'Essai gratuit',expired:'Abonnement terminé'}[me.status];
+  $('accStatus').textContent=label;
+  $('accUntil').textContent = me.status==='admin' ? 'Aucune limite.' : me.until ? ((me.allowed?'Jusqu\u2019au ':'Terminé le ')+dateFr(me.until)) : '';
+  $('btnPay').classList.toggle('hide', me.status==='admin');
+  $('btnPay').textContent = (me.status==='paid'?'Prolonger de 30 jours : ':'S\u2019abonner : ')+fcfa(me.price)+' / mois';
+  $('btnInstall').classList.toggle('hide', isStandalone());
+}
+
+/* ---------- Paiement PayDunya ---------- */
+function startPay(){
+  api('pay',{method:'POST'}).then(function(j){
+    if(!j.url){ toast(j.error||'Paiement indisponible.'); return; }
+    localStorage.setItem('sf_pending', j.token);
+    location.href=j.url;
+  }).catch(function(){toast('Pas de connexion.');});
+}
+$('btnPay').onclick=startPay;
+$('pwPay').onclick=startPay;
+$('pwClose').onclick=function(){$('paywall').classList.add('hide');};
+function paywall(){
+  $('pwPrice').textContent=fcfa((S.me&&S.me.price)||1000);
+  $('paywall').classList.remove('hide');
+}
+function checkPending(){
+  var tk=localStorage.getItem('sf_pending'); if(!tk) return Promise.resolve();
+  return api('verify?token='+encodeURIComponent(tk)).then(function(j){
+    if(j.ok){ localStorage.removeItem('sf_pending'); setMe(j.me); toast('Paiement reçu. Merci ! Abonnement activé.'); }
+    else if(j.status==='cancelled'||j.status==='unknown_invoice'){ localStorage.removeItem('sf_pending'); }
+    else if(new URLSearchParams(location.search).get('pay')==='return'){ toast('Paiement en cours de confirmation…'); }
+  }).catch(function(){});
+}
+
+/* ---------- Installation (PWA) ---------- */
+function isStandalone(){return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone;}
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();S.deferred=e;});
+function install(){
+  if(S.deferred){ S.deferred.prompt(); S.deferred.userChoice.finally(function(){S.deferred=null;}); return; }
+  var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  $('ihText').textContent = ios
+    ? 'Dans Safari, touche le bouton Partager (carré avec une flèche), puis « Sur l\u2019écran d\u2019accueil ».'
+    : 'Dans C: 'Dans Chrome, touche le menu ⋮ en haut à droite, puis « Installer l\u2019application » (ou « Ajouter à l\u2019écran d\u2019accueil »).';
+  $('installHelp').classList.remove('hide');
+}
+$('btnInstall').onclick=install;
+$('btnInstallTop').onclick=install;
+$('ihClose').onclick=function(){$('installHelp').classList.add('hide');};
+if(isStandalone()) $('btnInstallTop').classList.add('hide');
+
+/* ---------- Choix de l'image ---------- */
+function loadBitmap(blob){
+  if(window.createImageBitmap) return createImageBitmap(blob);
+  return new Promise(function(ok,ko){var i=new Image();i.onload=function(){ok(i);};i.onerror=ko;i.src=URL.createObjectURL(blob);});
+}
+function setImage(blob){
+  $('homeerr').textContent='';
+  loadBitmap(blob).then(function(bmp){
+    var w=bmp.width||bmp.naturalWidth, h=bmp.height||bmp.naturalHeight, max=1024, k=Math.min(1,max/Math.max(w,h));
+    var c=document.createElement('canvas'); c.width=Math.round(w*k); c.height=Math.round(h*k);
+    c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);
+    var url=c.toDataURL('image/jpeg',0.82);
+    S.img=url.split(',')[1];
+    $('preview').src=url; $('preview').classList.remove('hide'); $('dropHint').classList.add('hide');
+    $('btnIdentify').disabled=false;
+  }).catch(function(){ $('homeerr').textContent='Image illisible. Essaie une autre capture.'; });
+}
+$('btnGallery').onclick=function(){$('file').click();};
+$('drop').onclick=function(){$('file').click();};
+$('file').onchange=function(){ if(this.files[0]) setImage(this.files[0]); this.value=''; };
+$('btnPaste').onclick=function(){
+  if(!navigator.clipboard||!navigator.clipboard.read){ toast('Colle non disponible : utilise Galerie.'); return; }
+  navigator.clipboard.read().then(function(items){
+    for(var i=0;i<items.length;i++){
+      var t=items[i].types.find(function(x){return x.indexOf('image/')===0;});
+      if(t) return items[i].getType(t).then(setImage);
+    }
+    toast('Aucune image copiée.');
+  }).catch(function(){toast('Colle refusé. Utilise Galerie.');});
+};
+
+/* ---------- Identification ---------- */
+function loading(on){
+  var b=$('btnIdentify'); b.disabled=on||!S.img;
+  b.innerHTML = on ? '<span class="spin"></span> Recherche en cours…' : 'Identifier le film';
+}
+$('btnIdentify').onclick=function(){
+  if(!S.img) return;
+  $('homeerr').textContent=''; loading(true);
+  api('identify',{method:'POST',body:{image:S.img}}).then(function(j){
+    loading(false);
+    if(j._status===402||j.code==='PAYWALL'){ api('me').then(function(m){ if(m.me) setMe(m.me); paywall(); }); return; }
+    if(j._status===401){ leave(); return; }
+    if(!j.title){ $('homeerr').textContent=j.error||'Film non trouvé.'; return; }
+    saveHist(j); showResult(j);
+  }).catch(function(){ loading(false); $('homeerr').textContent='Pas de connexion. Réessaie.'; });
+};/* ---------- Résultat ---------- */
+function showResult(f){
+  $('rConf').textContent = f.confidence ? 'Fiabilité '+Math.round(f.confidence*100)+' %' : '';
+  var meta=[f.year, (f.genres||[]).slice(0,2).join(', '), f.runtime?f.runtime+' min':''].filter(Boolean).join(' · ');
+  var h='<div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:16px">'+
+    (f.poster?'<img src="'+esc(f.poster)+'" alt="Affiche de '+esc(f.title)+'" style="width:96px;border-radius:14px;flex:none">':'')+
+    '<div><h2 style="font-size:24px;line-height:1.15">'+esc(f.title)+'</h2><div class="sub" style="margin-top:4px">'+esc(meta)+'</div></div></div>';
+  if(f.overview) h+='<p class="sub" style="line-height:1.5;margin:0 0 16px">'+esc(f.overview)+'</p>';
+  h+='<div class="sub" style="font-size:13px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px">Bande-annonce</div>';
+  if(f.trailerKey){
+    h+='<div class="trailer"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(f.trailerKey)+'?playsinline=1&rel=0" title="Bande-annonce de '+esc(f.title)+'" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>';
+  } else {
+    h+='<a class="plat" href="'+esc(platLink(PLATFORMS[3], f.title+' bande annonce'))+'"><b>Chercher la bande-annonce sur YouTube</b></a>';
+  }
+  h+='<div class="sub" style="font-size:13px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;margin:18px 0 8px">Où le regarder</div>';
+  PLATFORMS.forEach(function(p){
+    h+='<a class="plat" href="'+esc(platLink(p,f.title))+'"><span><b>'+esc(p.name)+'</b><br><span class="sub" style="font-size:13px">Ouvre l\u2019application</span></span><span aria-hidden="true" class="sub">›</span></a>';
+  });
+  h+='<button class="btn" id="btnAgain" style="margin-top:12px">Scanner un autre film</button>';
+  $('rBody').innerHTML=h;
+  $('btnAgain').onclick=function(){show('home');};
+  show('result');
+}
+$('btnBack').onclick=function(){show('home');};
+
+/* ---------- Historique (sur l'appareil) ---------- */
+function getHist(){try{return JSON.parse(localStorage.getItem('sf_hist')||'[]');}catch(e){return [];}}
+function saveHist(f){
+  var l=getHist().filter(function(x){return x.id!==f.id||x.type!==f.type;});
+  l.unshift(f); localStorage.setItem('sf_hist',JSON.stringify(l.slice(0,50)));
+}
+function renderHist(){
+  var l=getHist(), box=$('histList');
+  if(!l.length){ box.innerHTML='<p class="sub">Aucun film identifié pour l\u2019instant.</p>'; return; }
+  box.innerHTML=l.map(function(f,i){
+    return '<div class="hist" data-i="'+i+'" role="button" tabindex="0">'+(f.poster?'<img src="'+esc(f.poster)+'" alt="">':'<img alt="">')+
+      '<div><b>'+esc(f.title)+'</b><div class="sub" style="font-size:14px">'+esc(f.year)+'</div></div></div>';
+  }).join('');
+  box.querySelectorAll('.hist').forEach(function(el){
+    var go=function(){showResult(l[+el.dataset.i]);};
+    el.onclick=go; el.onkeydown=function(e){if(e.key==='Enter')go();};
+  });
+}
+
+/* ---------- Démarrage ---------- */
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
+if(S.token){
+  api('me').then(function(j){
+    if(j.me){ setMe(j.me); enter(); return checkPending().then(function(){ history.replaceState(null,'',location.pathname); }); }
+    leave();
+  }).catch(function(){ $('auth').classList.remove('hide'); });
+} else { $('auth').classList.remove('hide'); }
+})();
+</script>
+</body>
+</html>
