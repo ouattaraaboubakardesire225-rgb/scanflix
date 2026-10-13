@@ -62,23 +62,38 @@ async function askGemini(imageB64) {
   if (!key) throw new Error('GEMINI_API_KEY manquante');
   const prompt =
     "Tu identifies des films et séries à partir d'une capture d'écran. " +
-    'Réponds uniquement en JSON : {"title": titre original, "year": année ou null, ' +
-    '"type": "movie" ou "tv", "confidence": nombre entre 0 et 1}. ' +
+    'Réponds uniquement en JSON : {"title": titre original, "english_title": titre anglais international ou null, ' +
+    '"alt_titles": [autres titres connus : français, caractères originaux (chinois, coréen, etc.)], ' +
+    '"year": année ou null, "type": "movie" ou "tv", "confidence": nombre entre 0 et 1}. ' +
     "Si tu hésites, donne ta meilleure hypothèse avec une confiance faible. " +
     "Si l'image n'est clairement pas une scène de film ou de série, mets title à null.";
-  const r = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${key}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: 'image/jpeg', data: imageB64 } }] }],
-        generationConfig: { responseMimeType: 'application/json', temperature: 0.2 },
-      }),
+  const models = [GEMINI_MODEL, 'gemini-flash-latest', 'gemini-flash-lite-latest']
+    .filter((m, i, a) => m && a.indexOf(m) === i);
+  const body = JSON.stringify({
+    contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: 'image/jpeg', data: imageB64 } }] }],
+    generationConfig: { responseMimeType: 'application/json', temperature: 0.2 },
+  });
+  let j = null; let lastErr = 'Erreur Gemini'; let limited = false;
+  for (let attempt = 0; attempt < 2 && !j; attempt++) {
+    for (const m of models) {
+      const r = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${key}`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body }
+      );
+      const jj = await r.json().catch(() => ({}));
+      if (r.ok) { j = jj; break; }
+      lastErr = (jj.error && jj.error.message) || 'Erreur Gemini';
+      if (r.status === 429 || r.status === 503) { limited = true; continue; }
+      if (r.status === 404) continue;
+      throw new Error(lastErr);
     }
-  );
-  const j = await r.json();
-  if (!r.ok) throw new Error((j.error && j.error.message) || 'Erreur Gemini');
+    if (!j && limited && attempt === 0) await new Promise((ok) => setTimeout(ok, 4000));
+  }
+  if (!j) {
+    throw new Error(limited
+      ? "Trop de demandes en même temps. Patiente environ 1 minute puis réessaie."
+      : lastErr);
+  }
   const text = j.candidates && j.candidates[0] && j.candidates[0].content.parts.map((p) => p.text || '').join('');
   return JSON.parse(text || '{}');
 }
@@ -107,15 +122,25 @@ async function identify(req, res) {
     if (!guess.title) {
       return L.json(res, 404, { error: "Je ne reconnais pas de film sur cette image. Essaie une capture plus nette." });
     }
-    const type = guess.type === 'tv' ? 'tv' : 'movie';
-    const params = { query: guess.title, language: 'fr-FR' };
-    if (guess.year) params[type === 'tv' ? 'first_air_date_year' : 'year'] = String(guess.year);
-    let found = await tmdb('/search/' + type, params);
-    if (!found.results || !found.results.length) {
-      delete params.year; delete params.first_air_date_year;
-      found = await tmdb('/search/' + type, params);
+    const pref = guess.type === 'tv' ? 'tv' : 'movie';
+    const titles = [guess.title, guess.english_title].concat(Array.isArray(guess.alt_titles) ? guess.alt_titles : [])
+      .filter((t) => t && typeof t === 'string');
+    const uniq = [...new Set(titles)].slice(0, 5);
+    let hit = null; let type = pref;
+    const order = pref === 'tv' ? ['tv', 'movie'] : ['movie', 'tv'];
+    for (const t of uniq) {
+      for (const ty of order) {
+        for (const useYear of [true, false]) {
+          if (useYear && !guess.year) continue;
+          const params = { query: t, language: 'fr-FR' };
+          if (useYear) params[ty === 'tv' ? 'first_air_date_year' : 'year'] = String(guess.year);
+          const f = await tmdb('/search/' + ty, params);
+          if (f.results && f.results.length) { hit = f.results[0]; type = ty; break; }
+        }
+        if (hit) break;
+      }
+      if (hit) break;
     }
-    const hit = found.results && found.results[0];
     if (!hit) return L.json(res, 404, { error: 'Film introuvable : « ' + guess.title + ' ».' });
     const d = await tmdb('/' + type + '/' + hit.id, {
       language: 'fr-FR', append_to_response: 'videos', include_video_language: 'fr,en,null',
