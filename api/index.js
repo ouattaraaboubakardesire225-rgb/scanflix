@@ -118,4 +118,4 @@ module.exports = async (req, res) => {
   const h = H[route];
   if (!h) return L.json(res, 404, { error: 'Route inconnue.' });
   return h(req, res);
-};
+};￼Enter
