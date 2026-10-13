@@ -67,19 +67,22 @@ async function askGemini(imageB64) {
     '"year": année ou null, "type": "movie" ou "tv", "confidence": nombre entre 0 et 1}. ' +
     "Si tu hésites, donne ta meilleure hypothèse avec une confiance faible. " +
     "Si l'image n'est clairement pas une scène de film ou de série, mets title à null.";
-  const models = [GEMINI_MODEL, 'gemini-flash-latest', 'gemini-flash-lite-latest']
+  const models = [GEMINI_MODEL, 'gemini-flash-lite-latest']
     .filter((m, i, a) => m && a.indexOf(m) === i);
   const body = JSON.stringify({
     contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: 'image/jpeg', data: imageB64 } }] }],
     generationConfig: { responseMimeType: 'application/json', temperature: 0.2 },
   });
   let j = null; let lastErr = 'Erreur Gemini'; let limited = false;
-  for (let attempt = 0; attempt < 2 && !j; attempt++) {
+  for (let attempt = 0; attempt < 1 && !j; attempt++) {
     for (const m of models) {
-      const r = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${key}`,
-        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body }
-      );
+      let r;
+      try {
+        r = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${key}`,
+          { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, signal: AbortSignal.timeout(6000) }
+        );
+      } catch (e) { limited = true; lastErr = 'Gemini trop lent'; continue; }
       const jj = await r.json().catch(() => ({}));
       if (r.ok) { j = jj; break; }
       lastErr = (jj.error && jj.error.message) || 'Erreur Gemini';
@@ -87,8 +90,7 @@ async function askGemini(imageB64) {
       if (r.status === 404) continue;
       throw new Error(lastErr);
     }
-    if (!j && limited && attempt === 0) await new Promise((ok) => setTimeout(ok, 4000));
-  }
+      }
   if (!j) {
     throw new Error(limited
       ? "Trop de demandes en même temps. Patiente environ 1 minute puis réessaie."
@@ -128,18 +130,19 @@ async function identify(req, res) {
     const uniq = [...new Set(titles)].slice(0, 5);
     let hit = null; let type = pref;
     const order = pref === 'tv' ? ['tv', 'movie'] : ['movie', 'tv'];
-    for (const t of uniq) {
+    const jobs = [];
+    for (const t of uniq.slice(0, 3)) {
       for (const ty of order) {
-        for (const useYear of [true, false]) {
-          if (useYear && !guess.year) continue;
-          const params = { query: t, language: 'fr-FR' };
-          if (useYear) params[ty === 'tv' ? 'first_air_date_year' : 'year'] = String(guess.year);
-          const f = await tmdb('/search/' + ty, params);
-          if (f.results && f.results.length) { hit = f.results[0]; type = ty; break; }
-        }
-        if (hit) break;
+        const params = { query: t, language: 'fr-FR' };
+        if (guess.year) params[ty === 'tv' ? 'first_air_date_year' : 'year'] = String(guess.year);
+        jobs.push({ ty, params });
+        if (guess.year) jobs.push({ ty, params: { query: t, language: 'fr-FR' } });
       }
-      if (hit) break;
+    }
+    const outs = await Promise.all(jobs.map((jb) =>
+      tmdb('/search/' + jb.ty, jb.params).catch(() => ({ results: [] }))));
+    for (let i = 0; i < outs.length; i++) {
+      if (outs[i].results && outs[i].results.length) { hit = outs[i].results[0]; type = jobs[i].ty; break; }
     }
     if (!hit) return L.json(res, 404, { error: 'Film introuvable : « ' + guess.title + ' ».' });
     const d = await tmdb('/' + type + '/' + hit.id, {
