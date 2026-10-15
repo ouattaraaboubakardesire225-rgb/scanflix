@@ -81,6 +81,28 @@ a{color:inherit;text-decoration:none}
 .spin{width:20px;height:20px;border:3px solid rgba(22,6,12,.25);border-top-color:var(--ink);border-radius:50%;animation:s .8s linear infinite}
 @keyframes s{to{transform:rotate(360deg)}}
 .tag{display:inline-block;padding:5px 12px;border-radius:999px;background:var(--card2);font-size:12px;font-weight:700;color:var(--sub)}
+.avatar{width:54px;height:54px;border-radius:18px;background:var(--grad);color:var(--ink);font-weight:800;font-size:24px;display:flex;align-items:center;justify-content:center;flex:none}
+.prow{display:flex;align-items:center;gap:14px}
+.card + .card{margin-top:12px}
+.card .field:last-of-type{margin-bottom:6px}
+.hsec{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--sub);margin:24px 2px 10px}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:48px}
+.switch{position:relative;width:52px;height:30px;flex:none}
+.switch input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:2}
+.switch i{position:absolute;inset:0;border-radius:999px;background:#33334A;transition:background .2s}
+.switch i::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .2s}
+.switch input:checked + i{background:var(--acc)}
+.switch input:checked + i::after{transform:translateX(22px)}
+.switch input:focus-visible + i{outline:2px solid var(--acc2);outline-offset:2px}
+.btn.danger{background:transparent;color:#FF8FA3;border:1.5px solid rgba(255,143,163,.45);box-shadow:none}
+.note{font-size:13px;line-height:1.5;color:var(--sub);margin:8px 0 0}
+.okline{font-size:13px;margin-top:8px;color:#7BE0A8}
+.warnline{font-size:13px;margin-top:8px;color:#FFC36B}
+.alts{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;margin:0 -2px;scrollbar-width:none}
+.alt{flex:none;width:104px;border:0;background:none;text-align:left;cursor:pointer;padding:0}
+.alt .ph{width:104px;height:150px;border-radius:14px;background:var(--card2);object-fit:cover;display:block}
+.alt b{display:block;font-size:13px;margin-top:6px;line-height:1.25}
+.alt span{font-size:12px;color:var(--sub)}
 .perks{display:flex;flex-direction:column;gap:10px;margin:0 0 22px}
 .perk{display:flex;align-items:center;gap:12px;font-size:15px;color:var(--sub)}
 .perk i{width:34px;height:34px;border-radius:11px;background:var(--card2);display:flex;align-items:center;justify-content:center;flex:none;color:var(--acc2)}
@@ -103,6 +125,7 @@ a{color:inherit;text-decoration:none}
     <div class="perk"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor"/></svg></i>Bande-annonce tout de suite</div>
     <div class="perk"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6h9v9M18 6 7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Ouvre Netflix, Prime, YouTube… en un tap</div>
   </div>
+  <div class="field"><label for="nm">Nom d'utilisateur (facultatif)</label><input id="nm" type="text" autocomplete="nickname" maxlength="40"></div>
   <div class="field"><label for="em">E-mail</label><input id="em" type="email" autocomplete="email" inputmode="email"></div>
   <div class="field"><label for="pw">Mot de passe</label><input id="pw" type="password" autocomplete="current-password"></div>
   <div class="err" id="autherr" role="alert"></div>
@@ -148,8 +171,8 @@ a{color:inherit;text-decoration:none}
   <section id="v-hist" class="wrap hide">
     <h1 style="font-size:30px;margin:8px 0 14px">Mes films</h1>
     <div class="seg" role="tablist">
-      <button id="tabRecent" class="on" role="tab">Récents</button>
-      <button id="tabFav" role="tab">Ma liste</button>
+      <button id="tabFav" class="on" role="tab">♥ Favoris</button>
+      <button id="tabRecent" role="tab">Récents</button>
     </div>
     <div id="histList"></div>
   </section>
@@ -157,18 +180,54 @@ a{color:inherit;text-decoration:none}
   <!-- Compte -->
   <section id="v-acc" class="wrap hide">
     <h1 style="font-size:30px;margin:8px 0 14px">Compte</h1>
-    <div class="card" style="margin-bottom:12px">
-      <div class="sub" id="accEmail" style="font-size:14px"></div>
-      <div id="accStatus" style="font-weight:800;font-size:19px;margin-top:4px"></div>
-      <div class="sub" id="accUntil" style="font-size:14px;margin-top:2px"></div>
+    <div class="card prow">
+      <div class="avatar" id="accAv">?</div>
+      <div style="min-width:0"><div id="accName" style="font-weight:800;font-size:19px"></div><div class="sub" id="accEmail" style="font-size:14px;overflow-wrap:anywhere"></div></div>
     </div>
-    <button class="btn" id="btnPay" style="margin-bottom:10px"></button>
+
+    <div class="hsec">Abonnement</div>
+    <div class="card">
+      <div id="accStatus" style="font-weight:800;font-size:19px"></div>
+      <div class="sub" id="accUntil" style="font-size:14px;margin:2px 0 12px"></div>
+      <button class="btn" id="btnPay"></button>
+      <div id="accPay"></div>
+    </div>
+
+    <div class="hsec">Profil</div>
+    <div class="card">
+      <div class="field"><label for="pfName">Nom d'utilisateur</label><input id="pfName" type="text" autocomplete="nickname" maxlength="40"></div>
+      <div class="field"><label for="pfPhone">Numéro de téléphone</label><input id="pfPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+225 07 00 00 00 00"></div>
+      <div class="field"><label for="pfEmail">E-mail (non modifiable)</label><input id="pfEmail" type="email" disabled></div>
+      <div class="err" id="pfErr" role="alert"></div>
+      <button class="btn dark" id="btnSaveProf">Enregistrer</button>
+    </div>
+
+    <div class="hsec">Mot de passe</div>
+    <div class="card">
+      <div class="field"><label for="pwCur">Mot de passe actuel</label><input id="pwCur" type="password" autocomplete="current-password"></div>
+      <div class="field"><label for="pwNew">Nouveau mot de passe (6 caractères minimum)</label><input id="pwNew" type="password" autocomplete="new-password"></div>
+      <div class="err" id="pwErr" role="alert"></div>
+      <button class="btn dark" id="btnSavePw">Changer le mot de passe</button>
+    </div>
+
+    <div class="hsec">Confidentialité</div>
+    <div class="card">
+      <div class="srow">
+        <label for="keepHist" style="font-weight:600">Garder mon historique sur cet appareil</label>
+        <span class="switch"><input id="keepHist" type="checkbox"><i></i></span>
+      </div>
+      <p class="note">Tes captures sont envoyées à l’IA Google Gemini pour reconnaître le film. ScanFlix ne les enregistre pas. Ton historique et tes favoris restent sur ton téléphone.</p>
+      <button class="btn dark" id="btnClearHist" style="margin-top:14px">Effacer mon historique et mes favoris</button>
+      <button class="btn danger" id="btnDelAcc" style="margin-top:10px">Supprimer mon compte</button>
+    </div>
+
+    <div class="hsec">Application</div>
     <button class="btn ghost" id="btnInstall" style="margin-bottom:10px">Installer l'application</button>
     <button class="btn dark" id="btnLogout">Se déconnecter</button>
   </section>
 
   <nav class="nav" aria-label="Navigation">
-    <button data-v="home" class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>Scanner</button>
+    <button data-v="home" class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>Accueil</button>
     <button data-v="hist"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="3" stroke="currentColor" stroke-width="1.9"/><path d="M4 10h16M9 5v14" stroke="currentColor" stroke-width="1.9"/></svg>Mes films</button>
     <button data-v="acc"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5" stroke="currentColor" stroke-width="1.9"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>Compte</button>
   </nav>
@@ -181,6 +240,18 @@ a{color:inherit;text-decoration:none}
     <p class="sub" style="margin:0;line-height:1.45">Abonne-toi pour continuer à identifier tes films : <b id="pwPrice" style="color:var(--txt)"></b> par mois, par mobile money ou carte.</p>
     <button class="btn" id="pwPay">S'abonner</button>
     <button class="btn dark" id="pwClose">Plus tard</button>
+  </div>
+</div>
+
+<!-- Suppression du compte -->
+<div id="delModal" class="modal hide" role="dialog" aria-modal="true" aria-labelledby="delT">
+  <div class="sheet">
+    <h2 id="delT" style="font-size:22px">Supprimer ton compte ?</h2>
+    <p class="sub" style="margin:0;line-height:1.5">Cette action est définitive. Entre ton mot de passe pour confirmer.</p>
+    <div class="field" style="margin:0"><label for="delPw">Mot de passe</label><input id="delPw" type="password" autocomplete="current-password"></div>
+    <div class="err" id="delErr" role="alert"></div>
+    <button class="btn danger" id="delOk">Supprimer définitivement</button>
+    <button class="btn dark" id="delNo">Annuler</button>
   </div>
 </div>
 
@@ -257,7 +328,7 @@ function setMe(me){ S.me=me; }
 function authCall(action){
   var email=$('em').value.trim(), password=$('pw').value;
   $('autherr').textContent='';
-  api('auth',{method:'POST',body:{action:action,email:email,password:password}}).then(function(j){
+  api('auth',{method:'POST',body:{action:action,email:email,password:password,name:($('nm').value||'').trim()}}).then(function(j){
     if(!j.token){ $('autherr').textContent=j.error||'Erreur. Réessaie.'; return; }
     S.token=j.token; localStorage.setItem('sf_token',j.token); setMe(j.me); enter();
     if(action==='signup') toast('Bienvenue ! 1 jour gratuit commence maintenant.');
@@ -269,14 +340,62 @@ $('btnLogout').onclick=leave;
 
 function renderAcc(){
   var me=S.me; if(!me) return;
+  var nm=me.name||me.email.split('@')[0];
+  $('accAv').textContent=nm.charAt(0).toUpperCase();
+  $('accName').textContent=nm;
   $('accEmail').textContent=me.email;
-  var label={admin:'Propriétaire : accès gratuit',paid:'Abonné',trial:'Essai gratuit',expired:'Abonnement terminé'}[me.status];
+  var label={admin:'Propriétaire : accès illimité',paid:'Abonné',trial:'Essai gratuit',expired:'Abonnement terminé'}[me.status];
   $('accStatus').textContent=label;
-  $('accUntil').textContent = me.status==='admin' ? 'Aucune limite.' : me.until ? ((me.allowed?'Jusqu’au ':'Terminé le ')+dateFr(me.until)) : '';
+  $('accUntil').textContent = me.status==='admin' ? 'Aucune limite, jamais bloqué.' : me.until ? ((me.allowed?'Jusqu’au ':'Terminé le ')+dateFr(me.until)) : '';
   $('btnPay').classList.toggle('hide', me.status==='admin');
   $('btnPay').textContent = (me.status==='paid'?'Prolonger de 30 jours : ':'S’abonner : ')+fcfa(me.price)+' / mois';
+  var pd=$('accPay'); pd.innerHTML='';
+  if(me.pay){
+    var live = me.pay.endpoint==='production' && me.pay.keys==='live';
+    pd.innerHTML = live
+      ? '<div class="okline">✓ Paiement en mode réel : serveur PayDunya de production, clés live.</div>'
+      : '<div class="warnline">⚠ Paiement pas en mode réel : serveur '+esc(me.pay.endpoint)+', clés '+esc(me.pay.keys)+'. Vérifie les variables PAYDUNYA dans Vercel.</div>';
+  }
+  $('pfName').value=me.name||''; $('pfPhone').value=me.phone||''; $('pfEmail').value=me.email;
+  $('pfErr').textContent=''; $('pwErr').textContent='';
+  $('keepHist').checked = keepHist();
   $('btnInstall').classList.toggle('hide', isStandalone());
 }
+function keepHist(){try{return localStorage.getItem('sf_keephist')!=='0';}catch(e){return true;}}
+$('keepHist').onchange=function(){
+  try{localStorage.setItem('sf_keephist',this.checked?'1':'0');}catch(e){}
+  if(!this.checked){ try{localStorage.removeItem('sf_hist');}catch(e){} toast('Historique désactivé et effacé.'); }
+};
+$('btnSaveProf').onclick=function(){
+  $('pfErr').textContent='';
+  api('profile',{method:'POST',body:{action:'update',name:$('pfName').value,phone:$('pfPhone').value}}).then(function(j){
+    if(j._status===401){ leave(); return; }
+    if(!j.me){ $('pfErr').textContent=j.error||'Erreur. Réessaie.'; return; }
+    setMe(j.me); renderAcc(); toast('Profil enregistré.');
+  }).catch(function(){ $('pfErr').textContent='Pas de connexion. Réessaie.'; });
+};
+$('btnSavePw').onclick=function(){
+  $('pwErr').textContent='';
+  api('profile',{method:'POST',body:{action:'password',current:$('pwCur').value,next:$('pwNew').value}}).then(function(j){
+    if(!j.ok){ $('pwErr').textContent=j.error||'Erreur. Réessaie.'; return; }
+    $('pwCur').value=''; $('pwNew').value=''; toast('Mot de passe changé.');
+  }).catch(function(){ $('pwErr').textContent='Pas de connexion. Réessaie.'; });
+};
+$('btnClearHist').onclick=function(){
+  if(!confirm('Effacer ton historique et tes favoris sur cet appareil ?')) return;
+  try{localStorage.removeItem('sf_hist'); localStorage.removeItem('sf_fav');}catch(e){}
+  toast('Historique et favoris effacés.');
+};
+$('btnDelAcc').onclick=function(){ $('delPw').value=''; $('delErr').textContent=''; $('delModal').classList.remove('hide'); };
+$('delNo').onclick=function(){ $('delModal').classList.add('hide'); };
+$('delOk').onclick=function(){
+  $('delErr').textContent='';
+  api('profile',{method:'POST',body:{action:'delete',password:$('delPw').value}}).then(function(j){
+    if(!j.ok){ $('delErr').textContent=j.error||'Erreur. Réessaie.'; return; }
+    $('delModal').classList.add('hide'); try{localStorage.removeItem('sf_hist'); localStorage.removeItem('sf_fav');}catch(e){}
+    leave(); toast('Compte supprimé.');
+  }).catch(function(){ $('delErr').textContent='Pas de connexion. Réessaie.'; });
+};
 
 /* ---------- Paiement PayDunya ---------- */
 function startPay(){
@@ -362,7 +481,7 @@ $('btnIdentify').onclick=function(){
     if(j._status===402||j.code==='PAYWALL'){ api('me').then(function(m){ if(m.me) setMe(m.me); paywall(); }); return; }
     if(j._status===401){ leave(); return; }
     if(!j.title){ $('homeerr').textContent=j.error||('Le serveur n’a pas répondu correctement (code '+j._status+'). Réessaie dans un instant.'); return; }
-    saveHist(j); showResult(j);
+    var hj=Object.assign({},j); delete hj.alts; saveHist(hj); showResult(j);
   }).catch(function(){ loading(false); $('homeerr').textContent='Pas de connexion. Réessaie.'; });
 };
 
@@ -377,6 +496,11 @@ function showResult(f){
     '<div><h2>'+esc(f.title)+'</h2><div class="chips">'+chips+'</div></div></div></div>';
   h+='<div class="acts"><button class="btn dark" id="btnFav"></button><button class="btn dark" id="btnShare">Partager</button></div>';
   if(f.overview) h+='<p class="sub" style="line-height:1.55;margin:16px 0 0">'+esc(f.overview)+'</p>';
+  if(f.alts&&f.alts.length){
+    h+='<div class="sec">Ce n’est pas le bon film ?</div><div class="alts">'+f.alts.map(function(a,i){
+      return '<button class="alt" data-i="'+i+'">'+(a.poster?'<img class="ph" src="'+esc(a.poster)+'" alt="">':'<span class="ph" style="display:block"></span>')+'<b>'+esc(a.title)+'</b><span>'+esc(a.year)+'</span></button>';
+    }).join('')+'</div>';
+  }
   h+='<div class="sec">Bande-annonce</div>';
   if(f.trailerKey){
     h+='<div class="trailer"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(f.trailerKey)+'?playsinline=1&rel=0" title="Bande-annonce de '+esc(f.title)+'" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>';
@@ -390,10 +514,20 @@ function showResult(f){
   h+='<button class="btn" id="btnAgain" style="margin-top:14px">Scanner un autre film</button>';
   $('rBody').innerHTML=h;
   $('btnAgain').onclick=function(){show('home');};
+  document.querySelectorAll('.alt').forEach(function(el){
+    el.onclick=function(){
+      var a=f.alts[+el.dataset.i]; toast('Chargement…');
+      api('film?type='+encodeURIComponent(a.type)+'&id='+encodeURIComponent(a.id)).then(function(j){
+        if(j._status===402){ paywall(); return; }
+        if(!j.title){ toast(j.error||'Film indisponible.'); return; }
+        j.alts=f.alts.filter(function(x){return x!==a;}); saveHist(Object.assign({},j,{alts:undefined})); showResult(j);
+      }).catch(function(){toast('Pas de connexion.');});
+    };
+  });
   var favBtn=$('btnFav');
-  function paintFav(){ favBtn.textContent = isFav(f) ? '♥ Dans ma liste' : '♡ Ajouter à ma liste'; }
+  function paintFav(){ favBtn.textContent = isFav(f) ? '♥ Dans mes favoris' : '♡ Ajouter aux favoris'; }
   paintFav();
-  favBtn.onclick=function(){ toggleFav(f); paintFav(); toast(isFav(f)?'Ajouté à ta liste.':'Retiré de ta liste.'); };
+  favBtn.onclick=function(){ toggleFav(f); paintFav(); toast(isFav(f)?'Ajouté à tes favoris.':'Retiré de tes favoris.'); };
   $('btnShare').onclick=function(){
     var text='J’ai trouvé « '+f.title+(f.year?' ('+f.year+')':'')+' » avec ScanFlix.';
     if(navigator.share){ navigator.share({title:f.title,text:text,url:location.origin}).catch(function(){}); }
@@ -407,6 +541,7 @@ $('btnBack').onclick=function(){show('home');};
 /* ---------- Historique et Ma liste (sur l'appareil) ---------- */
 function getHist(){try{return JSON.parse(localStorage.getItem('sf_hist')||'[]');}catch(e){return [];}}
 function saveHist(f){
+  if(!keepHist()) return;
   var l=getHist().filter(function(x){return x.id!==f.id||x.type!==f.type;});
   l.unshift(f); try{localStorage.setItem('sf_hist',JSON.stringify(l.slice(0,50)));}catch(e){}
 }
@@ -418,11 +553,11 @@ function toggleFav(f){
   if(!had) l.unshift(f);
   try{localStorage.setItem('sf_fav',JSON.stringify(l.slice(0,200)));}catch(e){}
 }
-S.tab='recent';
+S.tab='fav';
 function renderHist(){
   var fav=S.tab==='fav', l=fav?getFav():getHist(), box=$('histList');
   $('tabRecent').classList.toggle('on',!fav); $('tabFav').classList.toggle('on',fav);
-  if(!l.length){ box.innerHTML='<p class="sub">'+(fav?'Ta liste est vide. Appuie sur « Ajouter à ma liste » sur un film.':'Aucun film identifié pour l’instant.')+'</p>'; return; }
+  if(!l.length){ box.innerHTML='<p class="sub">'+(fav?'Aucun favori pour l’instant. Ouvre un film et appuie sur « Ajouter aux favoris ».':'Aucun film identifié pour l’instant.')+'</p>'; return; }
   box.innerHTML=l.map(function(f,i){
     return '<div class="hist" data-i="'+i+'" role="button" tabindex="0">'+(f.poster?'<img src="'+esc(f.poster)+'" alt="">':'<img alt="">')+
       '<div><b>'+esc(f.title)+'</b><div class="sub" style="font-size:14px">'+esc(f.year)+'</div></div></div>';
