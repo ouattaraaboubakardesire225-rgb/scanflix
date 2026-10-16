@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>ScanFlix</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ScanFlix">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<style>
+:root{--bg:#0A0A12;--card:#14141F;--card2:#1D1D2D;--line:rgba(255,255,255,.09);--txt:#F6F6FB;--sub:#A9A9BF;--acc:#FF4D7E;--acc2:#FF9F1C;--grad:linear-gradient(135deg,#FF3D7F 0%,#FF9F1C 100%);--ink:#16060C;--r:20px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;padding-bottom:calc(96px + env(safe-area-inset-bottom));background:radial-gradient(120% 60% at 50% -10%,rgba(255,61,127,.16),transparent 60%),var(--bg) no-repeat}
+h1,h2,h3{margin:0;letter-spacing:-.5px}
+button,input{font:inherit;color:inherit}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--acc2);outline-offset:2px}
+.wrap{max-width:480px;margin:0 auto;padding:18px 20px}
+.hide{display:none!important}
+.top{display:flex;align-items:center;justify-content:space-between;min-height:48px;margin-bottom:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:22px;letter-spacing:-.4px}
+.logo svg{border-radius:11px;box-shadow:0 6px 18px rgba(255,61,127,.35)}
+.grad-t{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:56px;border:0;border-radius:18px;background:var(--grad);color:var(--ink);font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 10px 26px rgba(255,61,127,.28)}
+.btn:active{transform:scale(.985)}
+.btn.ghost{background:transparent;color:var(--txt);border:1.5px solid rgba(255,255,255,.22);box-shadow:none}
+.btn.dark{background:var(--card2);color:var(--txt);box-shadow:none;border:1px solid var(--line)}
+.btn[disabled]{opacity:.45;box-shadow:none}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-weight:600;font-size:14px;cursor:pointer}
+.sub{color:var(--sub)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.drop{position:relative;height:250px;border-radius:26px;background:linear-gradient(160deg,#171726,#0F0F19);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;overflow:hidden;text-align:center;padding:12px;cursor:pointer}
+.drop img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vf{position:absolute;width:30px;height:30px;border:3px solid #fff;opacity:.9;z-index:2;pointer-events:none}
+.vf.tl{top:14px;left:14px;border-right:0;border-bottom:0;border-top-left-radius:12px}
+.vf.tr{top:14px;right:14px;border-left:0;border-bottom:0;border-top-right-radius:12px}
+.vf.bl{bottom:14px;left:14px;border-right:0;border-top:0;border-bottom-left-radius:12px}
+.vf.br{bottom:14px;right:14px;border-left:0;border-top:0;border-bottom-right-radius:12px}
+.beam{position:absolute;left:10px;right:10px;height:3px;border-radius:3px;background:var(--grad);box-shadow:0 0 18px 4px rgba(255,61,127,.7);top:12px;z-index:3;display:none}
+.drop.scanning .beam{display:block;animation:beam 1.6s ease-in-out infinite alternate}
+@keyframes beam{from{top:12px}to{top:calc(100% - 15px)}}
+.dropicon{width:56px;height:56px;border-radius:18px;background:var(--grad);display:flex;align-items:center;justify-content:center;margin-bottom:6px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;font-size:14px;color:var(--sub)}
+.field input{min-height:52px;padding:0 16px;border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--txt);font-size:16px}
+.field input:focus{border-color:var(--acc);outline:none;box-shadow:0 0 0 3px rgba(255,77,126,.25)}
+.err{color:#FFB4C2;font-size:14px;min-height:20px;margin:8px 0}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom));width:min(440px,calc(100% - 28px));display:flex;justify-content:space-around;background:rgba(24,24,38,.82);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:26px;padding:6px;z-index:10}
+.nav button{background:none;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex:1;min-height:54px;border-radius:20px;color:var(--sub);font-size:12px;font-weight:600;cursor:pointer}
+.nav button.on{color:var(--txt);background:rgba(255,255,255,.08)}
+.nav button.on svg{color:var(--acc)}
+.plat{display:flex;align-items:center;gap:14px;min-height:62px;padding:8px 16px 8px 10px;border-radius:18px;background:var(--card);border:1px solid var(--line);margin-bottom:8px}
+.plat .bd{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px;flex:none}
+.plat .nm{flex:1;min-width:0}
+.plat .nm b{display:block;font-size:16px}
+.plat .nm span{font-size:13px;color:var(--sub)}
+.trailer{position:relative;width:100%;aspect-ratio:16/9;border-radius:22px;overflow:hidden;background:#0F0F19;border:1px solid var(--line)}
+.trailer iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.sec{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--sub);margin:22px 0 10px}
+.hero{position:relative;border-radius:26px;overflow:hidden;margin-bottom:6px;background:linear-gradient(135deg,#2A1230,#14141F);background-size:cover;background-position:center}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,18,.15) 0%,rgba(10,10,18,.92) 82%)}
+.hero .in{position:relative;display:flex;gap:14px;align-items:flex-end;padding:90px 16px 16px}
+.hero img{width:96px;border-radius:14px;flex:none;box-shadow:0 10px 30px rgba(0,0,0,.55)}
+.hero h2{font-size:25px;line-height:1.12}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{display:inline-block;padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.12);font-size:12px;font-weight:600;color:#E7E7F3}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 0}
+.acts .btn{min-height:50px;font-size:15px}
+.seg{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:4px;margin-bottom:14px}
+.seg button{flex:1;min-height:42px;border:0;border-radius:12px;background:none;color:var(--sub);font-weight:700;font-size:14px;cursor:pointer}
+.seg button.on{background:var(--card2);color:var(--txt)}
+.hist{display:flex;gap:12px;align-items:center;padding:10px;border-radius:18px;background:var(--card);border:1px solid var(--line);margin-bottom:8px;cursor:pointer}
+.hist img{width:52px;height:76px;object-fit:cover;border-radius:10px;background:var(--card2);flex:none}
+.modal{position:fixed;inset:0;background:rgba(4,4,10,.8);display:flex;align-items:flex-end;z-index:20}
+.sheet{width:100%;max-width:480px;margin:0 auto;background:var(--card);border-top:1px solid var(--line);border-radius:28px 28px 0 0;padding:24px 20px calc(22px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px}
+.toast{position:fixed;left:16px;right:16px;bottom:calc(104px + env(safe-area-inset-bottom));background:#fff;color:#0A0A12;padding:13px 16px;border-radius:16px;font-weight:600;z-index:30;max-width:448px;margin:0 auto;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.spin{width:20px;height:20px;border:3px solid rgba(22,6,12,.25);border-top-color:var(--ink);border-radius:50%;animation:s .8s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+.tag{display:inline-block;padding:5px 12px;border-radius:999px;background:var(--card2);font-size:12px;font-weight:700;color:var(--sub)}
+.avatar{width:54px;height:54px;border-radius:18px;background:var(--grad);color:var(--ink);font-weight:800;font-size:24px;display:flex;align-items:center;justify-content:center;flex:none}
+.prow{display:flex;align-items:center;gap:14px}
+.card + .card{margin-top:12px}
+.card .field:last-of-type{margin-bottom:6px}
+.hsec{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--sub);margin:24px 2px 10px}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:48px}
+.switch{position:relative;width:52px;height:30px;flex:none}
+.switch input{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:2}
+.switch i{position:absolute;inset:0;border-radius:999px;background:#33334A;transition:background .2s}
+.switch i::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .2s}
+.switch input:checked + i{background:var(--acc)}
+.switch input:checked + i::after{transform:translateX(22px)}
+.switch input:focus-visible + i{outline:2px solid var(--acc2);outline-offset:2px}
+.btn.danger{background:transparent;color:#FF8FA3;border:1.5px solid rgba(255,143,163,.45);box-shadow:none}
+.note{font-size:13px;line-height:1.5;color:var(--sub);margin:8px 0 0}
+.okline{font-size:13px;margin-top:8px;color:#7BE0A8}
+.warnline{font-size:13px;margin-top:8px;color:#FFC36B}
+.alts{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;margin:0 -2px;scrollbar-width:none}
+.alt{flex:none;width:104px;border:0;background:none;text-align:left;cursor:pointer;padding:0}
+.alt .ph{width:104px;height:150px;border-radius:14px;background:var(--card2);object-fit:cover;display:block}
+.alt b{display:block;font-size:13px;margin-top:6px;line-height:1.25}
+.alt span{font-size:12px;color:var(--sub)}
+.warnbox{margin:14px 0 0;padding:12px 14px;border-radius:16px;background:rgba(255,159,28,.12);border:1px solid rgba(255,159,28,.35);color:#FFD9A0;font-size:14px;line-height:1.45}
+.perks{display:flex;flex-direction:column;gap:10px;margin:0 0 22px}
+.perk{display:flex;align-items:center;gap:12px;font-size:15px;color:var(--sub)}
+.perk i{width:34px;height:34px;border-radius:11px;background:var(--card2);display:flex;align-items:center;justify-content:center;flex:none;color:var(--acc2)}
+@media (prefers-reduced-motion:reduce){.drop.scanning .beam{animation:none;top:50%}.spin{animation-duration:2s}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3D7F"/><stop offset="1" stop-color="#FF9F1C"/></linearGradient></defs>
+  <symbol id="lg" viewBox="0 0 40 40"><rect width="40" height="40" rx="11" fill="url(#g1)"/><path d="M11 16v-3.5A1.5 1.5 0 0 1 12.5 11H16M24 11h3.5a1.5 1.5 0 0 1 1.5 1.5V16M29 24v3.5a1.5 1.5 0 0 1-1.5 1.5H24M16 29h-3.5A1.5 1.5 0 0 1 11 27.5V24" stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none"/><path d="M17.5 15.5v9l7.5-4.5-7.5-4.5Z" fill="#fff"/></symbol>
+</svg>
+
+<!-- Connexion / inscription -->
+<section id="auth" class="wrap hide">
+  <div class="top"><div class="logo"><svg width="38" height="38" aria-hidden="true"><use href="#lg"/></svg>ScanFlix</div></div>
+  <h1 style="font-size:34px;line-height:1.08;margin:20px 0 10px">Trouve n'importe quel film <span class="grad-t">depuis une capture.</span></h1>
+  <p class="sub" style="margin:0 0 18px;line-height:1.45">Crée ton compte : <b style="color:var(--txt)">1 jour gratuit</b> pour tout essayer.</p>
+  <div class="perks">
+    <div class="perk"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg></i>Capture ou GIF : le film est reconnu</div>
+    <div class="perk"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor"/></svg></i>Bande-annonce tout de suite</div>
+    <div class="perk"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6h9v9M18 6 7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Ouvre Netflix, Prime, YouTube… en un tap</div>
+  </div>
+  <div class="field"><label for="nm">Nom d'utilisateur (facultatif)</label><input id="nm" type="text" autocomplete="nickname" maxlength="40"></div>
+  <div class="field"><label for="em">E-mail</label><input id="em" type="email" autocomplete="email" inputmode="email"></div>
+  <div class="field"><label for="pw">Mot de passe</label><input id="pw" type="password" autocomplete="current-password"></div>
+  <div class="err" id="autherr" role="alert"></div>
+  <button class="btn" id="btnSignup">Créer mon compte (1 jour gratuit)</button>
+  <button class="btn ghost" id="btnLogin" style="margin-top:10px">J'ai déjà un compte</button>
+</section>
+
+<!-- Application -->
+<main id="app" class="hide">
+  <!-- Accueil -->
+  <section id="v-home" class="wrap">
+    <div class="top">
+      <div class="logo"><svg width="36" height="36" aria-hidden="true"><use href="#lg"/></svg>ScanFlix</div>
+      <button class="pill" id="btnInstallTop">Installer</button>
+    </div>
+    <h1 style="font-size:34px;line-height:1.08;margin-bottom:8px">Quel est <span class="grad-t">ce film&nbsp;?</span></h1>
+    <p class="sub" style="margin:0 0 16px;line-height:1.45">Importe une capture d'écran ou un GIF.</p>
+    <div class="drop" id="drop">
+      <i class="vf tl"></i><i class="vf tr"></i><i class="vf bl"></i><i class="vf br"></i><div class="beam"></div>
+      <img id="preview" class="hide" alt="Aperçu de la capture">
+      <div id="dropHint">
+        <div class="dropicon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 16V5m0 0-4 4m4-4 4 4M5 15v3a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3" stroke="#16060C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div style="font-weight:800;font-size:19px">Ajoute ta capture</div>
+        <div class="sub" style="font-size:14px;margin-top:4px">PNG, JPG ou GIF animé</div>
+      </div>
+    </div>
+    <div class="row2">
+      <button class="btn dark" id="btnGallery">Galerie</button>
+      <button class="btn dark" id="btnPaste">Coller</button>
+    </div>
+    <input id="file" type="file" accept="image/*" class="hide">
+    <div class="field" style="margin:0 0 12px"><label for="hint">Indice (facultatif)</label><input id="hint" type="text" maxlength="120" placeholder="Ex : film de soldats, acteur, langue…"></div>
+    <button class="btn" id="btnIdentify" disabled>Identifier le film</button>
+    <div class="err" id="homeerr" role="alert"></div>
+  </section>
+
+  <!-- Résultat -->
+  <section id="v-result" class="wrap hide">
+    <div class="top"><button class="pill" id="btnBack">‹ Retour</button><span class="tag" id="rConf"></span></div>
+    <div id="rBody"></div>
+  </section>
+
+  <!-- Historique -->
+  <section id="v-hist" class="wrap hide">
+    <h1 style="font-size:30px;margin:8px 0 14px">Mes films</h1>
+    <div class="seg" role="tablist">
+      <button id="tabFav" class="on" role="tab">♥ Favoris</button>
+      <button id="tabRecent" role="tab">Récents</button>
+    </div>
+    <div id="histList"></div>
+  </section>
+
+  <!-- Compte -->
+  <section id="v-acc" class="wrap hide">
+    <h1 style="font-size:30px;margin:8px 0 14px">Compte</h1>
+    <div class="card prow">
+      <div class="avatar" id="accAv">?</div>
+      <div style="min-width:0"><div id="accName" style="font-weight:800;font-size:19px"></div><div class="sub" id="accEmail" style="font-size:14px;overflow-wrap:anywhere"></div></div>
+    </div>
+
+    <div class="hsec">Abonnement</div>
+    <div class="card">
+      <div id="accStatus" style="font-weight:800;font-size:19px"></div>
+      <div class="sub" id="accUntil" style="font-size:14px;margin:2px 0 12px"></div>
+      <button class="btn" id="btnPay"></button>
+      <div id="accPay"></div>
+    </div>
+
+    <div class="hsec">Profil</div>
+    <div class="card">
+      <div class="field"><label for="pfName">Nom d'utilisateur</label><input id="pfName" type="text" autocomplete="nickname" maxlength="40"></div>
+      <div class="field"><label for="pfPhone">Numéro de téléphone</label><input id="pfPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+225 07 00 00 00 00"></div>
+      <div class="field"><label for="pfEmail">E-mail (non modifiable)</label><input id="pfEmail" type="email" disabled></div>
+      <div class="err" id="pfErr" role="alert"></div>
+      <button class="btn dark" id="btnSaveProf">Enregistrer</button>
+    </div>
+
+    <div class="hsec">Mot de passe</div>
+    <div class="card">
+      <div class="field"><label for="pwCur">Mot de passe actuel</label><input id="pwCur" type="password" autocomplete="current-password"></div>
+      <div class="field"><label for="pwNew">Nouveau mot de passe (6 caractères minimum)</label><input id="pwNew" type="password" autocomplete="new-password"></div>
+      <div class="err" id="pwErr" role="alert"></div>
+      <button class="btn dark" id="btnSavePw">Changer le mot de passe</button>
+    </div>
+
+    <div class="hsec">Confidentialité</div>
+    <div class="card">
+      <div class="srow">
+        <label for="keepHist" style="font-weight:600">Garder mon historique sur cet appareil</label>
+        <span class="switch"><input id="keepHist" type="checkbox"><i></i></span>
+      </div>
+      <p class="note">Tes captures sont envoyées à l’IA Google Gemini pour reconnaître le film. ScanFlix ne les enregistre pas. Ton historique et tes favoris restent sur ton téléphone.</p>
+      <button class="btn dark" id="btnClearHist" style="margin-top:14px">Effacer mon historique et mes favoris</button>
+      <button class="btn danger" id="btnDelAcc" style="margin-top:10px">Supprimer mon compte</button>
+    </div>
+
+    <div class="hsec">Application</div>
+    <button class="btn ghost" id="btnInstall" style="margin-bottom:10px">Installer l'application</button>
+    <button class="btn dark" id="btnLogout">Se déconnecter</button>
+  </section>
+
+  <nav class="nav" aria-label="Navigation">
+    <button data-v="home" class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>Accueil</button>
+    <button data-v="hist"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="3" stroke="currentColor" stroke-width="1.9"/><path d="M4 10h16M9 5v14" stroke="currentColor" stroke-width="1.9"/></svg>Mes films</button>
+    <button data-v="acc"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5" stroke="currentColor" stroke-width="1.9"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>Compte</button>
+  </nav>
+</main>
+
+<!-- Abonnement requis -->
+<div id="paywall" class="modal hide" role="dialog" aria-modal="true" aria-labelledby="pwT">
+  <div class="sheet">
+    <h2 id="pwT" style="font-size:25px">Ton jour gratuit est terminé</h2>
+    <p class="sub" style="margin:0;line-height:1.45">Abonne-toi pour continuer à identifier tes films : <b id="pwPrice" style="color:var(--txt)"></b> par mois, par mobile money ou carte.</p>
+    <button class="btn" id="pwPay">S'abonner</button>
+    <button class="btn dark" id="pwClose">Plus tard</button>
+  </div>
+</div>
+
+<!-- Suppression du compte -->
+<div id="delModal" class="modal hide" role="dialog" aria-modal="true" aria-labelledby="delT">
+  <div class="sheet">
+    <h2 id="delT" style="font-size:22px">Supprimer ton compte ?</h2>
+    <p class="sub" style="margin:0;line-height:1.5">Cette action est définitive. Entre ton mot de passe pour confirmer.</p>
+    <div class="field" style="margin:0"><label for="delPw">Mot de passe</label><input id="delPw" type="password" autocomplete="current-password"></div>
+    <div class="err" id="delErr" role="alert"></div>
+    <button class="btn danger" id="delOk">Supprimer définitivement</button>
+    <button class="btn dark" id="delNo">Annuler</button>
+  </div>
+</div>
+
+<!-- Aide à l'installation -->
+<div id="installHelp" class="modal hide" role="dialog" aria-modal="true" aria-labelledby="ihT">
+  <div class="sheet">
+    <h2 id="ihT" style="font-size:22px">Installer ScanFlix</h2>
+    <p class="sub" id="ihText" style="margin:0;line-height:1.5"></p>
+    <button class="btn dark" id="ihClose">Compris</button>
+  </div>
+</div>
+
+<div id="toast" class="toast hide" role="status"></div>
+
+<script>
+(function(){
+'use strict';
+var $ = function(id){return document.getElementById(id);};
+var S = { token: localStorage.getItem('sf_token')||'', me:null, img:null, deferred:null };
+
+/* ---------- Plateformes : ouverture directe des applications ---------- */
+// Sur Android : lien « intent » vers l'app (avec repli sur le site si elle n'est pas installée).
+// Sur iPhone : lien universel (ouvre l'app si elle est installée).
+// À modifier ici si tu changes de plateforme ou si un lien ne convient pas.
+var PLATFORMS = [
+  {name:'Netflix', color:'#E50914', pkg:'com.netflix.mediaclient', web:function(t){return 'https://www.netflix.com/search?q='+t;}},
+  {name:'Amazon Prime Video', color:'#1AB7EA', pkg:'com.amazon.avod.thirdpartyclient', web:function(t){return 'https://www.primevideo.com/search/?phrase='+t;}},
+  {name:'Moviebox', color:'#FFB020', pkg:'com.community.oneroom', web:function(t){return 'https://moviebox.ng/web/searchResult?keyword='+t;}},
+  {name:'YouTube', color:'#FF3B30', pkg:'com.google.android.youtube', web:function(t){return 'https://www.youtube.com/results?search_query='+t+'+film+complet';}},
+  {name:'Vidmate', color:'#34D27B', pkg:'com.nemo.vidmate', web:function(t){return 'https://www.vidmate.com/';}}
+];
+var isAndroid = /android/i.test(navigator.userAgent);
+function platLink(p, title){
+  var t = encodeURIComponent(title), web = p.web(t);
+  if(!isAndroid) return web;
+  var u = new URL(web);
+  return 'intent://'+u.host+u.pathname+u.search+'#Intent;scheme='+u.protocol.replace(':','')+
+    ';package='+p.pkg+';S.browser_fallback_url='+encodeURIComponent(web)+';end';
+}
+
+/* ---------- Outils ---------- */
+function toast(msg){var t=$('toast');t.textContent=msg;t.classList.remove('hide');clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.add('hide');},3500);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function fcfa(n){return Number(n).toLocaleString('fr-FR').replace(/ | /g,' ')+' FCFA';}
+function dateFr(ms){return new Date(ms).toLocaleString('fr-FR',{day:'2-digit',month:'long',hour:'2-digit',minute:'2-digit'});}
+function api(path, opts){
+  opts = opts || {};
+  var h = {'Content-Type':'application/json'};
+  if(S.token) h.Authorization = 'Bearer '+S.token;
+  return fetch('/api/'+path, {method:opts.method||'GET', headers:h, body:opts.body?JSON.stringify(opts.body):undefined})
+    .then(function(r){return r.json().catch(function(){return {};}).then(function(j){j._status=r.status;return j;});});
+}
+
+/* ---------- Navigation ---------- */
+function show(v){
+  ['home','result','hist','acc'].forEach(function(x){$('v-'+x).classList.toggle('hide', x!==v);});
+  var tab = v==='result'?'home':v;
+  document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on', b.dataset.v===tab);});
+  if(v==='hist') renderHist();
+  if(v==='acc') renderAcc();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.nav button').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.v);});});
+
+/* ---------- Compte ---------- */
+function enter(){
+  $('auth').classList.add('hide'); $('app').classList.remove('hide'); show('home');
+}
+function leave(){
+  S.token=''; S.me=null; localStorage.removeItem('sf_token');
+  $('app').classList.add('hide'); $('auth').classList.remove('hide');
+}
+function setMe(me){ S.me=me; }
+function authCall(action){
+  var email=$('em').value.trim(), password=$('pw').value;
+  $('autherr').textContent='';
+  api('auth',{method:'POST',body:{action:action,email:email,password:password,name:($('nm').value||'').trim()}}).then(function(j){
+    if(!j.token){ $('autherr').textContent=j.error||'Erreur. Réessaie.'; return; }
+    S.token=j.token; localStorage.setItem('sf_token',j.token); setMe(j.me); enter();
+    if(action==='signup') toast('Bienvenue ! 1 jour gratuit commence maintenant.');
+  }).catch(function(){ $('autherr').textContent='Pas de connexion. Réessaie.'; });
+}
+$('btnSignup').onclick=function(){authCall('signup');};
+$('btnLogin').onclick=function(){authCall('login');};
+$('btnLogout').onclick=leave;
+
+function renderAcc(){
+  var me=S.me; if(!me) return;
+  var nm=me.name||me.email.split('@')[0];
+  $('accAv').textContent=nm.charAt(0).toUpperCase();
+  $('accName').textContent=nm;
+  $('accEmail').textContent=me.email;
+  var label={admin:'Propriétaire : accès illimité',paid:'Abonné',trial:'Essai gratuit',expired:'Abonnement terminé'}[me.status];
+  $('accStatus').textContent=label;
+  $('accUntil').textContent = me.status==='admin' ? 'Aucune limite, jamais bloqué.' : me.until ? ((me.allowed?'Jusqu’au ':'Terminé le ')+dateFr(me.until)) : '';
+  $('btnPay').classList.toggle('hide', me.status==='admin');
+  $('btnPay').textContent = (me.status==='paid'?'Prolonger de 30 jours : ':'S’abonner : ')+fcfa(me.price)+' / mois';
+  var pd=$('accPay'); pd.innerHTML='';
+  if(me.pay){
+    var live = me.pay.endpoint==='production' && me.pay.keys==='live';
+    pd.innerHTML = live
+      ? '<div class="okline">✓ Paiement en mode réel : serveur PayDunya de production, clés live.</div>'
+      : '<div class="warnline">⚠ Paiement pas en mode réel : serveur '+esc(me.pay.endpoint)+', clés '+esc(me.pay.keys)+'. Vérifie les variables PAYDUNYA dans Vercel.</div>';
+  }
+  $('pfName').value=me.name||''; $('pfPhone').value=me.phone||''; $('pfEmail').value=me.email;
+  $('pfErr').textContent=''; $('pwErr').textContent='';
+  $('keepHist').checked = keepHist();
+  $('btnInstall').classList.toggle('hide', isStandalone());
+}
+function keepHist(){try{return localStorage.getItem('sf_keephist')!=='0';}catch(e){return true;}}
+$('keepHist').onchange=function(){
+  try{localStorage.setItem('sf_keephist',this.checked?'1':'0');}catch(e){}
+  if(!this.checked){ try{localStorage.removeItem('sf_hist');}catch(e){} toast('Historique désactivé et effacé.'); }
+};
+$('btnSaveProf').onclick=function(){
+  $('pfErr').textContent='';
+  api('profile',{method:'POST',body:{action:'update',name:$('pfName').value,phone:$('pfPhone').value}}).then(function(j){
+    if(j._status===401){ leave(); return; }
+    if(!j.me){ $('pfErr').textContent=j.error||'Erreur. Réessaie.'; return; }
+    setMe(j.me); renderAcc(); toast('Profil enregistré.');
+  }).catch(function(){ $('pfErr').textContent='Pas de connexion. Réessaie.'; });
+};
+$('btnSavePw').onclick=function(){
+  $('pwErr').textContent='';
+  api('profile',{method:'POST',body:{action:'password',current:$('pwCur').value,next:$('pwNew').value}}).then(function(j){
+    if(!j.ok){ $('pwErr').textContent=j.error||'Erreur. Réessaie.'; return; }
+    $('pwCur').value=''; $('pwNew').value=''; toast('Mot de passe changé.');
+  }).catch(function(){ $('pwErr').textContent='Pas de connexion. Réessaie.'; });
+};
+$('btnClearHist').onclick=function(){
+  if(!confirm('Effacer ton historique et tes favoris sur cet appareil ?')) return;
+  try{localStorage.removeItem('sf_hist'); localStorage.removeItem('sf_fav');}catch(e){}
+  toast('Historique et favoris effacés.');
+};
+$('btnDelAcc').onclick=function(){ $('delPw').value=''; $('delErr').textContent=''; $('delModal').classList.remove('hide'); };
+$('delNo').onclick=function(){ $('delModal').classList.add('hide'); };
+$('delOk').onclick=function(){
+  $('delErr').textContent='';
+  api('profile',{method:'POST',body:{action:'delete',password:$('delPw').value}}).then(function(j){
+    if(!j.ok){ $('delErr').textContent=j.error||'Erreur. Réessaie.'; return; }
+    $('delModal').classList.add('hide'); try{localStorage.removeItem('sf_hist'); localStorage.removeItem('sf_fav');}catch(e){}
+    leave(); toast('Compte supprimé.');
+  }).catch(function(){ $('delErr').textContent='Pas de connexion. Réessaie.'; });
+};
+
+/* ---------- Paiement PayDunya ---------- */
+function startPay(){
+  api('pay',{method:'POST'}).then(function(j){
+    if(!j.url){ toast(j.error||'Paiement indisponible.'); return; }
+    localStorage.setItem('sf_pending', j.token);
+    location.href=j.url;
+  }).catch(function(){toast('Pas de connexion.');});
+}
+$('btnPay').onclick=startPay;
+$('pwPay').onclick=startPay;
+$('pwClose').onclick=function(){$('paywall').classList.add('hide');};
+function paywall(){
+  $('pwPrice').textContent=fcfa((S.me&&S.me.price)||1000);
+  $('paywall').classList.remove('hide');
+}
+function checkPending(){
+  var tk=localStorage.getItem('sf_pending'); if(!tk) return Promise.resolve();
+  return api('verify?token='+encodeURIComponent(tk)).then(function(j){
+    if(j.ok){ localStorage.removeItem('sf_pending'); setMe(j.me); toast('Paiement reçu. Merci ! Abonnement activé.'); }
+    else if(j.status==='cancelled'||j.status==='unknown_invoice'){ localStorage.removeItem('sf_pending'); }
+    else if(new URLSearchParams(location.search).get('pay')==='return'){ toast('Paiement en cours de confirmation…'); }
+  }).catch(function(){});
+}
+
+/* ---------- Installation (PWA) ---------- */
+function isStandalone(){return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone;}
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();S.deferred=e;});
+function install(){
+  if(S.deferred){ S.deferred.prompt(); S.deferred.userChoice.finally(function(){S.deferred=null;}); return; }
+  var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  $('ihText').textContent = ios
+    ? 'Dans Safari, touche le bouton Partager (carré avec une flèche), puis « Sur l’écran d’accueil ».'
+    : 'Dans Chrome, touche le menu ⋮ en haut à droite, puis « Installer l’application » (ou « Ajouter à l’écran d’accueil »).';
+  $('installHelp').classList.remove('hide');
+}
+$('btnInstall').onclick=install;
+$('btnInstallTop').onclick=install;
+$('ihClose').onclick=function(){$('installHelp').classList.add('hide');};
+if(isStandalone()) $('btnInstallTop').classList.add('hide');
+
+/* ---------- Choix de l'image ---------- */
+function loadBitmap(blob){
+  if(window.createImageBitmap) return createImageBitmap(blob);
+  return new Promise(function(ok,ko){var i=new Image();i.onload=function(){ok(i);};i.onerror=ko;i.src=URL.createObjectURL(blob);});
+}
+function setImage(blob){
+  $('homeerr').textContent='';
+  loadBitmap(blob).then(function(bmp){
+    var w=bmp.width||bmp.naturalWidth, h=bmp.height||bmp.naturalHeight, max=1024, k=Math.min(1,max/Math.max(w,h));
+    var c=document.createElement('canvas'); c.width=Math.round(w*k); c.height=Math.round(h*k);
+    c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);
+    var url=c.toDataURL('image/jpeg',0.82);
+    S.img=url.split(',')[1];
+    $('preview').src=url; $('preview').classList.remove('hide'); $('dropHint').classList.add('hide');
+    $('btnIdentify').disabled=false;
+  }).catch(function(){ $('homeerr').textContent='Image illisible. Essaie une autre capture.'; });
+}
+$('btnGallery').onclick=function(){$('file').click();};
+$('drop').onclick=function(){$('file').click();};
+$('file').onchange=function(){ if(this.files[0]) setImage(this.files[0]); this.value=''; };
+$('btnPaste').onclick=function(){
+  if(!navigator.clipboard||!navigator.clipboard.read){ toast('Colle non disponible : utilise Galerie.'); return; }
+  navigator.clipboard.read().then(function(items){
+    for(var i=0;i<items.length;i++){
+      var t=items[i].types.find(function(x){return x.indexOf('image/')===0;});
+      if(t) return items[i].getType(t).then(setImage);
+    }
+    toast('Aucune image copiée.');
+  }).catch(function(){toast('Colle refusé. Utilise Galerie.');});
+};
+
+/* ---------- Identification ---------- */
+function loading(on){
+  var b=$('btnIdentify'); b.disabled=on||!S.img; $('drop').classList.toggle('scanning',!!on);
+  b.innerHTML = on ? '<span class="spin"></span> Recherche en cours…' : 'Identifier le film';
+}
+$('btnIdentify').onclick=function(){
+  if(!S.img) return;
+  $('homeerr').textContent=''; loading(true);
+  api('identify',{method:'POST',body:{image:S.img,hint:($('hint').value||'').trim()}}).then(function(j){
+    loading(false);
+    if(j._status===402||j.code==='PAYWALL'){ api('me').then(function(m){ if(m.me) setMe(m.me); paywall(); }); return; }
+    if(j._status===401){ leave(); return; }
+    if(!j.title){ $('homeerr').textContent=j.error||('Le serveur n’a pas répondu correctement (code '+j._status+'). Réessaie dans un instant.'); return; }
+    var hj=Object.assign({},j); delete hj.alts; saveHist(hj); showResult(j);
+  }).catch(function(){ loading(false); $('homeerr').textContent='Pas de connexion. Réessaie.'; });
+};
+
+/* ---------- Résultat ---------- */
+function showResult(f){
+  $('rConf').textContent = f.confidence ? 'Fiabilité '+Math.round(f.confidence*100)+' %' : '';
+  var chips=[f.year].concat((f.genres||[]).slice(0,2)).concat([f.runtime?f.runtime+' min':'']).filter(Boolean)
+    .map(function(c){return '<span class="chip">'+esc(c)+'</span>';}).join('');
+  var bg = f.backdrop ? ' style="background-image:url(\''+esc(f.backdrop)+'\')"' : '';
+  var h='<div class="hero"'+bg+'><div class="in">'+
+    (f.poster?'<img src="'+esc(f.poster)+'" alt="Affiche de '+esc(f.title)+'">':'')+
+    '<div><h2>'+esc(f.title)+'</h2><div class="chips">'+chips+'</div></div></div></div>';
+  h+='<div class="acts"><button class="btn dark" id="btnFav"></button><button class="btn dark" id="btnShare">Partager</button></div>';
+  var low = f.confidence!=null && f.confidence<0.5;
+  var altsHtml='';
+  if(f.alts&&f.alts.length){
+    altsHtml='<div class="sec">Ce n’est pas le bon film ?</div><div class="alts">'+f.alts.map(function(a,i){
+      return '<button class="alt" data-i="'+i+'">'+(a.poster?'<img class="ph" src="'+esc(a.poster)+'" alt="">':'<span class="ph" style="display:block"></span>')+'<b>'+esc(a.title)+'</b><span>'+esc(a.year)+'</span></button>';
+    }).join('')+'</div>';
+  }
+  if(low){
+    h+='<div class="warnbox"><b>Je ne suis pas sûr de ce film.</b> Regarde les autres propositions ci-dessous, ou refais la recherche avec un indice (par exemple « film de soldats » ou le nom d’un acteur).</div>'+altsHtml;
+  }
+  if(f.overview) h+='<p class="sub" style="line-height:1.55;margin:16px 0 0">'+esc(f.overview)+'</p>';
+  if(!low) h+=altsHtml;
+  h+='<div class="sec">Bande-annonce</div>';
+  if(f.trailerKey){
+    h+='<div class="trailer"><iframe src="https://www.youtube-nocookie.com/embed/'+encodeURIComponent(f.trailerKey)+'?playsinline=1&rel=0" title="Bande-annonce de '+esc(f.title)+'" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>';
+  } else {
+    h+='<a class="plat" href="'+esc(platLink(PLATFORMS[3], f.title+' bande annonce'))+'"><span class="nm"><b>Chercher la bande-annonce sur YouTube</b></span></a>';
+  }
+  h+='<div class="sec">Où le regarder</div>';
+  PLATFORMS.forEach(function(p){
+    h+='<a class="plat" href="'+esc(platLink(p,f.title))+'"><span class="bd" style="background:'+p.color+'26;color:'+p.color+'">'+esc(p.name.charAt(0))+'</span><span class="nm"><b>'+esc(p.name)+'</b><span>Ouvre l’application</span></span><span aria-hidden="true" class="sub">›</span></a>';
+  });
+  h+='<button class="btn" id="btnAgain" style="margin-top:14px">Scanner un autre film</button>';
+  $('rBody').innerHTML=h;
+  $('btnAgain').onclick=function(){show('home');};
+  document.querySelectorAll('.alt').forEach(function(el){
+    el.onclick=function(){
+      var a=f.alts[+el.dataset.i]; toast('Chargement…');
+      api('film?type='+encodeURIComponent(a.type)+'&id='+encodeURIComponent(a.id)).then(function(j){
+        if(j._status===402){ paywall(); return; }
+        if(!j.title){ toast(j.error||'Film indisponible.'); return; }
+        j.alts=f.alts.filter(function(x){return x!==a;}); saveHist(Object.assign({},j,{alts:undefined})); showResult(j);
+      }).catch(function(){toast('Pas de connexion.');});
+    };
+  });
+  var favBtn=$('btnFav');
+  function paintFav(){ favBtn.textContent = isFav(f) ? '♥ Dans mes favoris' : '♡ Ajouter aux favoris'; }
+  paintFav();
+  favBtn.onclick=function(){ toggleFav(f); paintFav(); toast(isFav(f)?'Ajouté à tes favoris.':'Retiré de tes favoris.'); };
+  $('btnShare').onclick=function(){
+    var text='J’ai trouvé « '+f.title+(f.year?' ('+f.year+')':'')+' » avec ScanFlix.';
+    if(navigator.share){ navigator.share({title:f.title,text:text,url:location.origin}).catch(function(){}); }
+    else if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text+' '+location.origin).then(function(){toast('Texte copié.');}).catch(function(){toast('Partage indisponible.');}); }
+    else toast('Partage indisponible.');
+  };
+  show('result');
+}
+$('btnBack').onclick=function(){show('home');};
+
+/* ---------- Historique et Ma liste (sur l'appareil) ---------- */
+function getHist(){try{return JSON.parse(localStorage.getItem('sf_hist')||'[]');}catch(e){return [];}}
+function saveHist(f){
+  if(!keepHist()) return;
+  var l=getHist().filter(function(x){return x.id!==f.id||x.type!==f.type;});
+  l.unshift(f); try{localStorage.setItem('sf_hist',JSON.stringify(l.slice(0,50)));}catch(e){}
+}
+function getFav(){try{return JSON.parse(localStorage.getItem('sf_fav')||'[]');}catch(e){return [];}}
+function isFav(f){return getFav().some(function(x){return x.id===f.id&&x.type===f.type;});}
+function toggleFav(f){
+  var l=getFav(), had=l.some(function(x){return x.id===f.id&&x.type===f.type;});
+  l=l.filter(function(x){return x.id!==f.id||x.type!==f.type;});
+  if(!had) l.unshift(f);
+  try{localStorage.setItem('sf_fav',JSON.stringify(l.slice(0,200)));}catch(e){}
+}
+S.tab='fav';
+function renderHist(){
+  var fav=S.tab==='fav', l=fav?getFav():getHist(), box=$('histList');
+  $('tabRecent').classList.toggle('on',!fav); $('tabFav').classList.toggle('on',fav);
+  if(!l.length){ box.innerHTML='<p class="sub">'+(fav?'Aucun favori pour l’instant. Ouvre un film et appuie sur « Ajouter aux favoris ».':'Aucun film identifié pour l’instant.')+'</p>'; return; }
+  box.innerHTML=l.map(function(f,i){
+    return '<div class="hist" data-i="'+i+'" role="button" tabindex="0">'+(f.poster?'<img src="'+esc(f.poster)+'" alt="">':'<img alt="">')+
+      '<div><b>'+esc(f.title)+'</b><div class="sub" style="font-size:14px">'+esc(f.year)+'</div></div></div>';
+  }).join('');
+  box.querySelectorAll('.hist').forEach(function(el){
+    var go=function(){showResult(l[+el.dataset.i]);};
+    el.onclick=go; el.onkeydown=function(e){if(e.key==='Enter')go();};
+  });
+}
+$('tabRecent').onclick=function(){S.tab='recent';renderHist();};
+$('tabFav').onclick=function(){S.tab='fav';renderHist();};
+
+/* ---------- Démarrage ---------- */
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
+if(S.token){
+  api('me').then(function(j){
+    if(j.me){ setMe(j.me); enter(); return checkPending().then(function(){ history.replaceState(null,'',location.pathname); }); }
+    leave();
+  }).catch(function(){ $('auth').classList.remove('hide'); });
+} else { $('auth').classList.remove('hide'); }
+})();
+</script>
+</body>
+</html>
